@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+
+
+    <title>智慧教育平台-修改头像</title>
+    <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
+    <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
+
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html" />
+    <![endif]-->
+
+    <link rel="shortcut icon" href="../../static/favicon.ico"
+          th:href="@{/static/favicon.ico}">
+    <link href="../../static/css/bootstrap.min.css?v=3.3.6"
+          th:href="@{/static/css/bootstrap.min.css(v='3.3.6')}" rel="stylesheet">
+    <link href="../../static/css/font-awesome.min.css?v=4.4.0"
+          th:href="@{/static/css/font-awesome.min.css(v='4.4.0')}" rel="stylesheet">
+    <link href="../../static/css/animate.css"
+          th:href="@{/static/css/animate.css}" rel="stylesheet">
+    <link href="../../static/css/style.css?v=4.1.0"
+          th:href="@{/static/css/style.css(v='4.1.0')}" rel="stylesheet">
+
+    <!--cropper.js-->
+    <link href="../../static/css/plugins/cropper/cropper.min.css"
+          th:href="@{../../static/css/plugins/cropper/cropper.min.css}" rel="stylesheet">
+
+
+
+</head>
+
+<body class="gray-bg">
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="white-bg ">
+        <div class="wrapper-content">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="page-header">
+                    <i class="fa fa-user">
+                    </i>
+                    头像设置
+                </h2>
+            </div>
+        </div>
+           <!--裁剪部分-->
+            <div class="row">
+                <div class="col-md-5 col-md-offset-1">
+                    <div class="image-crop">
+                        <img  class="avatarimg" src="../../static/img/bg.png" width="300px" height="300px">
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <h4>图片预览：</h4>
+                    <div style="width: 200px;height: 200px">
+                        <div class="img-preview img-preview-sm"></div>
+                    </div>
+                    <div class="btn-group" style="margin-top: 5px">
+                        <label title="上传图片" for="avatarImage" class="btn btn-primary">
+                            <input type="file" accept="image/*" name="file" id="avatarImage" class="hide"> 选择图片
+                        </label>
+                        <button class="btn btn-warning" id="setCut" type="button">保存</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<!-- 全局js -->
+<script src="../../static/js/jquery.min.js?v=2.1.4"
+        th:src="@{/static/js/jquery.min.js(v='2.1.4')}"></script>
+<script src="../../static/js/bootstrap.min.js?v=3.3.6"
+        th:src="@{/static/js/bootstrap.min.js(v='3.3.6')}"></script>
+
+<!--cropper.js-->
+<script src="../../static/public/system/cropper/cropper.js"
+        th:src="@{../../static/public/system/cropper/cropper.js}"></script>
+
+<script>
+    /*图片裁剪*/
+    $(function () {
+        var $image = $(".image-crop > img[class='avatarimg']")
+        $($image).cropper({
+            ContainerWidth:400,
+            ContainerHeight: 400,
+            guides: true,   //是否显示裁剪框虚线
+            aspectRatio: 1/1,//裁剪框比例
+            viewMode: 0,//视图模式
+            dragMode: 'move',//裁剪框的模式
+            CanvasWidth: 200,//canvas的最小宽度，如果不设置的话，值是0
+            CanvasHeight: 200,
+            preview: ".img-preview",
+            done: function (data) {
+                // 输出结果
+            }
+        });
+
+        var $inputImage = $("#avatarImage");
+        if (window.FileReader) {
+            $inputImage.change(function () {
+                var fileReader = new FileReader(),
+                    files = this.files,
+                    file;
+
+                if (!files.length) {
+                    return;
+                }
+
+                file = files[0];
+
+                if (/^image\/\w+$/.test(file.type)) {
+                    fileReader.readAsDataURL(file);
+                    fileReader.onload = function () {
+                        $inputImage.val("");
+                        $image.cropper("reset", true).cropper("replace", this.result);
+                    };
+                } else {
+                    showMessage("请选择图片文件");
+                }
+            });
+        } else {
+            $inputImage.addClass("hide");
+        }
+
+
+        $("#setBig").click(function () {
+            $image.cropper("zoom", 0.1);
+        });
+
+        $("#setSmall").click(function () {
+            $image.cropper("zoom", -0.1);
+        });
+
+        $("#setLeft").click(function () {
+            $image.cropper("rotate", 45);
+        });
+
+        $("#setRight").click(function () {
+            $image.cropper("rotate", -45);
+        });
+
+        $("#setCut").click(function () {
+            // $image.cropper("setDragMode", "crop");
+            alert("保存成功！");
+
+        });
+    })
+</script>
+</body>
+
+</html>

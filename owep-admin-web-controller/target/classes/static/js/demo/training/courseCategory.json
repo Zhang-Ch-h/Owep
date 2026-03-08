@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "typeName": "mybatis",
+    "typeDesc": "是一个对数据库进行增删改查的开源框架，前身是一个iBatis"
+  },
+  {
+    "id": 2,
+    "typeName": "java核心技术2（测试）",
+    "typeDesc": "java核心技术2（测试）"
+  },
+  {
+    "id": 3,
+    "typeName": "服务器环境搭建",
+    "typeDesc": "主要是Linux下的常用命令与软件安装"
+  },
+  {
+    "id": 4,
+    "typeName": "Web后端开发",
+    "typeDesc": "Web后端开发"
+  },
+  {
+    "id": 5,
+    "typeName": "mybatis",
+    "typeDesc": "是一个对数据库进行增删改查的开源框架，前身是一个iBatis"
+  },
+  {
+    "id": 6,
+    "typeName": "java核心技术2（测试）",
+    "typeDesc": "java核心技术2（测试）"
+  },
+  {
+    "id": 7,
+    "typeName": "服务器环境搭建",
+    "typeDesc": "主要是Linux下的常用命令与软件安装"
+  },
+  {
+    "id": 8,
+    "typeName": "Web后端开发",
+    "typeDesc": "Web后端开发"
+  }
+]

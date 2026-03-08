@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+
+    <title>乐码在线智慧平台 - 登录</title>
+
+    <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
+    <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
+
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html" />
+    <![endif]-->
+
+    <link rel="shortcut icon" href="../static/favicon.ico" th:href="@{/static/favicon.ico}">
+    <link href="../static/css/bootstrap.min.css?v=3.3.6" th:href="@{/static/css/bootstrap.min.css(v='3.3.6')}" rel="stylesheet">
+    <link href="../static/css/font-awesome.min.css?v=4.4.0" th:href="@{/static/css/font-awesome.min.css(v='4.4.0')}" rel="stylesheet">
+    <link href="../static/css/animate.css" th:href="@{/static/css/animate.css}" rel="stylesheet">
+    <link href="../static/css/style.css?v=4.1.0" th:href="@{/static/css/style.css(v='4.1.0')}" rel="stylesheet">
+
+    <link href="../static/css/plugins/verify/verify.css" th:href="@{/static/css/plugins/verify/verify.css}" rel="stylesheet">
+    <link href="../static/css/login.css" th:href="@{/static/css/login.css}" rel="stylesheet">
+
+    <script>if(window.top !== window.self){ window.top.location = window.location;}</script>
+
+    <style type="text/css">
+        .input_bg {
+            height: 42px;
+            color: #2E2D3C;
+        }
+
+        .checkcode-popover {
+            width: 400px;
+            min-height: 200px;
+            border: 1px solid gray;
+            display: none;
+        }
+
+    </style>
+</head>
+
+<body class="blue-bg">
+
+    <div class="middle-box text-center loginscreen  animated fadeInDown">
+        <div>
+            <div>
+
+                <h1 class="logo-name" style="font-size: 48px;letter-spacing: 1px;">乐码在线智慧平台</h1>
+
+            </div>
+            <h3>欢迎使用</h3>
+
+            <form class="m-t form-horizontal" role="form" method="post" action="/owep/login" id="validateForm">
+
+                <div class="error red-bg" name="error_msg" ></div>
+                <div>
+                    <label class="col-sm-4 text-left"><i class="fa fa-user"></i>&nbsp;&nbsp;用户名</label>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <input type="text" class="form-control input_bg" name="username"  placeholder="username/email/phone">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="col-sm-4 text-left"><i class="fa fa-unlock"></i>&nbsp;&nbsp;密码</label>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <input type="password" class="form-control input_bg" name="password" placeholder="password">
+                    </div>
+                </div>
+
+                <div class="checkcode_label">
+                    <label class="col-sm-4 text-left"><i class="fa fa-user-secret"></i>&nbsp;&nbsp;验证码</label>
+                </div>
+
+
+
+                    <div class="checkcode-popover">
+                        <div id="slide_checkcode"></div>
+                    </div>
+
+                    <button type="button" class="btn btn-default block full-width m-b">点击按钮进行验证</button>
+
+
+                <p class="text-muted text-right"><a href="forget_password.html" style="color: #fff;"><small>忘记密码了？</small></a></p>
+
+
+                <button type="submit" class="btn btn-primary block full-width m-b" disabled>登 录</button>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- 全局js -->
+    <script src="../static/js/jquery.min.js?v=2.1.4" th:src="@{/static/js/jquery.min.js(v='2.1.4')}"></script>
+    <script src="../static/js/bootstrap.min.js?v=3.3.6" th:src="@{/static/js/bootstrap.min.js(v='3.3.6')}"></script>
+    <script src="../static/js/plugins/verfiy/verify.js" th:src="@{/static/js/plugins/verfiy/verify.js}"></script>
+    <script src="../static/js/plugins/validate/jquery.validate.min.js" th:src="@{/static/js/plugins/validate/jquery.validate.min.js}"></script>
+    <script src="../static/js/plugins/validate/messages_zh.min.js" th:src="@{/static/js/plugins/validate/messages_zh.min.js}"></script>
+
+    <script>
+        $(function  GetRequest() {
+            var url = location.search;//获取url？后字串
+            // console.log(url);
+            if(url.indexOf("?")!==-1){//?后是否有参数
+                var str = url.substr(1);//排除首位?号
+                // console.log(str);
+                if(str==="error"){ $("div[name='error_msg']").html("用户名或密码错误")}//url参数位为对应标识则显示
+            }
+        })
+
+        $(function () {
+
+            //verify 生成的验证码
+            $('#slide_checkcode').slideVerify({
+                type : 2,		//类型
+                vOffset :5,	//误差量，根据需求自行调整
+                vSpace : 5,	//间隔
+                imgName : ['1.jpg', '2.jpg','3.jpg','4.jpg','5.jpg','6.jpg'],
+                imgSize : {
+                    width: '400px',
+                    height: '200px',
+                },
+                blockSize : {
+                    width: '40px',
+                    height: '40px',
+                },
+                barSize : {
+                    width : '400px',
+                    height : '40px',
+                },
+                ready : function() {
+                },
+                success : function() {
+                    //alert('验证成功，添加你自己的代码！');
+                    //......后续操作
+                    //显示按钮，隐藏自己
+                    $(".checkcode-popover").hide();
+                    //
+                    $(".btn.btn-default").show();
+                    //改变按钮的文字信息
+                    $(".btn.btn-default").html("<i class='fa fa-check-square-o'></i> 验证成功 !");
+                    //修改提交按钮的状态
+                    $(":submit").prop("disabled", false);
+                },
+                error : function() {
+//		        	alert('验证失败！');
+                }
+            }); //end of checkcode
+
+            //隐藏弹出验证码的框
+            $(".btn.btn-default").on("click", function () {
+                //隐藏 checkcode_label
+                $("div[class='checkcode_label']").hide();
+                //显示验证码
+                $(".checkcode-popover").show();
+                //隐藏按钮
+                $(".btn.btn-default").hide();
+            });
+
+
+            //表单验证
+            $("#validateForm").validate({
+                rules: {
+                    username: 'required',
+                    password: {
+                        required: true,
+                        minlength: 6
+                    }
+                },
+                //自定义显示的消息
+                messages: {
+                    username: "请输入用户名",
+                    password: {
+                        required: "请输入密码",
+                        minlength: "密码不能少于6个字符"
+                    }
+                },
+                //自定义错误消息显示的位置
+                /*errorPlacement: function(error, element) {
+                    error.appendTo(element.siblings("span"));
+                },*/
+                submitHandler: function (form) {
+                    //alert("提交表单;");
+                    console.log(form);
+                    form.submit();
+                }
+            });
+
+        })
+    </script>
+</body>
+
+</html>

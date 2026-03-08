@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>乐码在线智慧平台-专业方向</title>
+    <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
+    <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
+
+    <link rel="shortcut icon" href="../../static/favicon.ico">
+    <link href="../../static/css/bootstrap.min.css?v=3.3.6" th:href="@{/static/css/bootstrap.min.css(v='3.3.6')}"
+          rel="stylesheet">
+    <link href="../../static/css/font-awesome.css?v=4.4.0" th:href="@{/static/css/font-awesome.css(v='4.4.0')}"
+          rel="stylesheet">
+    <link href="../../static/css/plugins/bootstrap-table/bootstrap-table.min.css"
+          th:href="@{/static/css/plugins/bootstrap-table/bootstrap-table.min.css}" rel="stylesheet">
+    <link href="../../static/css/animate.css" th:href="@{/static/css/animate.css}" rel="stylesheet">
+    <link href="../../static/css/style.css?v=4.1.0" th:href="@{/static/css/style.css(v='4.1.0')}" rel="stylesheet">
+    <!-- Sweet Alert -->
+    <link href="../../static/css/plugins/sweetalert/sweetalert.css"
+          th:href="@{/static/css/plugins/sweetalert/sweetalert.css}" rel="stylesheet">
+    <!--switchery-->
+    <link href="../../static/css/plugins/switchery/switchery.css" th:href="@{/static/css/plugins/switchery/switchery.css}" rel="stylesheet">
+    <style type="text/css">
+        .table>thead>tr>th{
+            color: #2a62bc;
+        }
+    </style>
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+
+    <div class="pull-left">
+        <form class="form-inline" style="margin:15px 5px">
+            <div class="form-group">
+                <label>专业名称:</label>
+                <input type="text" class="form-control" id="name">
+            </div>
+            <div class="form-group">
+                <label>&nbsp;&nbsp;所属机构:</label>
+                <div class="input-group">
+                    <input type="text" class="form-control org" id="org-search">
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                        </ul>
+                    </div>
+                    <!-- /btn-group -->
+                </div>
+            </div>
+            <div class="form-group">
+                <label>&nbsp;&nbsp; 所属分支:</label>
+                <div class="input-group">
+                    <input type="text" class="form-control branch" id="branch-search">
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                        </ul>
+                    </div>
+                    <!-- /btn-group -->
+                </div>
+            </div>
+            <input type="button" class="btn btn-primary" value="查询" id="queryBtn"/>
+        </form>
+    </div>
+
+    <div class="pull-right"  style="margin-top:15px;margin-right: 10px">
+        <button class="btn btn-primary" data-toggle="modal" data-target="#add">添加</button>
+        <button class="btn btn-danger" id="deleteAll">删除</button>
+    </div>
+    <div>
+        <table id="tb_major"></table>
+    </div>
+</div>
+<!--更新专业模态框-->
+<div class="modal fade" id="update" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close" data-dismiss="modal">&times;</span>
+                <h3 class="modal-title">修改</h3>
+            </div>
+
+            <div class="modal-body" style="min-height: 300px;margin-top: 20px">
+                <form action="#" name="updateMajorForm" class="form-horizontal" method="post">
+                    <input type="hidden" name="id">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label right">专业名称：</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" name="profName">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label right">所属机构：</label>
+                        <div class="col-sm-7">
+                            <div class="input-group">
+                                <input type="text" class="form-control org" name="instituteName" id="org-update">
+                                <div class="input-group-btn" style="z-index:99999 !important;">
+                                    <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label right">所属分支：</label>
+                        <div class="col-sm-7">
+                            <div class="input-group">
+                                <input type="text" class="form-control branch" name="instituteBranchName" id="branch-update">
+                                <div class="input-group-btn" style="z-index:99999!important;">
+                                    <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label right">描述：</label>
+                        <div class="col-sm-7">
+                            <textarea class="form-control" type="text" placeholder="乐码学院，JavaEE企业级开发人才培养。" name="profDesc"></textarea>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-dismiss="modal">关闭</button>
+                <button class="btn btn-primary" id="update_sure">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--添加专业模态框-->
+<div class="modal fade" id="add" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close" data-dismiss="modal">&times;</span>
+                <h3 class="modal-title">添加</h3>
+            </div>
+
+            <div class="modal-body" style="min-height: 400px;margin-top: 20px">
+                <form action="/owep/clazz/saveMajor" name="saveMajorForm" class="form-horizontal" method="post">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label right">专业名称：</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" name="profName">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label right">所属机构：</label>
+                        <div class="col-sm-7">
+                            <div class="input-group">
+                                <input type="text" class="form-control org" name="instituteName" id="org-save">
+                                <div class="input-group-btn" style="z-index:99999!important;">
+                                    <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label right">所属分支：</label>
+                        <div class="col-sm-7">
+                            <div class="input-group">
+                                <input type="text" class="form-control branch" name="instituteBranchName" id="branch-save">
+                                <div class="input-group-btn" style="z-index:99999!important;">
+                                    <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">是否启用：</label>
+                        <div class="col-sm-7">
+                            <select class="form-control m-b" name="profStatus">
+                                <option value="1">启用</option>
+                                <option value="0">不启用</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label right">描述：</label>
+                        <div class="col-sm-7">
+                            <textarea class="form-control" type="text" placeholder="乐码学院，JavaEE企业级开发人才培养。" name="profDesc"></textarea>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-dismiss="modal">关闭</button>
+                <button class="btn btn-primary" id="add_sure">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 全局js -->
+<script src="../../static/js/jquery.min.js?v=2.1.4" th:src="@{/static/js/jquery.min.js(v='2.1.4')}"></script>
+<script src="../../static/js/bootstrap.min.js?v=3.3.6" th:src="@{/static/js/bootstrap.min.js(v='3.3.6')}"></script>
+<!-- 自定义js -->
+<script src="../../static/js/content.js?v=1.0.0" th:src="@{/static/js/content.js(v='1.0.0')}"></script>
+<!-- Bootstrap table -->
+<script src="../../static/js/plugins/bootstrap-table/bootstrap-table.min.js"
+        th:src="@{/static/js/plugins/bootstrap-table/bootstrap-table.min.js}"></script>
+<script src="../../static/js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"
+        th:src="@{/static/js/plugins/bootstrap-table/bootstrap-table-mobile.min.js}"></script>
+<script src="../../static/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"
+        th:src="@{/static/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js}"></script>
+<!--动态搜索-->
+<script src="../../static/js/plugins/suggest/bootstrap-suggest.min.js"
+        th:src="@{/static/js/plugins/suggest/bootstrap-suggest.min.js}"></script>
+<!-- Sweet alert -->
+<script src="../../static/js/plugins/sweetalert/sweetalert.min.js"
+        th:src="@{/static/js/plugins/sweetalert/sweetalert.min.js}"></script>
+<!-- Switchery -->
+<script src="../../static/js/plugins/switchery/switchery.js"  th:src="@{/static/js/plugins/switchery/switchery.js}"></script>
+<script>
+    $(function () {
+        //初始化表格
+        var init = new initdata();
+        var a = init.Init('/owep/clazz/majorList');
+        console.log(a);
+        //点击按钮开始搜索
+        $("#queryBtn").click(function () {
+            let name = $("#name").val();
+            let org = $("#org-search").val();
+            let branch = $("#branch-search").val();
+            //判断条件是否存在
+            if (name==""&&org==""&&branch==""){
+                alert("请选择查询条件");
+                return ;
+            }else {
+                //执行查询
+                init.Init('/owep/clazz/selectByKeyword?profName='+name+'&instituteName='+org+"&instituteBranchName="+branch);
+            }
+
+        });
+        //删除所有
+        $('#deleteAll').click(function () {
+            // 删除按钮事件
+                if (!confirm("是否确认删除？"))
+                    return;
+                var rows = $("#tb_major").bootstrapTable('getSelections');// 获得要删除的数据
+                if (rows.length == 0) {// rows 主要是为了判断是否选中，下面的else内容才是主要
+                    alert("请先选择要删除的记录!");
+                    return;
+                } else {
+                    var ids = new Array();// 声明一个数组 该数组将要存放所有选择的id
+                    $(rows).each(function() {// 通过获得别选中的来进行遍历
+                        ids.push(this.id);// cid为获得到的整条数据中的一列
+                    });
+                    var idList=JSON.stringify(ids);
+                    //TODO 发送ajax请求
+                    $.ajax({
+                        url:"/owep/clazz/deleteSelectMajor",
+                        method:"POST",
+                        async:true,
+                        data:idList,
+                        dataType:"text",
+                        contentType:"application/json",
+                        processData:false,
+                        success:function (data) {
+                            alert(data);
+                            window.location.reload();
+                        },
+                        error:function(jqXHR){
+                            alert("删除失败");
+                        }
+                    });
+                }
+        });
+        //动态搜索选择下拉框
+        /*testdataBsSuggest1;
+        testdataBsSuggest2;*/
+        //添加事件
+        $('#add_sure').click(function () {
+            //获取表单数据
+            var form = document.forms["saveMajorForm"];
+            var formData = new FormData(form);
+            //AJAX去提交表单数据
+            $.ajax({
+                url:"/owep/clazz/saveMajor",
+                method:"POST",
+                async:true,
+                data:formData,  //综合表单，使用formData来封装，不能用Serializable，否则无法提交
+                dataType:"text",
+                contentType:false,
+                processData:false,
+                success:function(data){
+                    alert(data);
+                    window.location.reload();
+                },
+                error:function(jqXHR){
+                    alert("添加失败");
+                }
+            });
+        });
+        //更新事件
+        $('#update_sure').click(function () {
+            //获取表单数据
+            var form = document.forms["updateMajorForm"];
+            var formData = new FormData(form);
+            //AJAX去提交表单数据
+            $.ajax({
+                url:"/owep/clazz/updateMajor",
+                method:"POST",
+                async:true,
+                data:formData,  //综合表单，使用formData来封装，不能用Serializable，否则无法提交
+                dataType:"text",  //期望服务端发送给客户端的数据类型。不能写成application/json
+                contentType:false,
+                processData:false,
+                success:function(data){
+                    swal("更新成功！", "", "success");
+                    //alert(data);
+                    //window.location.reload();
+                    $("#tb_major").bootstrapTable("refresh");
+                },
+                error:function(jqXHR){
+                    alert("修改失败");
+                }
+            });
+        });
+
+    });
+/*    $(".js-switch-1").on('change', function () {
+        var status=  $(this).prop("checked");
+        alert(status);
+    });*/
+    var testdataBsSuggest1 = $("#org-search").bsSuggest({
+        url:"/owep/clazz/getAllInstitute",
+        idField:"instituteId",
+        keyField:"instituteName",
+        effectiveFields: ["instituteName"],
+
+    }).on('onSetSelectValue',function (e,keyword) {
+        $("#branch-search").bsSuggest("destroy");
+        $("#branch-search").bsSuggest({
+            url:"/owep/clazz/getBranchByInstitute?id="+keyword.id,
+            idField:"branchId",
+            keyField: "branchName",
+            effectiveFields: ["branchName"],
+        })
+        }
+
+    );
+
+    var testdataBsSuggest2 = $("#org-update").bsSuggest({
+        url:"/owep/clazz/getAllInstitute",
+        idField:"instituteId",
+        keyField:"instituteName",
+        effectiveFields: ["instituteName"],
+
+    }).on('onSetSelectValue',function (e,keyword) {
+            $("#branch-update").bsSuggest("destroy");
+            $("#branch-update").bsSuggest({
+                url:"/owep/clazz/getBranchByInstitute?id="+keyword.id,
+                idField:"branchId",
+                keyField: "branchName",
+                effectiveFields: ["branchName"],
+            })
+        }
+
+    );
+
+    var testdataBsSuggest3 = $("#org-save").bsSuggest({
+        url:"/owep/clazz/getAllInstitute",
+        idField:"instituteId",
+        keyField:"instituteName",
+        effectiveFields: ["instituteName"],
+
+    }).on('onSetSelectValue',function (e,keyword) {
+            $("#branch-save").bsSuggest("destroy");
+            $("#branch-save").bsSuggest({
+                url:"/owep/clazz/getBranchByInstitute?id="+keyword.id,
+                idField:"branchId",
+                keyField: "branchName",
+                effectiveFields: ["branchName"],
+            })
+        }
+
+    );
+
+    var initdata = function () {
+        var init = new Object();
+        init.Init = function (url) {
+            //加载之前先格式化 放在查询的时候起冲突
+            $("#tb_major").bootstrapTable('destroy')
+            $("#tb_major").bootstrapTable({
+                url: url,
+                method: 'get',
+                striped: true,  //是否显示行间隔色
+                cache: false, //是否使用缓存
+                pagination: true, //是否分页
+                pageSize: 5,  //每页记录行数
+                uniqueId: 'id',  //唯一id
+                pageList: [5, 10, 20],
+                queryParams: init.queryParams, // 传递参数
+                onLoadSuccess:check,  //页面加载成功执行方法
+                onPageChange:check,   //页面发送改变执行的方法
+                columns: [{
+                    field: "coo",
+                    checkbox: true,
+                }, {
+                    field: 'id',
+                    title: "id",
+                    align: "center",
+                    visible: false //隐藏 让该字段不可见 为了后面更新和删除做准备
+                }, {
+                    field: 'profName',
+                    title: "专业名称",
+                    align: "center",
+                }, {
+                    field: 'instituteName',
+                    title: "所属机构",
+                    align: "center",
+                }, {
+                    field: 'instituteBranchName',
+                    title: "所属分支",
+                    align: "center",
+                }, {
+                    field: 'profStatus',
+                    title: "是否启用",
+                    align: "center",
+                    formatter:addSlideChoiceBox
+                }, {
+                    field: 'operator',
+                    title: "操作",
+                    align: "center",
+                    valign: "middle",
+                    formatter: actionFormatter, //方法调用
+                    events: {
+                        'click button[title=删除]': function (e, value, row, index) {
+                            // console.log(row.id);
+                            swal({
+                                title: "您确定要删除这条信息吗",
+                                text: "删除后将无法恢复，请谨慎操作！",
+                                type: "warning",
+                                showCancelButton: true,
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "删除",
+                                closeOnConfirm: false
+                            }, function () {
+                                //TODO 发送ajax请求
+                                $.ajax({
+                                    //发送AJAX请求
+                                    url:"/owep/clazz/deleteMajor?id="+row.id,
+                                    method:"GET",
+                                    async:true,
+                                    dataType:"text",
+                                    success:function (data) {
+                                        if (data === "success"){
+                                            swal("删除成功！", "您已经永久删除了这条信息。", "success");
+                                        }else {
+                                            alert("删除失败");
+                                        }
+                                        window.location.reload();
+                                    },
+                                    error:function(jqXHR){
+                                        alert("删除失败");
+                                    }
+
+                                });
+                            });
+                        },
+                        
+                        'click button[title=修改]':function (e, value, row, index) {
+                            $.ajax({
+                                //发送AJAX请求
+                                url:"/owep/clazz/toUpdateMajor?id="+row.id,
+                                method:"GET",
+                                async:true,
+                                dataType:"json",  //拿到json
+                                success:function (professionJson) {
+                                    //把返回的json对象添加到弹出层的更新表单域中
+                                    $("form[name='updateMajorForm'] input[name='id']").val(professionJson.id);
+                                    $("form[name='updateMajorForm'] input[name='profName']").val(professionJson.profName);
+                                    $("form[name='updateMajorForm'] input[name='instituteName']").val(professionJson.instituteName);
+                                    $("form[name='updateMajorForm'] input[name='instituteBranchName']").val(professionJson.instituteBranchName);
+                                    $("form[name='updateMajorForm'] textarea[name='profDesc']").val(professionJson.profDesc);
+                                },
+                                error:function(jqXHR){
+                                    alert("获取数据失败");
+                                    //重新加载页面
+                                    window.location.reload();
+                                }
+                            });
+                        }
+                    }
+                }]
+
+            });
+        };
+        init.queryParams = function (params) {
+            console.log(params);
+            console.log($('#name').val());
+            return {
+                offset: params.offset,//从数据库第几条记录开始
+                limit: params.limit,//找多少条
+                name: $("#name").val(),
+                org: $("#org").val(),
+                branch: $("#branch").val()
+            };
+        };
+
+
+        return init;
+    }
+
+    //是否启用按钮
+    function addSlideChoiceBox(value, row, index) {
+        var check="checked";
+        //判断状态
+        if (row.profStatus==0){
+            check="";
+        }
+        return "<input type=\"checkbox\" class=\"js-switch-1 form-control\""+check+"/>"
+    }
+    //操作栏的格式化
+    function actionFormatter(value, row, index) {
+        var id = value;
+        var result = "";
+        // console.log(row.id);
+        // console.log(row.name+"--"+index +"--"+value);
+        result += "<button class='btn btn-primary btn-sm' title='修改' style='margin-right: 10px' data-toggle=\"modal\" data-target=\"#update\"><span class='glyphicon glyphicon-edit'></span></button>";
+        result += "<button class='btn btn-danger btn-sm delete'  title='删除'><span class='glyphicon glyphicon-trash'></span></button>";
+        return result;
+    };
+
+    /*初始化滑动按钮*/
+    function check(data) {
+        //页面有多个互动按钮
+        $(".js-switch-1").each(function (index,elements) {
+            new Switchery(elements);
+            //监听按钮点击事件
+            $(elements).on("change",function () {
+                //TODO 发送ajax请求s
+                //获取滑动按钮爷级元素tr里面data-index的值
+                let index = $(elements).parents("tr").attr("data-index");
+                //获取id
+                let id=data[index].id;
+                console.log(id);
+
+                $.ajax({
+                    //发送AJAX请求
+                    url:"/owep/clazz/professionTrigger?id="+id+"&check="+elements.checked,
+                    method:"GET",
+                    async:true,
+                    dataType:"text",
+                    success:function (data) {
+                        alert(data);
+                    },
+                    error:function(jqXHR){
+                        alert("操作失败");
+                    }
+
+                });
+            })
+        })
+    };
+</script>
+
+</body>
+</html>

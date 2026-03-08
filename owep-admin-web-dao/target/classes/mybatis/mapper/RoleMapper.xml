@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kclm.owep.mapper.RoleMapper">
+    <resultMap id="BaseResultMap" type="com.kclm.owep.entity.Role">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
+        <result column="role_description" jdbcType="VARCHAR" property="roleDescription"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="last_access_time" jdbcType="TIMESTAMP" property="lastAccessTime"/>
+        <result column="version" jdbcType="INTEGER" property="version"/>
+        <!--  <result column="fk_parent_id" jdbcType="INTEGER" property="parent"/>-->
+    </resultMap>
+
+    <sql id="base_column_list">
+        id,
+        role_name,
+        role_description,
+        create_time,
+        last_access_time,
+        version
+    </sql>
+    <!--插入角色-->
+    <insert id="save" parameterType="Role">
+        insert into t_role
+        <trim prefix="(" suffixOverrides="," suffix=")">
+            <if test="roleName != null">
+                role_name,
+            </if>
+            <if test="roleDescription != null">
+                role_description,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="parent != null">
+                fk_parent_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roleName != null">
+                #{roleName},
+            </if>
+            <if test="roleDescription != null">
+                #{roleDescription},
+            </if>
+            <if test="createTime != null">
+                #{createTime},
+            </if>
+            <if test="version != null">
+                #{version},
+            </if>
+            <if test="parent != null">
+                #{parent.id},
+            </if>
+        </trim>
+    </insert>
+    <!--更新角色-->
+    <update id="update" parameterType="Role">
+        update t_role
+        <set>
+            <if test="roleName != null">
+                role_name=#{roleName},
+            </if>
+            <if test="roleDescription != null">
+                role_description=#{roleDescription},
+            </if>
+            last_access_time=now(),
+            version=version + 1,
+            <if test="parent != null">
+                fk_parent_id=#{parent.id}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <!--批量删除-->
+    <delete id="deleteSelect">
+        delete
+        from t_role
+                where id in
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </delete>
+    <!--单条删除-->
+    <delete id="deleteById">
+        delete
+        from t_role
+        where id = #{id}
+    </delete>
+    <!--查询全部-->
+    <select id="selectAll" resultType="Role">
+        select
+        <include refid="base_column_list"/>
+        from t_role
+    </select>
+    <!--根据Id进行查询-->
+    <select id="selectById" resultType="Role">
+        select
+        <include refid="base_column_list"/>
+        from t_role
+        where id = #{id}
+    </select>
+    <!--通过名字进行模糊查询-->
+    <select id="selectByName" resultMap="BaseResultMap">
+        select
+        <include refid="base_column_list"/>
+        from t_role
+        where role_name like concat('%', #{roleName}, '%')
+    </select>
+    <!--查询角色的孩子 可传如Id作为条件-->
+    <select id="selectChild" resultMap="RoleChild">
+        select r.id                rid,
+               r.role_name         rname,
+               r.role_description  rdesc,
+               r.create_time       rctime,
+               r.last_access_time  rltime,
+               r.version           rv,
+               cr.id               cid,
+               cr.role_name        cname,
+               cr.role_description cdesc,
+               cr.create_time      cctime,
+               cr.last_access_time cltime,
+               cr.version          cv,
+               cr.fk_parent_id     cpid
+        from t_role r
+                     left join t_role cr on cr.fk_parent_id = r.id
+        <where>
+            <if test="_parameter != 0">
+                r.id = #{Id}
+            </if>
+        </where>
+    </select>
+    <resultMap id="RoleChild" type="Role">
+        <id column="rid" property="id"/>
+        <result column="rname" property="roleName"/>
+        <result column="rdesc" property="roleDescription"/>
+        <result column="rltime" property="lastAccessTime"/>
+        <result column="rv" property="version"/>
+        <collection property="childRoles" ofType="Role">
+            <id column="cid" property="id"/>
+            <result column="cname" property="roleName"/>
+            <result column="cdesc" property="roleDescription"/>
+            <result column="cltime" property="lastAccessTime"/>
+            <result column="cv" property="version"/>
+        </collection>
+    </resultMap>
+    <!--根据角色Id查询该角色下所关联的用户组-->
+    <select id="selectGroupsByRoleId" resultMap="RoleInGroup">
+        select r.id               rid,
+               role_name,
+               role_description,
+               r.create_time      rctime,
+               r.last_access_time rltime,
+               r.version          rv,
+               g.id               gid,
+               group_name,
+               group_description,
+               g.create_time      gctime,
+               g.last_access_time gltime,
+               g.version          gv,
+               max_count
+        from t_role r
+                     left join t_group_role gr on r.id = gr.role_id
+                     left join t_group g on gr.group_id = g.id
+        <where>
+            <if test="_parameter != 0">
+                role_id = #{roleId}
+            </if>
+        </where>
+    </select>
+    <resultMap id="RoleInGroup" type="Role">
+        <id column="rid" property="id"/>
+        <result column="role_name" property="roleName"/>
+        <result column="role_description" property="roleDescription"/>
+        <result column="rltime" property="lastAccessTime"/>
+        <result column="rctime" property="createTime"/>
+        <result column="rv" property="version"/>
+        <collection property="groups" ofType="Group">
+            <id column="gid" property="id"/>
+            <result column="group_name" property="groupName"/>
+            <result column="group_description" property="groupDescription"/>
+            <result column="max_count" property="maxCount"/>
+            <result column="gctime" property="createTime"/>
+            <result column="gltime" property="lastAccessTime"/>
+            <result column="gv" property="version"/>
+        </collection>
+    </resultMap>
+    <!--查询角色下所拥有的权限-->
+    <select id="selectPermissionInRole" resultMap="RoleInPermission">
+        select r.id               rid,
+               role_name,
+               role_description,
+               r.create_time      rctime,
+               r.last_access_time rltime,
+               r.version          rv,
+               p.id               pid,
+               permission_name,
+               permission_description,
+               p.create_time      pctime,
+               p.last_access_time pltime,
+               p.version          pv
+        from t_role r
+                     left join t_role_permission rp on r.id = rp.role_id
+                     left join t_permission p on p.id = rp.permission_id
+        <where>
+            <if test="_parameter != 0">
+                r.id = #{roleId}
+            </if>
+        </where>
+    </select>
+    <resultMap id="RoleInPermission" type="Role">
+        <id column="rid" property="id"/>
+        <result column="role_name" property="roleName"/>
+        <result column="role_description" property="roleDescription"/>
+        <result column="rctime" property="createTime"/>
+        <result column="rltime" property="lastAccessTime"/>
+        <result column="rv" property="version"/>
+        <collection property="permissions" ofType="Permission">
+            <id column="pid" property="id"/>
+            <result column="permission_name" property="permissionName"/>
+            <result column="permission_description" property="permissionDescription"/>
+            <result column="pctime" property="createTime"/>
+            <result column="pltime" property="lastAccessTime"/>
+            <result column="pv" property="version"/>
+        </collection>
+    </resultMap>
+    <!--向角色权限表中添加数据-->
+    <insert id="assignPermissionToRole">
+        insert t_role_permission(role_id, permission_id) value (#{roleId}, #{perId})
+    </insert>
+    <!--根据角色ID删除该角色下的所有权限-->
+    <delete id="deletePermissionByRoleId">
+        delete
+        from t_role_permission
+                where role_id in
+        <foreach collection="list" close=")" open="(" separator="," item="item">
+            #{item}
+        </foreach>
+    </delete>
+    <delete id="deleteRoleInGR">
+        delete
+        from t_group_role
+                where role_id in
+        <foreach collection="list" close=")" open="(" separator="," item="item">
+            #{item}
+        </foreach>
+    </delete>
+    <!--删除某个角色下的某个权限-->
+    <delete id="deletePermissionByPerIdAndRoleId">
+        delete
+        from t_role_permission
+        where role_id = #{roleId}
+          and permission_id = #{perId}
+    </delete>
+    <!--统计角色权限表中的数据-->
+    <select id="countPermissionByRoleId" resultType="int">
+        select count(permission_id)
+        from t_role_permission
+        <where>
+            <if test="_parameter != 0">
+                role_id = #{roleId};
+            </if>
+        </where>
+    </select>
+    <!--统计角色表中数据-->
+    <select id="count" resultType="_int">
+        select count(id)
+        from t_role
+    </select>
+    <!--根据ID来查询父角色-->
+    <select id="selectParent" resultMap="ParentRole">
+        select r.id                rid,
+               r.role_name         rname,
+               r.role_description  rdesc,
+               r.create_time       rctime,
+               r.last_access_time  rltime,
+               r.version           rv,
+               cr.id               cid,
+               cr.role_name        cname,
+               cr.role_description cdesc,
+               cr.create_time      cctime,
+               cr.last_access_time cltime,
+               cr.version          cv
+        from t_role r
+                     left join t_role cr on r.fk_parent_id = cr.id
+        <where>
+            <if test="_parameter != 0">
+                r.id = #{Id}
+            </if>
+        </where>
+    </select>
+    <resultMap id="ParentRole" type="Role">
+        <id column="rid" property="id"/>
+        <result column="rname" property="roleName"/>
+        <result column="rdesc" property="roleDescription"/>
+        <result column="rctime" property="createTime"/>
+        <result column="rltime" property="lastAccessTime"/>
+        <result column="rv" property="version"/>
+        <association property="parent" javaType="Role">
+            <id column="cid" property="id"/>
+            <result column="cname" property="roleName"/>
+            <result column="cctime" property="createTime"/>
+            <result column="cdesc" property="roleDescription"/>
+            <result column="cltime" property="lastAccessTime"/>
+            <result column="cv" property="version"/>
+        </association>
+    </resultMap>
+</mapper>

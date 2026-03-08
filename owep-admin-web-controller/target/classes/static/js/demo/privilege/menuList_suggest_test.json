@@ -1,0 +1,24 @@
+{
+"value": [
+  {
+    "id":1,
+    "privilegeName":"测试权限"
+  },
+  {
+    "id":2,
+    "privilegeName":"咨询权限"
+  },
+  {
+    "id":3,
+    "privilegeName":"教务权限"
+  },
+  {
+    "id":4,
+    "privilegeName":"教师权限"
+  },
+  {
+    "id":5,
+    "privilegeName":"管理员权限"
+  }
+]
+}

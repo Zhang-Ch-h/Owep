@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+
+
+    <title>智慧教育平台-系统配置</title>
+    <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
+    <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
+
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html" />
+    <![endif]-->
+
+    <link rel="shortcut icon" href="../../static/favicon.ico"
+          th:href="@{/static/favicon.ico}">
+    <link href="../../static/css/bootstrap.min.css?v=3.3.6"
+          th:href="@{/static/css/bootstrap.min.css(v='3.3.6')}" rel="stylesheet">
+    <link href="../../static/css/font-awesome.min.css?v=4.4.0"
+          th:href="@{/static/css/font-awesome.min.css(v='4.4.0')}" rel="stylesheet">
+    <link href="../../static/css/animate.css"
+          th:href="@{/static/css/animate.css}" rel="stylesheet">
+    <link href="../../static/css/style.css?v=4.1.0"
+          th:href="@{/static/css/style.css(v='4.1.0')}" rel="stylesheet">
+
+    <!--文件上传-->
+  <link href="../../static/css/plugins/webuploader/webuploader.css"
+        th:href="@{/static/css/plugins/webuploader/webuploader.css}" rel="stylesheet">
+
+    <!--图片剪切-->
+    <link href="../../static/css/plugins/cropper/cropper.min.css"
+          th:href="@{/static/css/plugins/cropper/cropper.min.css}" rel="stylesheet">
+
+    <!-- 弹出框插件 -->
+    <link href="../../static/css/plugins/sweetalert/sweetalert.css" rel="stylesheet"
+          th:href="@{/static/css/plugins/sweetalert/sweetalert.css }">
+
+    <style>
+        .fileinput-button {
+            position: relative;
+            display: inline-block;
+            background: #CCCCCC;
+            border: 1px solid #99D3F5;
+            border-radius: 4px;
+            padding: 4px 12px;
+            overflow: hidden;
+            color: white;
+            text-decoration: none;
+            text-indent: 0;
+            line-height: 20px;
+        }
+
+        .fileinput-button input {
+            position: absolute;
+            right: 0px;
+            top: 0px;
+            opacity: 0;
+            -ms-filter: 'alpha(opacity=0)';
+            font-size: 200px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content  animated fadeInRight">
+    <div class="white-bg">
+        <div class="wrapper-content">
+            <!--头部标题-->
+            <div class="row">
+                <div class="col-md-12">
+                    <h2 class="page-header">
+                        <i class="fa fa-globe"></i>
+                        基本信息
+                    </h2>
+                </div>
+            </div>
+            <!--表单内容部分-->
+            <form role="form">
+
+                <div class="form-group form-inline">
+                    <div class="row">
+                    <label class="col-md-2 wrapper " style="font-weight:bold; margin-top: 5px">系统名称:</label>
+                    <div class="input-group col-md-3">
+                        <input type="text" class="form-control" name="systemname" value="苏州青英培训学校(乐码学院) ">
+                    </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="row">
+                        <label class="col-md-2 wrapper " style="margin-top: 5px">版权信息:</label>
+                        <div class="input-group col-md-3">
+                            <input type="text" class="form-control" name="verinfo" value="苏州青英培训学校(乐码学院) ">
+                        </div>
+                    </div>
+                </div>
+                <!--保存按钮-->
+                <div class="form-group">
+                    <div class="row wrapper">
+                        <button type="button" id="save" name="save" class="btn btn-success">保存</button>
+                    </div>
+                </div>
+
+                <!--登录页LOGO-->
+                <div class="form-group">
+                    <div class="row">
+                        <label class="col-md-2 wrapper " style=" margin-top: 5px">登录页LOGO:</label>
+                        <div class="col-md-5">
+                            <button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#loginModal">裁剪图片</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2" style="background-color: #fff">
+                            <img src="../../static/img/getImage.png" th:src="@{/static/img/{name}(name=${loginLogoName})}" id="loginLogo" width="200" height="50" />
+                        </div>
+                    </div>
+                </div>
+                <!--系统页LOGO-->
+                <div class="form-group">
+                    <div class="row">
+                        <label class="col-md-2 wrapper " style=" margin-top: 5px">系统页LOGO:</label>
+                        <div class="col-md-5">
+                            <button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#myModal">裁剪图片</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2" style="background-color: #fff">
+                            <img src="../../static/img/sysImage.png" th:src="@{/static/img/{name}(name=${sysLogoName})}" id="sysshow2" width="200" height="50" >
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <!--end-->
+        </div>
+    </div>
+</div>
+
+<!--模态框部分-->
+<!--登录页模态框-->
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="loginModalLabel">裁剪图片</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="image-crop">
+                            <img  class="loginimg" src="../../static/img/getImage.png" th:src="@{/static/img/{name}(name=${loginLogoName})}">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h4>图片预览：</h4>
+                        <div style="width: 200px;height: 100px">
+                            <div class="img-preview img-preview-sm" id="img-preview-login"></div>
+                        </div>
+                        <div class="btn-group" style="margin-top: 5px">
+                            <label title="上传图片" for="loginImage" class="btn btn-primary">
+                                <input type="file" accept="image/*" name="file" id="loginImage" class="hide"> 上传新图片
+                            </label>
+                            <button class="btn btn-warning" id="setCut" type="button">裁剪</button>
+                        </div>
+
+                        <div class="btn-group" style="margin-top: 5px">
+                            <button class="btn btn-white" id="setBig" type="button">放大</button>
+                            <button class="btn btn-white" id="setSmall" type="button">缩小</button>
+                            <button class="btn btn-white" id="setLeft" type="button">左旋转</button>
+                            <button class="btn btn-white" id="setRight" type="button">右旋转</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="loginSave">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--系统页模态框-->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">裁剪图片</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="image-crop">
+                            <img src="../../static/img/sysImage.png" th:src="@{/static/img/{name}(name=${sysLogoName})}">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h4>图片预览：</h4>
+                        <div style="width: 200px;height: 100px">
+                        <div class="img-preview img-preview-sm" id="img-preview-sys"></div>
+                        </div>
+                        <div class="btn-group" style="margin-top: 5px">
+                            <label title="上传图片" for="inputImage" class="btn btn-primary">
+                                <input type="file" accept="image/*" name="file" id="inputImage" class="hide"> 上传新图片
+                            </label>
+                            <button class="btn btn-warning" id="setDrag" type="button">裁剪</button>
+                        </div>
+
+                        <div class="btn-group" style="margin-top: 5px">
+                            <button class="btn btn-white" id="zoomIn" type="button">放大</button>
+                            <button class="btn btn-white" id="zoomOut" type="button">缩小</button>
+                            <button class="btn btn-white" id="rotateLeft" type="button">左旋转</button>
+                            <button class="btn btn-white" id="rotateRight" type="button">右旋转</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="sysSave">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 全局js -->
+<script src="../../static/js/jquery.min.js?v=2.1.4"
+        th:src="@{/static/js/jquery.min.js(v='2.1.4')}"></script>
+<script src="../../static/js/bootstrap.min.js?v=3.3.6"
+        th:src="@{/static/js/bootstrap.min.js(v='3.3.6')}"></script>
+
+<!-- 自定义js -->
+<script src="../../static/js/content.js?v=1.0.0"
+        th:src="@{/static/js/content.js(v='1.0.0')}"></script>
+
+<!-- 弹出框插件 -->
+<script src="../../static/js/plugins/sweetalert/sweetalert.min.js"
+        th:src="@{/static/js/plugins/sweetalert/sweetalert.min.js }"></script>
+
+<!--文件上传-->
+<script src="../../static/js/plugins/webuploader/webuploader.js"
+        th:src="@{/static/js/plugins/webuploader/webuploader.js}"></script>
+
+<!--图片裁剪-->
+<script src="../../static/public/system/cropper/cropper.js"
+        th:src="@{/static/public/system/cropper/cropper.js}"></script>
+
+<script>
+    $(function () {
+        // 当文档加载完成后
+        $.ajax({
+            url: "/owep/system/getInfo",
+            type: "GET",
+            success: function (json) {
+                // 通过name属性回显系统名称、版本信息
+                $("input[name=systemname]").val(json.systemName);
+                $("input[name=verinfo]").val(json.copyName);
+            },
+            error: function (error) {
+                console.error('获取图片失败', error);
+            }
+        });
+    });
+</script>
+
+<script>
+    $(function () {
+        //保存按钮点击事件
+        $("#save").click(function () {
+            let name = $("input[name=systemname]").val();
+            let info = $("input[name=verinfo]").val();
+            //
+            if (name == "" || info == "") {
+                alert("请填写完整信息");
+                return;
+            }
+            $.ajax({
+                url:"/owep/system/updateNameAndInfo",
+                type:"post",
+                data:{
+                    "systemname":$("input[name=systemname]").val(),
+                    "verinfo":$("input[name=verinfo]").val()
+                },
+                success:function (data) {
+                    swal({
+                        title: "修改成功",
+                        text: "系统名称和版本信息已修改",
+                        type: "success",
+                        confirmButtonColor: "success",
+                        confirmButtonText: "确定",
+                        closeOnConfirm: false
+                    }, function () {
+                        window.location.reload();
+                    });
+                },
+                error:function (jqXHR) {
+                    alert("修改失败");
+                }
+            })
+        });
+
+
+
+        //登录页模态框保存按钮
+        $("#loginSave").click(function() {
+            var croppedCanvas = $("#loginModal .image-crop > img").cropper('getCroppedCanvas', {
+                width: 230, // 裁剪后的宽度
+                height: 50, // 裁剪后的高度
+            });
+
+            if (!croppedCanvas) {
+                alert("不能获取裁剪后的图片，请确认图片已正确裁剪。");
+                return;
+            }
+
+            var croppedImageDataURL = croppedCanvas.toDataURL('image/png');
+            var blob = dataURItoBlob(croppedImageDataURL);
+
+            var formData = new FormData();
+            formData.append("imageSource", blob, 'cropped_image.png');
+
+            $.ajax({
+                url:"/owep/system/uploadLoginPageImage",
+                method: 'post',
+                async: true,
+                data: formData,
+                dataType: 'text',
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    console.log("data: " + data);
+                    swal({
+                        title: "保存成功",
+                        text: "登录页图片已保存",
+                        type: "success",
+                        confirmButtonText: "确定"
+                    }, function () {
+                        window.location.reload();
+                    });
+                },
+                error: function (jqXHR) {
+                    console.log(jqXHR);
+                }
+            })
+        });
+
+        //系统页模态框保存按钮
+        $("#sysSave").click(function () {
+            var croppedCanvas = $("#myModal .image-crop > img").cropper('getCroppedCanvas', {
+                width: 230, // 裁剪后的宽度
+                height: 50, // 裁剪后的高度
+            });
+
+            if (!croppedCanvas) {
+                alert("不能获取裁剪后的图片，请确认图片已正确裁剪。");
+                return;
+            }
+
+            var croppedImageDataURL = croppedCanvas.toDataURL('image/png');
+            var blob = dataURItoBlob(croppedImageDataURL);
+
+            var formData = new FormData();
+            formData.append("imageSource", blob, 'cropped_image.png');
+
+            $.ajax({
+                url:"/owep/system/uploadSysPageImage",
+                method: 'post',
+                async: true,
+                data: formData,
+                dataType: 'text',
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    console.log("data: " + data);
+                    swal({
+                        title: "保存成功",
+                        text: "登录页图片已保存",
+                        type: "success",
+                        confirmButtonText: "确定"
+                    }, function () {
+                        window.location.reload();
+                    });
+                },
+                error: function (jqXHR) {
+                    console.log(jqXHR);
+                }
+            })
+        });
+
+        // 将 Base64 数据转换为 Blob 对象
+        function dataURItoBlob(dataURI) {
+            //atob函数是JavaScript中的方法之一，用于解码Base64编码的字符串，并从dataURI中把前面的头部信息去掉
+            var byteString = atob(dataURI.split(',')[1]);
+            //从dataURI中取出MIME类型，如：image/png
+            var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+            //把经过 atob解码后的字符数据用一个 ArrayBuffer 存储，以便进行映射
+            var ab = new ArrayBuffer(byteString.length);
+            //Uint8Array是JavaScript中的一种类型，它表示一个8位无符号整数值的数组,主要用来处理二进制数据
+            var ia = new Uint8Array(ab);
+            //通过循环来依次处理每个字符，转换成8位的字节数据
+            for (var i = 0; i < byteString.length; i++) {
+                ia[i] = byteString.charCodeAt(i);
+            }
+            //把处理过后的字节数据，使用Blob对象进行封装。
+            return new Blob([ab], { type: mimeString });
+        }
+
+    });
+    //
+</script>
+<!--登录页LOGO裁剪-->
+<script>
+    /*图片裁剪*/
+    $(function () {
+        var $image = $(".image-crop > img[class='loginimg']")
+        $($image).cropper({
+            //aspectRatio: 16/9,
+            width:230,
+            height:50,
+            guides: false,   //是否显示裁剪框虚线
+            preview: "#img-preview-login",  //显示预览的位置
+            done: function (data) {
+                // 输出结果
+            }
+        });
+
+        var $inputImage = $("#loginImage");
+        if (window.FileReader) {
+            $inputImage.change(function () {
+                var fileReader = new FileReader(),
+                    files = this.files,
+                    file;
+
+                if (!files.length) {
+                    return;
+                }
+
+                file = files[0];
+
+                if (/^image\/\w+$/.test(file.type)) {
+                    fileReader.readAsDataURL(file);
+                    fileReader.onload = function () {
+                        $inputImage.val("");
+                        $image.cropper("reset", true).cropper("replace", this.result);
+                    };
+                } else {
+                    showMessage("请选择图片文件");
+                }
+            });
+        } else {
+            $inputImage.addClass("hide");
+        }
+
+
+        $("#setBig").click(function () {
+            $image.cropper("zoom", 0.1);
+        });
+
+        $("#setSmall").click(function () {
+            $image.cropper("zoom", -0.1);
+        });
+
+        $("#setLeft").click(function () {
+            $image.cropper("rotate", 45);
+        });
+
+        $("#setRight").click(function () {
+            $image.cropper("rotate", -45);
+        });
+
+        $("#setCut").click(function () {
+            // $image.cropper("setDragMode", "crop");
+            //alert("裁剪成功！");
+
+        });
+    })
+</script>
+<!--系统页LOGO裁剪-->
+<script>
+    /*图片裁剪*/
+    $(function () {
+        var $image = $(".image-crop > img")
+        $($image).cropper({
+            //aspectRatio: 16/9,
+            width:230,
+            height:50,
+            guides: false,   //是否显示裁剪框虚线
+            preview: "#img-preview-sys",
+            done: function (data) {
+                // 输出结果
+            }
+        });
+
+        var $inputImage = $("#inputImage");
+        if (window.FileReader) {
+            $inputImage.change(function () {
+                var fileReader = new FileReader(),
+                    files = this.files,
+                    file;
+
+                if (!files.length) {
+                    return;
+                }
+
+                file = files[0];
+
+                if (/^image\/\w+$/.test(file.type)) {
+                    fileReader.readAsDataURL(file);
+                    fileReader.onload = function () {
+                        $inputImage.val("");
+                        $image.cropper("reset", true).cropper("replace", this.result);
+                    };
+                } else {
+                    showMessage("请选择图片文件");
+                }
+            });
+        } else {
+            $inputImage.addClass("hide");
+        }
+
+        $("#download").click(function () {
+            window.open($image.cropper("getDataURL"));
+        });
+
+        $("#zoomIn").click(function () {
+            $image.cropper("zoom", 0.1);
+        });
+
+        $("#zoomOut").click(function () {
+            $image.cropper("zoom", -0.1);
+        });
+
+        $("#rotateLeft").click(function () {
+            $image.cropper("rotate", 45);
+        });
+
+        $("#rotateRight").click(function () {
+            $image.cropper("rotate", -45);
+        });
+
+        $("#setDrag").click(function () {
+           // $image.cropper("setDragMode", "crop");
+            //alert("裁剪成功！");
+
+        });
+    })
+</script>
+</body>
+</html>

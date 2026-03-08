@@ -1,0 +1,355 @@
+/**
+*@author:
+*@2020/6/29 15:45
+*文件说明:exam样式
+*/
+html, body {
+    overflow-y: scroll;
+}
+
+html {
+    overflow: -moz-scrollbars-vertical;
+}
+
+.table > thead > tr > th {
+    color: #2a62bc;
+}
+
+.tm-tab-body {
+    background: #FFF;
+    padding: 0 15px 15px 15px;
+}
+
+.tm-table-form-base-title {
+    font-size: 14px;
+    text-align: left;
+    color: #666;
+    font-weight: bold;
+    line-height: 20px;
+    padding: 10px 10px;
+    background: #f5f5f5;
+    margin: 0 0;
+}
+
+.tm_table_form_base_body {
+    border: solid 1px #f5f5f5;
+    padding: 10px 0 10px 0;
+    border-top: none;
+    margin: 0 0 20px 0;
+}
+
+.twm_desc {
+    font-size: 12px;
+    line-height: 20px;
+    margin: 0 0;
+}
+
+/*模态框字体*/
+.tm_table_form_base_title {
+    font-size: 14px;
+    text-align: left;
+    color: #666;
+    font-weight: bold;
+    line-height: 20px;
+    padding: 10px 10px;
+    background: #f5f5f5;
+    margin: 0 0;
+}
+
+/*模态框批量导入*/
+.tm_table_form_base_body {
+    border: solid 1px #f5f5f5;
+    padding: 10px 0 10px 0;
+    border-top: none;
+    margin: 0 0 20px 0;
+}
+
+.tm_table_form_base {
+    border-collapse: collapse; /*属性设置表格的边框是否被合并为一个单一的边框*/
+    border: none;
+}
+
+.form-inline .input-group > .form-control {
+    width: auto;
+!important;
+}
+
+.sweet-alert h2 {
+    font-size: 18px;
+}
+
+.tm_table_form {
+    border-collapse: collapse; /*为表格设置合并边框模型*/
+    border: solid 1px #eee;
+}
+
+b, strong {
+    font-weight: 700;
+}
+
+.tm_table_form tbody tr th {
+    font-weight: normal;
+    text-align: right;
+    font-size: 12px;
+    border: solid 1px #eee;
+    background: #f5f5f5;
+    line-height: 25px;
+}
+
+.tm_table_form tbody tr td {
+    border: solid 1px #eee;
+}
+
+.tm_table_form tr th {
+    padding: 8px 8px !important;
+}
+
+.tm_table_form tr td {
+    padding: 8px 8px !important;
+}
+
+
+tbody {
+    color: #000;
+}
+
+.portlet .portlet-heading {
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    padding: 5px 20px;
+    border-radius: 3px;
+    color: #fff;
+}
+
+
+.portlet .portlet-heading .portlet-title {
+    float: left;
+    font-size: 14px;
+    font-weight: bold;
+    border-bottom: 0;
+    margin-top: 0;
+    line-height: 25px;
+}
+
+.portlet .portlet-heading .portlet-widgets {
+    position: relative;
+    text-align: right;
+    float: right;
+    padding-left: 15px;
+    display: inline-block;
+    font-size: 15px;
+    line-height: 25px;
+}
+
+.checkbox-info input[type="checkbox"]:checked + label::before,
+.checkbox-info input[type="radio"]:checked + label::before {
+    background-color: #1c84c6;
+    border-color: #1c84c6;
+}
+
+/*改变小编辑框的属性*/
+.simditor-toolbar.changed > ul > li > .toolbar-item {
+    width: 15px;
+    height: 15px;
+    margin-left: 7px;
+}
+
+.panel-default > .panel-heading {
+    padding: 5px 15px;
+    background-color: gray;
+}
+
+.simditor .simditor-toolbar {
+    background-color: #D2CECE;
+}
+
+/* 修改试题选项的内边距 */
+.tabs-container .panel-body {
+    padding: 2px 0px;
+    border: none;
+}
+
+/* 修改富文本框图标栏的宽度，默认是40px */
+.simditor .simditor-toolbar > ul > li > .toolbar-item {
+    width: 25px;
+}
+
+/* 题干富文本框的样式 */
+.simditor .simditor-body {
+    padding: 5px 15px 10px;
+    min-height: 225px;
+    max-height: 225px;
+    overflow-y: scroll;
+}
+
+/*  选项富文本框样式 */
+.panel-body > .simditor .simditor-body {
+    padding: 5px 15px 10px;
+    min-height: 80px;
+    max-height: 80px;
+    overflow-y: scroll;
+}
+
+.scaleClose {
+    font-weight: 900;
+    font-size: 1.2em;
+}
+
+.label {
+    font-size: 12px;
+}
+
+/*输入标签*/
+.tags {
+    background-color: #fff;
+    border: 1px solid #d5d5d5;
+    color: #777;
+    padding: 1px 12px;
+}
+
+.modify_tags {
+    background-color: #fff;
+    border: 1px solid #d5d5d5;
+    color: #777;
+    padding: 1px 12px;
+}
+
+.tags:hover {
+    outline: 0 none;
+}
+
+.modify_tags:hover {
+    outline: 0 none;
+}
+
+.tags[class*="span"] {
+    float: none;
+    margin-left: 0;
+}
+
+.modify_tags[class*="span"] {
+    float: none;
+    margin-left: 0;
+}
+
+.tags input[type="text"], .tags input[type="text"]:focus {
+    border: 0 none;
+    box-shadow: none;
+    display: inline;
+    line-height: 22px;
+    margin: 0;
+    outline: 0 none;
+    padding: 4px 6px;
+}
+
+.modify_tags input[type="text"], .modify_tags input[type="text"]:focus {
+    border: 0 none;
+    box-shadow: none;
+    display: inline;
+    line-height: 22px;
+    margin: 0;
+    outline: 0 none;
+    padding: 4px 6px;
+}
+
+.tags .tag {
+    background-color: #91b8d0;
+    color: #fff;
+    display: inline-block;
+    font-size: 12px;
+    font-weight: normal;
+    margin-bottom: 3px;
+    margin-right: 3px;
+    padding: 4px 22px 5px 9px;
+    position: relative;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s ease 0s;
+    vertical-align: baseline;
+    white-space: nowrap;
+}
+
+.modify_tags .tag {
+    background-color: #91b8d0;
+    color: #fff;
+    display: inline-block;
+    font-size: 12px;
+    font-weight: normal;
+    margin-bottom: 3px;
+    margin-right: 3px;
+    padding: 4px 22px 5px 9px;
+    position: relative;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s ease 0s;
+    vertical-align: baseline;
+    white-space: nowrap;
+}
+
+.tags .tag .close {
+    bottom: 0;
+    color: #fff;
+    float: none;
+    font-size: 12px;
+    line-height: 20px;
+    opacity: 1;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    text-shadow: none;
+    top: 0;
+    width: 18px;
+}
+
+.modify_tags .tag .close {
+    bottom: 0;
+    color: #fff;
+    float: none;
+    font-size: 12px;
+    line-height: 20px;
+    opacity: 1;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    text-shadow: none;
+    top: 0;
+    width: 18px;
+}
+
+.modify_tags .tag .close:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.tags .tag .close:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.close {
+    color: #000;
+    float: right;
+    font-size: 21px;
+    font-weight: bold;
+    line-height: 1;
+    opacity: 0.2;
+    text-shadow: 0 1px 0 #fff;
+}
+
+.close:hover, .close:focus {
+    color: #000;
+    cursor: pointer;
+    opacity: 0.5;
+    text-decoration: none;
+}
+
+button.close {
+    background: transparent none repeat scroll 0 0;
+    border: 0 none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.tags .tag-warning {
+    background-color: #ffb752;
+}
+
+.modify_tags .tag-warning {
+    background-color: #ffb752;
+}

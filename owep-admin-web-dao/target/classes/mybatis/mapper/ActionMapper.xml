@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kclm.owep.mapper.ActionMapper">
+    <resultMap id="BaseResultMap" type="com.kclm.owep.entity.Action">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="action_name" jdbcType="VARCHAR" property="actionName"/>
+        <result column="action_description" jdbcType="VARCHAR" property="actionDescription"/>
+        <result column="action_url" jdbcType="VARCHAR" property="actionUrl"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="last_access_time" jdbcType="TIMESTAMP" property="lastAccessTime"/>
+        <result column="version" jdbcType="INTEGER" property="version"/>
+        <result column="action_code" jdbcType="VARCHAR" property="actionCode"/>
+        <result column="action_value" jdbcType="INTEGER" property="actionValue"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id,
+        action_name,
+        action_description,
+        action_url,
+        create_time,
+        last_access_time,
+        version,
+        action_code,
+        action_value
+    </sql>
+    <!--查询所有行为-->
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_action
+    </select>
+    <!--根据Id查询-->
+    <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_action
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <!--删除单条记录-->
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        delete
+        from t_action
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <!--批量删除-->
+    <delete id="deleteSelect">
+        delete
+        from t_action
+                where id in
+        <foreach collection="list" separator="," open="(" close=")" item="id">
+            #{id}
+        </foreach>
+    </delete>
+    <!--插入记录-->
+    <insert id="save" parameterType="com.kclm.owep.entity.Action">
+        insert into t_action
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="actionName != null">
+                action_name,
+            </if>
+            <if test="actionDescription != null">
+                action_description,
+            </if>
+            <if test="actionUrl != null">
+                action_url,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="actionCode != null">
+                action_code,
+            </if>
+            <if test="actionValue != null">
+                action_value,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="actionName != null">
+                #{actionName,jdbcType=VARCHAR},
+            </if>
+            <if test="actionDescription != null">
+                #{actionDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="actionUrl != null">
+                #{actionUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=INTEGER},
+            </if>
+            <if test="actionCode != null">
+                #{actionCode,jdbcType=VARCHAR},
+            </if>
+            <if test="actionValue != null">
+                #{actionValue,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <!--更新行为表-->
+    <update id="update" parameterType="com.kclm.owep.entity.Action">
+        update t_action
+        <set>
+            <if test="actionName != null">
+                action_name = #{actionName,jdbcType=VARCHAR},
+            </if>
+            <if test="actionDescription != null">
+                action_description = #{actionDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="actionUrl != null">
+                action_url = #{actionUrl,jdbcType=VARCHAR},
+            </if>
+                last_access_time = now(),
+                version = version+1,
+            <if test="actionCode != null">
+                action_code = #{actionCode,jdbcType=VARCHAR},
+            </if>
+            <if test="actionValue != null">
+                action_value = #{actionValue,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <!--统计表中数据-->
+    <select id="count" resultType="int">
+        select count(id)
+        from t_action
+    </select>
+    <!--根据行为名 进行模糊搜索-->
+    <select id="selectByActionName" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_action
+        where action_name like concat('%', #{actionName}, '%')
+    </select>
+</mapper>

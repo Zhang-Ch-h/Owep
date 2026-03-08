@@ -1,0 +1,39 @@
+[
+  {
+    "id": 1,
+    "name":"JavaEE企业级开发",
+    "org":"萍乡学院",
+    "branch":"萍乡学院",
+    "isUse":0
+  },{
+  "id": 2,
+  "name":"JavaEE企业级开发",
+  "org":"萍乡学院",
+  "branch":"萍乡学院",
+  "isUse":1
+},{
+  "id": 3,
+  "name":"JavaEE企业级开发",
+  "org":"萍乡学院",
+  "branch":"萍乡学院",
+  "isUse":0
+},{
+  "id": 4,
+  "name":"JavaEE企业级开发",
+  "org":"萍乡学院",
+  "branch":"萍乡学院",
+  "isUse":1
+},{
+  "id": 5,
+  "name":"JavaEE企业级开发",
+  "org":"萍乡学院",
+  "branch":"萍乡学院",
+  "isUse":1
+},{
+  "id": 6,
+  "name":"JavaEE企业级开发",
+  "org":"萍乡学院",
+  "branch":"萍乡学院",
+  "isUse":1
+}
+]

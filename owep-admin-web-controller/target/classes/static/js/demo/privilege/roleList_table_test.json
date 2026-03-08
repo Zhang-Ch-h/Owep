@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "roleName": "角色1",
+    "createTime": "2018-08-10"
+  },
+  {
+    "id": 2,
+    "roleName": "角色2",
+    "createTime": "2018-08-10"
+  },
+  {
+    "id": 3,
+    "roleName": "角色3",
+    "createTime": "2018-08-10"
+  },
+  {
+    "id": 4,
+    "roleName": "角色4",
+    "createTime": "2018-08-10"
+  },
+  {
+    "id": 5,
+    "groupName": "角色5",
+    "createTime": "2018-08-10"
+  },
+  {
+    "id": 10,
+    "roleName": "角色6",
+    "createTime": "2018-08-10"
+  }
+]

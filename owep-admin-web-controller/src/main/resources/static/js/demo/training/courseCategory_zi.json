@@ -1,0 +1,20 @@
+[
+  {
+    "zid": 12,
+    "id": 1,
+    "lowerType": "java高级应用",
+    "lowerDesc": "java高级应用描述信息"
+  },
+  {
+    "zid": 15,
+    "id": 2,
+    "lowerType": "java高级应用",
+    "lowerDesc": "java高级应用描述信息"
+  },
+  {
+    "zid": 14,
+    "id": 3,
+    "lowerType": "java高级应用",
+    "lowerDesc": "java高级应用描述信息"
+  }
+]

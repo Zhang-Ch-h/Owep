@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kclm.owep.mapper.HomeworkMapper">
+
+    <select id="selectAll" resultMap="AllHomeworkMap">
+        select
+            h.id as hid,
+            work_title,
+            work_content,
+            work_file_name,
+            h.create_time as h_create_time,
+            case when c.is_delete = 1 then c.id end as cid,
+            case when c.is_delete = 1 then c.course_name end as c_course_name,
+            case when cl.is_delete = 1 then cl.id end as clid,
+            case when cl.is_delete = 1 then cl.class_name end as class_name
+        from t_homework h
+                 left join t_course c on h.fk_course_id = c.id
+                 left join t_class cl on h.fk_class_id = cl.id
+    </select>
+
+    <resultMap id="AllHomeworkMap" type="Homework">
+        <id column="hid" property="id"/>
+        <result column="work_title" property="workTitle"/>
+        <result column="work_content" property="workContent"/>
+        <result column="work_file_name" property="workFileName"/>
+        <result column="h_create_time" property="createTime"/>
+        <association property="course" javaType="com.kclm.owep.entity.Course">
+            <id column="cid" property="id"/>
+            <result column="c_course_name" property="courseName"/>
+        </association>
+        <association property="clazz" javaType="com.kclm.owep.entity.Clazz">
+            <id column="clid" property="id"/>
+            <result column="class_name" property="className"/>
+        </association>
+    </resultMap>
+
+    <insert id="save">
+        insert into t_homework(fk_class_id, fk_course_id, fk_chapter_id, fk_section_id, work_title, work_content, work_file_name, create_time)
+        values(#{clazz.id}, #{course.id}, #{chapter.id}, #{section.id}, #{workTitle}, #{workContent}, #{workFileName}, #{createTime})
+    </insert>
+
+    <select id="selectById" resultMap="selectByIdMap">
+        select
+        h.id hid,
+        work_title,
+        work_content,
+        work_file_name,
+        cl.id clid,
+        class_name,
+        c.id cid,
+        c.course_name c_course_name,
+        ch.id chid,
+        chapter_name,
+        s.id sid,
+        section_name
+        from t_homework h left join t_class cl on h.fk_class_id = cl.id left join t_course c on h.fk_course_id = c.id
+        left join t_chapter ch on h.fk_chapter_id = ch.id left join t_section s on h.fk_section_id = s.id
+        where h.id = #{id} and cl.is_delete = 1 and c.is_delete = 1 and ch.is_delete = 1 and s.is_delete = 1
+    </select>
+
+    <resultMap id="selectByIdMap" type="Homework">
+        <id column="hid" property="id"/>
+        <result column="work_title" property="workTitle"/>
+        <result column="work_content" property="workContent"/>
+        <result column="work_file_name" property="workFileName"/>
+        <association property="clazz" javaType="com.kclm.owep.entity.Clazz">
+            <id column="clid" property="id"/>
+            <result column="class_name" property="className"/>
+        </association>
+        <association property="course" javaType="com.kclm.owep.entity.Course">
+            <id column="cid" property="id"/>
+            <result column="c_course_name" property="courseName"/>
+        </association>
+        <association property="chapter" javaType="com.kclm.owep.entity.Chapter">
+            <id column="chid" property="id"/>
+            <result column="chapter_name" property="chapterName"/>
+        </association>
+        <association property="section" javaType="com.kclm.owep.entity.Section">
+            <id column="sid" property="id"/>
+            <result column="section_name" property="sectionName"/>
+        </association>
+    </resultMap>
+
+    <update id="update" parameterType="Homework">
+        update t_homework
+        <set>
+            <if test="workTitle != null and workTitle != ''">
+                work_title = #{workTitle},
+            </if>
+            <if test="workContent != null and workContent != ''">
+                work_content = #{workContent},
+            </if>
+            <if test="workFileName != null and workFileName != ''">
+                work_file_name = #{workFileName},
+            </if>
+            <if test="clazz.id != null">
+                fk_class_id = #{clazz.id},
+            </if>
+            <if test="course.id != null">
+                fk_course_id = #{course.id},
+            </if>
+            <if test="chapter.id != null">
+                fk_chapter_id = #{chapter.id},
+            </if>
+            <if test="section.id != null">
+                fk_section_id = #{section.id},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="selectHomeworkbByCourseId" resultMap="AllHomeworkMap">
+        select
+        h.id as hid,
+        work_title,
+        work_content,
+        work_file_name,
+        h.create_time as h_create_time,
+        case when c.is_delete = 1 then c.id end as cid,
+        case when c.is_delete = 1 then c.course_name end as c_course_name,
+        case when cl.is_delete = 1 then cl.id end as clid,
+        case when cl.is_delete = 1 then cl.class_name end as class_name
+        from t_homework h
+        left join t_course c on h.fk_course_id = c.id
+        left join t_class cl on h.fk_class_id = cl.id
+        where c.id = #{courseId}
+    </select>
+
+    <delete id="deleteById" parameterType="Integer">
+        delete from t_homework where id = #{id}
+    </delete>
+
+    <delete id="deleteSelect" parameterType="Integer">
+        delete from t_homework where id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectWorkFileNames" parameterType="Integer" resultType="String">
+        select work_file_name from t_homework where id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+</mapper>

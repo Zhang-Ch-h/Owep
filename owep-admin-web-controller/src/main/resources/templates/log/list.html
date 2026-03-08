@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+
+    <title>智慧教育平台-操作日志</title>
+    <link rel="shortcut icon" href="../../static/favicon.ico"
+          th:href="@{/static/favicon.ico}">
+    <link href="../../static/css/bootstrap.min.css?v=3.3.6" rel="stylesheet"
+          th:href="@{/static/css/bootstrap.min.css(v='3.3.6')}">
+    <link href="../../static/css/font-awesome.css?v=4.4.0" rel="stylesheet"
+          th:href="@{/static/css/font-awesome.css(v='4.4.0')}">
+    <link href="../../static/css/animate.css" th:href="@{/static/css/animate.css}" rel="stylesheet">
+    <link href="../../static/css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet"
+          th:href="@{/static/css/plugins/bootstrap-table/bootstrap-table.min.css }">
+   <!-- <link href="../../static/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">-->
+    <!--时间控件-->
+    <link href="../../static/css/plugins/datapicker/datepicker3.css"
+          th:href="@{/static/css/plugins/datapicker/datepicker3.css}" rel="stylesheet">
+
+    <style type="text/css">
+        .table > thead > tr > th    {
+            color: #2a62bc;
+        }
+        .left_40{
+            padding-left:40px;
+            padding-top: 20px;
+            padding-right: 40px;
+        }
+    </style>
+
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="left_40">
+    <!--头部查询按钮部分-->
+                    <!--<div class="panel-body" style="padding-bottom:0px;">-->
+    <form class="form-inline">
+        <div class="form-group">
+            <label>用户名：</label>
+            <input type="text" class="form-control" name="username" id="username">
+        </div>
+        <div class="form-group">
+            <label>开始时间:</label>
+            <div class=" input-group">
+                <input type="text" class="form-control" name="starttime" id="starttime">
+            </div>
+        </div>
+        <div class="form-group">
+            <label>结束时间:</label>
+            <div class=" input-group">
+                <input type="text" class=" form-control" name="endtime" id="endtime"/>
+            </div>
+            <button type="button" class="btn btn-primary" name="query" id="query">查询</button>
+        </div>
+    </form>
+
+    <!--表单部分-->
+    <table id="tb_departments"></table>
+
+    </div>
+    </div>
+</div>
+
+
+<!-- 全局js -->
+<script src="../../static/js/jquery.min.js?v=2.1.4"
+        th:src="@{/static/js/jquery.min.js(v='2.1.4')}"></script>
+<script src="../../static/js/bootstrap.min.js?v=3.3.6"
+        th:src="@{/static/js/bootstrap.min.js(v='3.3.6')}"></script>
+
+<!-- Bootstrap table -->
+<script src="../../static/js/plugins/bootstrap-table/bootstrap-table.min.js"
+        th:src="@{/static/js/plugins/bootstrap-table/bootstrap-table.min.js }"></script>
+<script src="../../static/js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"
+        th:src="@{/static/js/plugins/bootstrap-table/bootstrap-table-mobile.min.js }"></script>
+<script src="../../static/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"
+        th:src="@{/static/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js }"></script>
+
+<!-- 时间控件 -->
+<script src="../../static/js/plugins/datapicker/bootstrap-datepicker.js"
+        th:src="@{/static/js/plugins/datapicker/bootstrap-datepicker.js}"></script>
+<script src="../../static/js/plugins/datapicker/bootstrap-datepicker.zh-CN.min.js"
+        th:src="@{/static/js/plugins/datapicker/bootstrap-datepicker.zh-CN.min.js}"></script>
+<script>
+    $(function () {
+        /*时间控件配置*/
+        $('input[id=starttime]').datepicker({
+            language: "zh-CN",
+            clearBtn: true,//清除
+            autoclose: true,
+            todayHighlight: true,
+            format: 'yyyy-mm-dd',
+            todayBtn: false,//今日按钮
+            startDate: '1970-1-1', //与你自己设置的格式一致yyyy-mm-dd，未设置的话与默认格式一致mm/dd/yyyy
+            endDate: '2070-1-1'
+        });
+        $('input[id=endtime]').datepicker({
+            language: "zh-CN",
+            clearBtn: true,//清除
+            autoclose: true,
+            todayHighlight: true,
+            format: 'yyyy-mm-dd',
+            todayBtn: false,//今日按钮
+            startDate: '1970-1-1', //与你自己设置的格式一致yyyy-mm-dd，未设置的话与默认格式一致mm/dd/yyyy
+            endDate: '2070-1-1'
+        });
+    });
+</script>
+<script>
+    /*table部分*/
+    $(function () {
+        //1.初始化Table
+        var oTable = new TableInit();
+        oTable.Init('/owep/log/allLog');
+        /*查询按钮事件*/
+        $('#query').click(function () {
+            //
+            var username=$('#username').val();
+            var starttime=$('#starttime').val();
+            var endtime=$('#endtime').val();
+            if(starttime==""||endtime==""||username==""){
+                alert("条件不能为空");
+                return ;
+            }
+            //执行查询
+            oTable.Init('/owep/log/getAllLogByKeyWords?name=' + username + '&start=' + starttime + '&end=' + endtime);
+        });
+    });
+
+    var TableInit = function () {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function (url) {
+            $('#tb_departments').bootstrapTable('destroy');
+            $('#tb_departments').bootstrapTable({
+                url: url,         //请求后台的URL（*）
+                method: 'get',                      //请求方式（*）
+                toolbar: '#toolbar',                //工具按钮用哪个容器
+                striped: true,                      //是否显示行间隔色
+                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true,                   //是示分页（*）
+                sortable: false,                     //是否启用排序否显
+                sortOrder: "asc",                   //排序方式
+                queryParams: oTableInit.queryParams,//传递参数（*）
+                sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber:1,                       //初始化加载第一页，默认第一页
+                pageSize: 10,                       //每页的记录行数（*）
+                pageList: [3000, 6000, 10000, 15000, 20000],        //可供选择的每页的行数（*）
+                search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                strictSearch: false,                 //查询时是否严格匹配, true表示严格匹配，false表示模糊匹配
+                showColumns: true,                  //是否显示所有的列
+                showRefresh: true,                  //是否显示刷新按钮
+                minimumCountColumns: 2,             //最少允许的列数
+                clickToSelect: true,                //是否启用点击选中行
+                height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+                showToggle:false,                    //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                detailView: false,                   //是否显示父子表
+                columns: /*[{
+                    checkbox: true
+                }, {
+                    field: 'Name',
+                    title: '部门名称'
+                }, {
+                    field: 'ParentName',
+                    title: '上级部门'
+                }, {
+                    field: 'Level',
+                    title: '部门级别'
+                }, {
+                    field: 'Desc',
+                    title: '描述'
+                }, ]*/
+                    [/*{
+                    /!*checkbox: false
+                },*!/ */{
+                        field: 'id',
+                        title: '序号',
+                        visible: true
+                    }, {
+                        field: 'title',
+                        title: '日志主题'
+                    }, {
+                        field: 'moduleName',
+                        title: '模块名'
+                    }, {
+                        field: 'ipAddr',
+                        title: 'IP地址'
+                    }, {
+                        field: 'requestUrl',
+                        title: '请求地址'
+                    },{
+                        field: 'method',
+                        title: '请求方式'
+                    },{
+                        field: 'loginUserName',
+                        title: '用户名'
+                    },{
+                        field: 'type',
+                        title: '类型'
+                    },{
+                        field:'lastAccessTime',
+                        title:'操作时间'
+                    }]
+            });
+        };
+
+        //得到查询的参数
+        oTableInit.queryParams = function (params) {
+            console.log(params);
+            var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+                limit: params.limit,   //页面大小
+                offset: params.offset,  //页码
+                departmentname: $("#txt_search_departmentname").val(),
+                statu: $("#txt_search_statu").val()
+            };
+            return temp;
+        };
+        return oTableInit;
+    };
+
+
+    /*var ButtonInit = function () {
+        var oInit = new Object();
+        var postdata = {};
+
+        oInit.Init = function () {
+            //初始化页面上面的按钮事件
+            $("#btn_query").click(function (event) {
+                //1.
+                alert("单南了查询按钮");
+            });
+
+            $("#btn_add").click(function (event) {
+                alert("新增")
+            });
+
+            $("#btn_edit").click(function (event) {
+                alert("更新")
+            });
+
+            $("#$btn_delete").click(function (event) {
+                alert("删除")
+            });
+
+        };
+
+        return oInit;
+    };*/
+
+</script>
+</body>
+</html>

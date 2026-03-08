@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!--by qikran-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <meta name="keywords" content="角色权限">
+    <meta name="description" content="角色权限">
+    <link rel="shortcut icon" href="../../static/favicon.ico" th:href="@{/static/favicon.ico}">
+    <link href="../../static/css/bootstrap.min.css?v=3.3.6" rel="stylesheet"
+          th:href="@{/static/css/bootstrap.min.css(v=3.3.6)}">
+    <link href="../../static/css/font-awesome.css?v=4.4.0" rel="stylesheet"
+          th:href="@{/static/css/font-awesohme.css(v=4.4.0)}">
+    <link href="../../static/css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet"
+          th:href="@{/static/css/plugins/bootstrap-table/bootstrap-table.min.css}">
+    <link href="../../static/css/animate.css" rel="stylesheet" th:href="@{/static/css/animate.css}">
+    <link href="../../static/css/style.css?v=4.1.0" rel="stylesheet" th:href="@{/static/css/style.css(v=4.1.0)}">
+    <!-- Sweet Alert -->
+    <link href="../../static/css/plugins/sweetalert/sweetalert.css" rel="stylesheet"
+          th:href="@{/static/css/plugins/sweetalert/sweetalert.css}">
+    <!--tree-->
+    <link href="../../static/css/plugins/treeview/bootstrap-treeview.css" rel="stylesheet"
+          th:href="@{/static/css/plugins/treeview/bootstrap-treeview.css}">
+    <title>角色权限</title>
+</head>
+<style type="text/css">
+    ul {
+        list-style-type: none;
+    }
+    th{
+        color:#2a62bc;
+    }
+</style>
+<body class="gray-bg">
+<div class="ibox-content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="animated fadeInRight">
+                <div id="toolbar">
+                    <!--   <button class="btn btn-success" data-toggle="modal" data-target="#addGroup" data-placement="bottom"
+                               title="添加"><i class="fa fa-plus fa-lg" aria-hidden="true"></i></button>
+                       <button class="btn btn-danger" id="delAll" data-placement="bottom" title="删除"><i
+                               class="fa fa-trash-o fa-lg" aria-hidden="true"></i></button>-->
+                    <button class="btn btn-success" data-toggle="modal" data-target="#addModal">添加</button>
+                    <button class="btn btn-danger" id="delAll">批量删除</button>
+                </div>
+                <table id="rolePrivilegeTable">
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!--添加模态窗-->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <!-- 模态框头部定义 -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">添加</h4>
+            </div>
+            <!--体部定义-->
+            <div class="modal-body">
+                <!-- 表单定义 -->
+                <form th:action="@{/privilege/rolePriv/addPerm}" id="addForm" method="post" class="form-horizontal">
+                    <div class="form-group  has-feedback">
+                        <label class="col-md-2 control-label">权限名:</label>
+                        <div class="col-md-6">
+                            <input type="text" name="permissionName" class="form-control">
+                        </div>
+                        <div class="col-md-offset-1 col-md-2">
+                            <label class="control-label" tip="name">添加成功</label>
+                        </div>
+                    </div>
+                    <div class="form-group  has-feedback">
+                        <label class="col-md-2 control-label ">权限描述:</label>
+                        <div class="col-md-6">
+                            <textarea name="permissionDescription" class="form-control" rows="3"></textarea>
+                        </div>
+                        <div class="col-md-offset-1 col-md-2">
+                            <label class="control-label" tip="description">添加成功</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="submit" id="btnAddModal" class="btn btn-primary">添加</button>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!--修改模态窗-->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <!-- 模态框头部定义 -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">修改</h4>
+            </div>
+            <!--体部定义-->
+            <div class="modal-body">
+                <!-- 表单定义 -->
+                <form th:action="@{/privilege/rolePriv/editPerm}" id="editForm" method="post" class="form-horizontal">
+                    <div class="form-group  has-feedback">
+                        <input type="text"  name="id" value="" hidden>
+                        <label class="col-md-2 control-label">权限名:</label>
+                        <div class="col-md-6">
+                            <input type="text" name="permissionName" class="form-control" value="" th:value="privilegeName">
+                        </div>权限名
+                        <div class="col-md-offset-1 col-md-2">
+                            <label class="control-label" tip="name"></label>
+                        </div>
+                    </div>
+                    <div class="form-group  has-feedback">
+                        <label class="col-md-2 control-label ">权限描述:</label>
+                        <div class="col-md-6">
+                            <textarea name="permissionDescription" class="form-control" rows="3" value=""
+                                      th:value="privilegeDescription"></textarea>
+                        </div>
+                        <div class="col-md-offset-1 col-md-2">
+                            <label class="control-label" tip="description"></label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="submit" id="btnEditModal" class="btn btn-primary">保存</button>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!--分配角色模态窗-->
+<div class="modal fade" id="allocateModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <!-- 模态框头部定义 -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">分配菜单</h4>
+            </div>
+            <!--体部定义-->
+            <div class="modal-body">
+                <div class="row form-horizontal">
+                    <div class="form-group  has-feedback">
+                        <input type="text" name="permissionId" id="permissionId" value="1" th:value="permId" hidden>
+                        <label class="col-md-2 control-label">权限名:</label>
+                        <div class="col-md-6">
+                            <input type="text" name="permissionName" readonly class="form-control" value="权限名"
+                                   th:value="privilegeName">
+                        </div>
+                        <div class="col-md-offset-1 col-md-2">
+                            <label class="control-label" tip="name"></label>
+                        </div>
+                    </div>
+                    <!--树形复选框-->
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">菜单分配:</label>
+                        <div class="col-md-6">
+                            <div id="menuListTree" style="overflow-y:scroll;height: 300px"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="submit" id="btnAllocateModal" class="btn btn-primary">保存</button>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+<!-- 全局js -->
+<script src="../../static/js/jquery.min.js?v=2.1.4" th:src="@{/static/js/jquery.min.js(v=2.1.4)}"></script>
+<script src="../../static/js/bootstrap.min.js?v=3.3.6" th:src="@{/static/js/bootstrap.min.js(v=3.3.6)}"></script>
+<script src="../../static/js/plugins/bootstrap-table/bootstrap-table.min.js"
+        th:src="@{/static/js/plugins/bootstrap-table/bootstrap-table.min.js}"></script>
+<script src="../../static/js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"
+        th:src="@{/static/js/plugins/bootstrap-table/bootstrap-table-mobile.min.js}"></script>
+<script src="../../static/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"
+        th:src="@{/static/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js}"></script>
+<!-- iCheck -->
+<script src="../../static/js/plugins/iCheck/icheck.min.js" th:src="@{/static/js/plugins/iCheck/icheck.min.js}"></script>
+<!-- Sweet alert -->
+<script src="../../static/js/plugins/sweetalert/sweetalert.min.js"
+        th:src="@{/static/js/plugins/sweetalert/sweetalert.min.js}"></script>
+<script src="../../static/js/plugins/treeview/bootstrap-treeview.min.js"
+        th:src="@{/static/js/plugins/treeview/bootstrap-treeview.min.js}"></script>
+
+<script type="text/javascript" th:inline="javascript">
+    // let appName=[[${#request.getContextPath()}]];
+    $(function () {
+        let oTableInit={};
+        /*init角色权限表*/
+        let $rolePrivilegeTable = $("#rolePrivilegeTable");
+        $rolePrivilegeTable.bootstrapTable({
+            // url: '../../static/js/demo/privilege/rolePrivilege_table_test1.json',
+            url: "/owep/privilege/rolePriv/getTable",
+            method: "get",
+            toolbar: '#toolbar',
+            mobileResponsive: true,
+            striped: true,
+            pagination: true,
+            queryParam:oTableInit.queryParams,
+            sidePagination: "client",
+            pageList: "[5,10]",
+            pageSize: 10,
+            iconSize: "outline",
+            search: true,
+            showSearchButton: true,
+            searchFields: "groupName",
+            toolbarAlign: "right",
+            searchAlign: "left",
+            columns: [
+                {
+                    checkbox: true
+                }, {
+                    field: 'SerialNumber',
+                    title: '序号',
+                    width: '120',
+                    formatter: function (value, row, index) {
+                        return index + 1;
+                    }
+                }, {
+                    field: 'permissionName',
+                    title: '权限名'
+                },
+                {
+                    field: 'permissionDescription',
+                    title: '权限描述'
+                }, {
+                    field: 'options',
+                    title: '操作',
+                    width: '200px',
+                    formatter: function (value, row, index) {
+                        //console.log("value:"+value);
+                        // console.log("index:"+index);
+                        //console.log("row:"+row.groupName);
+                        return [
+                            '<button class="btn btn-white" value="' + row.id + '" type="button" data-toggle="tooltip" data-placement="bottom" title="修改"><i class="glyphicon glyphicon-edit"/> </button>',
+                            '<button class="btn btn-white" value="' + row.id + '" type="button" data-toggle="tooltip" data-placement="bottom" title="删除"><i class="glyphicon glyphicon-trash text-danger"/></button>',
+                            '<button class="btn btn-white" value="' + row.id + '" type="button"  data-toggle="tooltip" data-placement="bottom" title="分配菜单"><i class="glyphicon glyphicon-share text-success" /></button>',
+                        ].join('');
+                    }
+
+                }
+
+            ],
+        });
+
+                //得到查询的参数
+                oTableInit.queryParams = function (params) {
+                    var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+                        limit: params.limit,   //页面大小
+                        offset: params.offset,  //页码
+                        departmentname: $("#txt_search_departmentname").val(),
+                        statu: $("#txt_search_statu").val()
+                    };
+                    return temp;
+                };
+
+        /*绑定表格每列中的修改按钮*/
+        $rolePrivilegeTable.on("click", "button[title='修改']", function () {
+            let id = $(this).val();
+            /*异步请求后台数据*/
+                   $.ajax({
+                       url:"/owep/privilege/rolePriv/toEditPerm",
+                       method:"get",
+                       data:{id:id},
+                       dataType:"json",
+                       contentType:"application/json",
+                       success:function (data) {
+                           /*调用模态窗*/
+                           $("#editModal").modal();
+                           /*回显数据*/
+                           $("input[name='id']").val(data.id);
+                           $("input[name='permissionName']").val(data.permissionName);
+                           $("textarea[name='permissionDescription']").val(data.permissionDescription);
+
+                       },
+                       error:function (jqXHR) {
+                           alert(jqXHR);
+                       }
+                   });
+
+        });
+        $rolePrivilegeTable.on("click", "button[title='删除']", function () {
+            swal({
+                title: "您确定要删除这条数据吗",
+                text: "删除后将无法恢复，请谨慎操作！",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "删除",
+                cancelButtonText: "取消",
+                closeOnConfirm: false
+            }, function () {
+                swal("删除成功！", "您已经永久删除了这条信息。", "success");
+            });
+             let id=$(this).val();
+             $.ajax({
+                 url:"/owep/privilege/rolePriv/deletePerm",
+                 method:"post",
+                 data:id,
+                 dataType:"text",
+                 contentType:"application/json",
+                 success:function () {
+                     swal("删除成功！", "您已经永久删除了这条信息。", "success");
+                     window.location.reload();
+                 },
+                 error:function (jqXHR) {
+                     swal("删除失败","后台请求失败"+jqXHR,"error");
+                 }
+             })
+        });
+
+        $rolePrivilegeTable.on("click", "button[title='分配菜单']", function () {
+            /*初始化树形复选框*/
+            let id=$(this).val();
+            let name = this.parentNode.parentNode.childNodes[2].textContent;
+            initListTree(id,name);
+        });
+
+        /*添加模态窗提交*/
+        $("#btnAddModal").click(function () {
+            $("#addForm").submit();
+        });
+        /*修改模态窗提交*/
+        $("#btnEditModal").click(function () {
+            $("#editForm").submit();
+        });
+        /*延迟启用按钮的tip*/
+        /*    $(function () {
+                setTimeout(function () { $("[data-toggle='tooltip']").tooltip(); },800);
+            });
+    */
+        /*绑定批量删除按钮*/
+        $("#delAll").click(function () {
+            let objList = $rolePrivilegeTable.bootstrapTable('getAllSelections');
+            let idList = [];
+            objList.forEach(function (item,index) {
+                console.log(item);
+                idList.push(item.id);
+            });
+            let ids = JSON.stringify(idList);
+            if (idList.length === 0) {
+                alert("请至少选择一个")
+            } else {
+                if (confirm("确定批量删除么")) {
+                    // alert("删除:" + ids);
+                    window.location.reload();
+                    //ajax发送异步请求
+                    $.ajax({
+                        url:  "/owep/privilege/rolePriv/deleteByGroup",
+                        method: "post",
+                        data: ids,
+                        dataType: "text",
+                        async: "true",
+                        contentType: "application/json",
+                        success: function (data) {
+                            /!*重新加载本页面*!/
+                            alert(data);
+                            window.location.reload();
+                        },
+                        error: function (jqXRH) {
+                            console.log(jqXRH);
+                            alert("删除失败")
+                        }
+                    })
+                }
+            }
+
+
+        });
+        let $menuListTree = $("#menuListTree");
+
+        function initListTree(id,name) {
+            $("input[name='permissionId']").val(id);
+            $("input[name='permissionName']").val(name);
+            /*分配角色里的  树形复选框*/
+            $.ajax({
+                // url: '../../static/js/demo/privilege/rolePrivilege_treeCheck_test.json',
+                url:"/owep/privilege/rolePriv/treeCheck",
+                data: {id:id},
+                dataType: "json",
+                method: "get",
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    $menuListTree.treeview({
+                        data: data,
+                        levels: 2,
+                        showCheckbox: 1,
+                        showIcon: false,
+                        showBorder: false,
+                        expandIcon: undefined,
+                        collapseIcon: undefined,
+                        multiSelect: 1,
+                        highlightSelected: 0,
+                        /*节点选中事件*/
+                        onNodeChecked: function (event, node) {
+                            let selectNodes = getChildNodeIdArr(node); //获取所有子节点
+                            if (selectNodes) { //子节点不为空，则选中所有子节点
+                                $menuListTree.treeview('checkNode', [selectNodes, {silent: true}]);
+                            }
+                            setParentNodeCheck(node);
+                        },
+                        onNodeSelected:function(event,node){
+                            let selectNodes = getChildNodeIdArr(node); //获取所有子节点
+                            if (selectNodes) { //子节点不为空，则选中所有子节点
+                                $menuListTree.treeview('checkNode', [selectNodes, {silent: true}]);
+                            }
+                            setParentNodeCheck(node);
+                            $menuListTree.treeview('checkNode',[node.nodeId,{silent:true}]);
+                        },
+                        onNodeUnselected:function(event,node){
+                            $menuListTree.treeview('uncheckNode',[node.nodeId,{silent:true}]);
+                            let selectNodes = getChildNodeIdArr(node); //获取所有子节点
+                            if (selectNodes) { //子节点不为空，则取消选中所有子节点
+                                $menuListTree.treeview('uncheckNode', [selectNodes, {silent: true}]);
+                            }
+                            /*如果父节点选中，子节点部分选中，则取消父节点选中状态*/
+                            if (node.parentId !=undefined) {
+                                $menuListTree.treeview('uncheckNode', [node.parentId, {silent: true}]);
+                            }
+                        },
+                        onNodeUnchecked: function (event, node) { //取消选中节点
+                            let parent = $menuListTree.treeview('getParent', node);
+                            let selectNodes = getChildNodeIdArr(node); //获取所有子节点
+                            if (selectNodes) { //子节点不为空，则取消选中所有子节点
+                                $menuListTree.treeview('uncheckNode', [selectNodes, {silent: true}]);
+                            }
+                            /*如果父节点选中，子节点部分选中，则取消父节点选中状态*/
+                            if (node.parentId!=undefined) {
+                                $menuListTree.treeview('uncheckNode', [parent, {silent: true}]);
+                            }
+                        }
+                    });
+                    /*数据加载后 调用模态窗*/
+                    $("#allocateModal").modal();
+                },
+                error: function (jqXHR) {
+                    alert(jqXHR);
+                }
+            });
+
+            //当子节点全被选中时 其父节点被选中  如若还有祖先节点则递归【作废】
+            // new : 当有子节点被主动选中时，其父节点被动选中
+            function setParentNodeCheck(node) {
+                let parentNode = $menuListTree.treeview("getParent", node);
+                if (parentNode.nodes) {
+                    let checkedCount = 0;
+                    for (let x in parentNode.nodes) {
+                        if (parentNode.nodes[x].state.checked) {
+                            checkedCount++;
+                        } else {
+                           continue;
+                        }
+                    }
+                    if (checkedCount >0 ) {
+                        $menuListTree.treeview("checkNode", parentNode.nodeId);
+                        setParentNodeCheck(parentNode);
+                    }
+                }
+            }
+
+            /*获取所有子节点*/
+            function getChildNodeIdArr(node) {
+                let ts = [];
+                if (node.nodes) {
+                    for (let x in node.nodes) {
+                        ts.push(node.nodes[x].nodeId);
+                        if (node.nodes[x].nodes) {
+                            let getNodeDieDai = getChildNodeIdArr(node.nodes[x]);
+                            for (j in getNodeDieDai) {
+                                ts.push(getNodeDieDai[j]);
+                            }
+                        }
+                    }
+                } else {
+                    ts.push(node.nodeId);
+                }
+                return ts;
+            }
+        }
+
+        //分配角色模态窗全选的值  传入后端
+        $("#btnAllocateModal").click(function () {
+            let permId = $("#permissionId").val();
+            var datas = [];
+            let checks = $menuListTree.treeview('getChecked');
+            $.each(checks, function (index, item) {
+                console.log(item);
+                // if (item.parentId!=undefined) {//这个条件会滤除顶级节点，此处不应该使用
+                    datas.push(item.tags);
+                // }
+            });
+            let s = {"permissionId": permId, "menuIds": datas};
+            s = JSON.stringify(s);
+            console.log("传入的IdJson" + s);
+            if (datas == 0) {
+                alert("至少选择一个");
+            } else {
+                if (confirm("确定添加这些数据么")) {
+                    alert("添加数据:" + s);
+                    //ajax发送异步请求
+                    $.ajax({
+                        url:  "/owep/privilege/rolePriv/treeCheck_edit",
+                        method: "post",
+                        data: s,
+                        dataType: "text",
+                        async: "true",
+                        contentType: "application/json",
+                        success: function (data) {
+                            /!*重新加载本页面*!/
+                            alert(data);
+                            window.location.reload();
+                        },
+                        error: function (jqXRH) {
+                            console.log(jqXRH);
+                            alert("删除失败")
+                        }
+                    })
+                }
+            }
+
+        });
+        return oTableInit;
+    });
+</script>
+
+</body>
+
+</html>

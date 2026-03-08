@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kclm.owep.mapper.ProfessionMapper">
+
+    <resultMap id="BaseResultMap" type="com.kclm.owep.entity.Profession">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="prof_name" jdbcType="VARCHAR" property="profName" />
+        <result column="prof_desc" jdbcType="VARCHAR" property="profDesc" />
+        <result column="prof_status" jdbcType="INTEGER" property="profStatus" />
+        <result column="institute_name" jdbcType="VARCHAR" property="instituteName" />
+        <result column="institute_branch_name" jdbcType="VARCHAR" property="instituteBranchName" />
+        <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
+        <result column="order_profe_name" jdbcType="VARCHAR" property="orderProfeName" />
+        <result column="version" jdbcType="INTEGER" property="version" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="last_access_time" jdbcType="TIMESTAMP" property="lastAccessTime" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, prof_name, prof_desc, prof_status, institute_name, institute_branch_name, is_delete,
+        order_profe_name, version, create_time, last_access_time
+    </sql>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" />
+        from t_profession
+        where is_delete = 1
+    </select>
+
+    <select id="selectByProNameAndInstituteNameAndInstituteBranchName" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" />
+        from t_profession
+        where prof_name = #{proName} and institute_name = #{instituteName} and institute_branch_name = #{instituteBranchName}
+        and is_delete = 1
+    </select>
+
+    <insert id="save" parameterType="Profession">
+        insert into t_profession
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="id != null">
+            id,
+        </if>
+        <if test="profName != null">
+            prof_name,
+        </if>
+        <if test="profDesc != null">
+            prof_desc,
+        </if>
+        <if test="profStatus != null">
+            prof_status,
+        </if>
+        <if test="instituteName != null">
+            institute_name,
+        </if>
+        <if test="instituteBranchName != null">
+            institute_branch_name,
+        </if>
+        <if test="isDelete != null">
+            is_delete,
+        </if>
+        <if test="orderProfeName != null">
+            orderProfeName,
+        </if>
+        <if test="version != null">
+            version,
+        </if>
+        <if test="createTime != null">
+            create_time,
+        </if>
+        <if test="lastAccessTime != null">
+            last_access_time
+        </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="id != null">
+            #{id,jdbcType=INTEGER},
+        </if>
+        <if test="profName != null">
+            #{profName,jdbcType=VARCHAR},
+        </if>
+        <if test="profDesc != null">
+            #{profDesc,jdbcType=VARCHAR},
+        </if>
+        <if test="profStatus != null">
+            #{profStatus,jdbcType=INTEGER},
+        </if>
+        <if test="instituteName != null">
+            #{instituteName,jdbcType=VARCHAR},
+        </if>
+        <if test="instituteBranchName != null">
+            #{instituteBranchName,jdbcType=VARCHAR},
+        </if>
+        <if test="isDelete != null">
+            #{isDelete,jdbcType=INTEGER},
+        </if>
+        <if test="orderProfeName != null">
+            #{orderProfeName,jdbcType=VARCHAR},
+        </if>
+        <if test="version != null">
+            #{version,jdbcType=INTEGER},
+        </if>
+        <if test="createTime != null">
+            #{createTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="lastAccessTime != null">
+            #{lastAccessTime,jdbcType=TIMESTAMP},
+        </if>
+        </trim>
+    </insert>
+
+    <update id="deleteById" parameterType="Integer">
+        update t_profession set is_delete = 0
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="deleteSelect">
+        update t_profession set is_delete = 0
+        where  id in
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </update>
+
+    <select id="selectById" parameterType="Integer" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" />
+        from t_profession where id = #{id} and is_delete = 1
+    </select>
+
+    <update id="update" parameterType="Profession">
+        update t_profession set prof_name = #{profName}, prof_desc = #{profDesc}, institute_name = #{instituteName},
+        institute_branch_name = #{instituteBranchName} where id = #{id}
+    </update>
+
+    <update id="switchStatus" parameterType="Integer">
+        update t_profession set prof_status = #{status}
+        where id = #{id}
+    </update>
+
+    <select id="selectByInstituteNameAndInstituteBranchName" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" />
+        from t_profession where institute_name = #{instituteName} and institute_branch_name = #{instituteBranchName}
+        and is_delete = 1 and prof_status = 1
+    </select>
+
+    <select id="selectByProfNameAndInstituteNameAndInstituteBranchName" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" />
+        from t_profession where prof_name = #{profName} and institute_name = #{instituteName}
+            and institute_branch_name = #{InstituteBranchName}
+    </select>
+
+    <select id="selectByInstituteNameAndInstituteBranchNameAndIsDelete" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" />
+        from t_profession where institute_name = #{instituteName} and institute_branch_name = #{instituteBranchName}
+        and is_delete = 0
+    </select>
+</mapper>

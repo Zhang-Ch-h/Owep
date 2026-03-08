@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kclm.owep.mapper.DBCopyMapper">
+    <select id="selectAll" resultType="DbCopy">
+        select id,
+            file_name,
+            file_path,
+            create_time,
+            status
+        from t_db_copy
+    </select>
+
+    <select id="selectByTime" resultType="DbCopy">
+        select id,
+        file_name,
+        file_path,
+        create_time,
+        status
+        from t_db_copy
+        <where>
+            <if test="start != null and end != null">
+                create_time BETWEEN #{start} AND #{end}
+            </if>
+        </where>
+    </select>
+
+    <insert id="save">
+        insert into t_db_copy(file_name, file_path, create_time, status) values (#{fileName}, #{filePath}, #{createTime}, #{status})
+    </insert>
+
+    <select id="selectById" resultType="DbCopy">
+        select id,
+            file_name,
+            file_path,
+            create_time,
+            status
+        from t_db_copy
+        where id = #{id} and status = 1
+    </select>
+    
+    <delete id="deleteById">
+        delete from t_db_copy where id = #{id}
+    </delete>
+</mapper>

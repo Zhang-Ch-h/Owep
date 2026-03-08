@@ -1,0 +1,47 @@
+{
+  "message": "",
+  "value": [
+    {
+      "id": 1,
+      "name": "张三",
+      "class": "17软件(2)班",
+      "customerBelongs": "市场部",
+      "school": "萍乡学院",
+      "college": "信计学院"
+    },
+    {
+      "id": 1,
+      "name": "赵四",
+      "class": "17软件(1)班",
+      "customerBelongs": "开发部",
+      "school": "南昌大学",
+      "college": "文学院"
+    },
+    {
+      "id": 1,
+      "name": "王五",
+      "class": "18软件(2)班",
+      "customerBelongs": "市场部",
+      "school": "九江学院",
+      "college": "机电学院"
+    },
+    {
+      "id": 1,
+      "name": "吕六",
+      "class": "16软件(1)班",
+      "customerBelongs": "财务部",
+      "school": "苏州大学",
+      "college": "工商学院"
+    },
+    {
+      "id": 1,
+      "name": "余七",
+      "class": "17软件(3)班",
+      "customerBelongs": "测试部",
+      "school": "北京大学",
+      "college": "艺术学院"
+    }
+  ],
+  "code": 200,
+  "redirect": ""
+}

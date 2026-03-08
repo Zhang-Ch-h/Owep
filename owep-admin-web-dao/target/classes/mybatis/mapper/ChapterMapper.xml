@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kclm.owep.mapper.ChapterMapper">
+
+    <resultMap id="BaseMap" type="Chapter">
+        <id column="id" property="id" />
+        <result column="chapter_number" property="chapterNumber" />
+        <result column="chapter_name" property="chapterName" />
+        <result column="chapter_image_url" property="chapterImageUrl" />
+        <result column="chapter_status" property="chapterStatus" />
+        <result column="chapter_desc" property="chapterDesc" />
+        <result column="create_time" property="createTime" />
+        <result column="video_status" property="videoStatus" />
+        <result column="is_delete" property="isDelete" />
+        <result column="version" property="version" />
+        <result column="last_access_time" property="lastAccessTime" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, chapter_number, chapter_name, chapter_image_url, chapter_status, chapter_desc, create_time, video_status,
+        is_delete, version, last_access_time
+    </sql>
+
+    <select id="selectAllByCourseId" resultMap="BaseMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_chapter
+        <where>
+            <if test="courseId != null">
+                fk_course_id = #{courseId}
+            </if>
+            and is_delete = 1
+        </where>
+    </select>
+</mapper>

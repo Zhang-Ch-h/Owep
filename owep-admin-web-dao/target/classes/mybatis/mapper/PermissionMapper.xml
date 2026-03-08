@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kclm.owep.mapper.PermissionMapper">
+    <resultMap id="BaseResultMap" type="Permission">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="permission_name" jdbcType="VARCHAR" property="permissionName"/>
+        <result column="permission_description" jdbcType="VARCHAR" property="permissionDescription"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="last_access_time" jdbcType="TIMESTAMP" property="lastAccessTime"/>
+        <result column="version" jdbcType="INTEGER" property="version"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id,
+        permission_name,
+        permission_description,
+        create_time,
+        last_access_time,
+        version
+    </sql>
+    <!--根据Id查询-->
+    <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_permission
+        where id = #{id}
+    </select>
+    <!--根据ID删除-->
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        delete
+        from t_permission
+        where id = #{id}
+    </delete>
+    <!--批量删除-->
+    <delete id="deleteSelect">
+        delete
+        from t_permission
+                where id in
+        <foreach collection="list" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <!--插入权限记录-->
+    <insert id="save" parameterType="Permission">
+        insert into t_permission
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="permissionName != null">
+                permission_name,
+            </if>
+            <if test="permissionDescription != null">
+                permission_description,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="permissionName != null">
+                #{permissionName,jdbcType=VARCHAR},
+            </if>
+            <if test="permissionDescription != null">
+                #{permissionDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <!--更新记录-->
+    <update id="update" parameterType="Permission">
+        update t_permission
+        <set>
+            <if test="permissionName != null">
+                permission_name = #{permissionName,jdbcType=VARCHAR},
+            </if>
+            <if test="permissionDescription != null">
+                permission_description = #{permissionDescription,jdbcType=VARCHAR},
+            </if>
+                last_access_time =now(),
+                version =version+1,
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <!--查询所有的权限-->
+    <select id="selectAll" resultType="Permission">
+        select
+        <include refid="Base_Column_List"/>
+        from t_permission
+    </select>
+    <select id="selectByName" resultType="Permission">
+        select
+        <include refid="Base_Column_List"/>
+        from t_permission
+        where permission_name like concat('%', #{name}, '%')
+    </select>
+    <!--查询关联某个权限的所有的角色-->
+    <select id="selectRoleInPermission" resultMap="PermissionRole">
+        select p.id               pid,
+               permission_name,
+               permission_description,
+               p.create_time      pctime,
+               p.last_access_time pltime,
+               p.version          pv,
+               r.id               rid,
+               role_name,
+               role_description,
+               r.create_time      rctime,
+               r.last_access_time rltime,
+               r.version          rv
+        from t_permission p
+                     left join t_role_permission rp on p.id = rp.permission_id
+                     left join t_role r on r.id = rp.role_id
+        <where>
+            <if test="_parameter != 0">
+                p.id = #{perId}
+            </if>
+        </where>
+    </select>
+    <resultMap id="PermissionRole" type="Permission">
+        <id column="pid" property="id"/>
+        <result column="permission_name" property="permissionName"/>
+        <result column="permission_description" property="permissionDescription"/>
+        <result column="pctime" property="createTime"/>
+        <result column="pltime" property="lastAccessTime"/>
+        <result column="pv" property="version"/>
+        <collection property="roles" ofType="Role">
+            <id column="rid" property="id"/>
+            <result column="role_name" property="roleName"/>
+            <result column="role_description" property="roleDescription"/>
+            <result column="rctime" property="createTime"/>
+            <result column="rltime" property="lastAccessTime"/>
+            <result column="rv" property="version"/>
+        </collection>
+    </resultMap>
+    <!--外联查询 查询权限下所关联的菜单 可传Id进行条件查询。不传则默认查询所有-->
+    <select id="selectMenuInPermission" resultMap="PermissionMenu">
+        select p.id               pid,
+               permission_name   pname,
+               permission_description pdesc,
+               p.create_time      pctime,
+               p.last_access_time pltime,
+               p.version          pv,
+               m.id               mid,
+               menu_name,
+               menu_url,
+               menu_description,
+               menu_code,
+               m.create_time      mctime,
+               m.last_access_time mltime,
+               m.version          mv
+        from t_permission p
+                     left join t_perm_menu pm on p.id = pm.perm_id
+                     left join t_menu m on pm.menu_id=m.id
+        <where>
+            <if test="_parameter != 0">
+                p.id = #{perId}
+            </if>
+        </where>
+    </select>
+    <resultMap id="PermissionMenu" type="com.kclm.owep.entity.Permission">
+        <id column="pid" property="id"/>
+        <result column="pname" property="permissionName"/>
+        <result column="pdesc" property="permissionDescription"/>
+        <result column="pctime" property="createTime"/>
+        <result column="pltime" property="lastAccessTime"/>
+        <result column="pv" property="version"/>
+        <collection property="menus" ofType="com.kclm.owep.entity.Menu">
+            <id column="mid" property="id"/>
+            <result column="menu_name" property="menuName"/>
+            <result column="menu_description" property="menuDescription"/>
+            <result column="menu_url" property="menuUrl"/>
+            <result column="menu_code" property="menuCode"/>
+            <result column="mctime" property="createTime"/>
+            <result column="mltime" property="lastAccessTime"/>
+            <result column="mv" property="version"/>
+        </collection>
+    </resultMap>
+    <!--外联查询 查询权限下所关联的行为 可传Id进行条件查询。不传则默认查询所有-->
+    <select id="selectActionInPermission" resultMap="PermissionAction">
+        select p.id               pid,
+               permission_name,
+               permission_description,
+               p.create_time      pctime,
+               p.last_access_time pltime,
+               p.version          pv,
+               a.id               aid,
+               action_name,
+               action_description,
+               action_url,
+               a.create_time      actime,
+               a.last_access_time altime,
+               a.version          av,
+               action_code,
+               action_value
+        from t_permission p
+                     left join t_menu_action_per map on p.id = map.per_id
+                     left join t_action a on map.action_id = a.id
+        <where>
+            <if test="_parameter != 0">
+                p.id = #{perId}
+            </if>
+        </where>
+    </select>
+    <resultMap id="PermissionAction" type="Permission">
+        <id column="pid" property="id"/>
+        <result column="permission_name" property="permissionName"/>
+        <result column="permission_description" property="permissionDescription"/>
+        <result column="pctime" property="createTime"/>
+        <result column="pltime" property="lastAccessTime"/>
+        <result column="pv" property="version"/>
+        <collection property="actions" ofType="Action" >
+            <id column="aid" property="id"/>
+            <result column="action_name" property="actionName"/>
+            <result column="action_description" property="actionDescription"/>
+            <result column="action_url" property="actionUrl"/>
+            <result column="action_code" property="actionCode"/>
+            <result column="action_value" property="actionValue"/>
+            <result column="actime" property="createTime"/>
+            <result column="altime" property="lastAccessTime"/>
+            <result column="av" property="version"/>
+        </collection>
+    </resultMap>
+    <!--向中间表插入数据 给角色分配权限-->
+    <insert id="assignMenuToPermission">
+        insert into t_perm_menu(menu_id, perm_id)
+        VALUES (#{menuId}, #{perId})
+    </insert>
+    <!--根据权限ID删除所关联的菜单-->
+    <delete id="deleteMenusByPermissionId">
+        delete
+        from t_perm_menu
+                where perm_id in
+        <foreach collection="list" item="id" separator=",">
+            (#{id})
+        </foreach>
+    </delete>
+     <delete id="deleteMenusByMenuId">
+        delete
+        from t_perm_menu
+                where menu_id in
+        <foreach collection="list" item="id" separator=",">
+            (#{id})
+        </foreach>
+    </delete>
+    <!--给权限分配行为-->
+    <!--  <insert id="assignActionToPermission">
+          insert into t_menu_action_per(menu_id, per_id, action_id)
+          values (#{menuId}, #{perId}, #{actionId})
+      </insert>-->
+</mapper>

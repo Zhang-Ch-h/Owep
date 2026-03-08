@@ -1,0 +1,93 @@
+[{
+  "id": 1,
+  "name": "springboot学习笔记",
+  "describe": "呵呵呵呵呵",
+  "type": "pdf",
+  "size": "155655",
+  "classify": "完美哈哈",
+  "time": "2020-06-12"
+},{
+  "id": 1,
+  "name": "spring mvc学习笔记",
+  "describe": "哈哈哈哈",
+  "type": "pdf",
+  "size": "4955",
+  "classify": "课程资源",
+  "time": "2020-06-12"
+},{
+  "id": 1,
+  "name": "bootstrap学习笔记",
+  "describe": "热爱学习",
+  "type": "docx",
+  "size": "64194",
+  "classify": "课程资源",
+  "time": "2020-06-12"
+},{
+  "id": 1,
+  "name": "完成课题案例e",
+  "describe": "完成课题案例",
+  "type": "docx",
+  "size": "78857",
+  "classify": "课程资源",
+  "time": "2020-06-12"
+},{
+  "id": 1,
+  "name": "springboot学习笔记",
+  "describe": "java功夫好",
+  "type": "pdf",
+  "size": "354161",
+  "classify": "课程资源",
+  "time": "2020-06-12"
+},{
+  "id": 1,
+  "name": "Oracle编程开发",
+  "describe": "永无止境",
+  "type": ".docx",
+  "size": "6494",
+  "classify": "公共资源",
+  "time": "2020-06-12"
+},{
+  "id": 1,
+  "name": "Oracle编程开发",
+  "describe": "永无止境",
+  "type": ".docx",
+  "size": "6494",
+  "classify": "公共资源",
+  "time": "2020-06-12"
+},
+  {
+    "id": 1,
+    "name": "Oracle编程开发",
+    "describe": "永无止境",
+    "type": ".docx",
+    "size": "6494",
+    "classify": "公共资源",
+    "time": "2020-06-12"
+  },
+  {
+    "id": 1,
+    "name": "Oracle编程开发",
+    "describe": "永无止境",
+    "type": ".docx",
+    "size": "6494",
+    "classify": "公共资源",
+    "time": "2020-06-12"
+  },
+  {
+    "id": 1,
+    "name": "Oracle编程开发",
+    "describe": "永无止境",
+    "type": ".docx",
+    "size": "6494",
+    "classify": "公共资源",
+    "time": "2020-06-12"
+  },
+  {
+    "id": 1,
+    "name": "Oracle编程开发",
+    "describe": "永无止境",
+    "type": ".docx",
+    "size": "6494",
+    "classify": "公共资源",
+    "time": "2020-06-12"
+  }]

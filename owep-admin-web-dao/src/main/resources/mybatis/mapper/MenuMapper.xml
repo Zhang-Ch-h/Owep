@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kclm.owep.mapper.MenuMapper">
+    <resultMap id="BaseResultMap" type="com.kclm.owep.entity.Menu">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="menu_name" jdbcType="VARCHAR" property="menuName"/>
+        <result column="menu_url" jdbcType="VARCHAR" property="menuUrl"/>
+        <result column="menu_description" jdbcType="VARCHAR" property="menuDescription"/>
+        <result column="menu_code" jdbcType="VARCHAR" property="menuCode"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="last_access_time" jdbcType="TIMESTAMP" property="lastAccessTime"/>
+        <result column="version" jdbcType="INTEGER" property="version"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        menu_name,
+        menu_url,
+        menu_description,
+        menu_code,
+        create_time,
+        last_access_time,
+        version
+    </sql>
+    <!--查询menu的基本信息-->
+    <select id="selectById" parameterType="java.lang.Integer" resultType="Menu">
+        select
+        <include refid="Base_Column_List"/>
+        from t_menu
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <!--根据ID进行删除-->
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        delete
+        from t_menu
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <delete id="deleteSelect">
+        delete
+        from t_menu
+                where id in
+        <foreach collection="list" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <!--插入菜单-->
+    <insert id="save" parameterType="com.kclm.owep.entity.Menu">
+        insert into t_menu
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="parent != null">
+                fk_parent_id,
+            </if>
+            <if test="menuName != null">
+                menu_name,
+            </if>
+            <if test="menuUrl != null">
+                menu_url,
+            </if>
+            <if test="menuDescription != null">
+                menu_description,
+            </if>
+            <if test="menuCode != null">
+                menu_code,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="parent != null">
+                #{parent.id,jdbcType=INTEGER},
+            </if>
+            <if test="menuName != null">
+                #{menuName,jdbcType=VARCHAR},
+            </if>
+            <if test="menuUrl != null">
+                #{menuUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="menuDescription != null">
+                #{menuDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="menuCode != null">
+                #{menuCode,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <!--更新菜单-->
+    <update id="update" parameterType="Menu">
+        update t_menu
+        <set>
+            <if test="parent != null">
+                fk_parent_id = #{parent.id,jdbcType=INTEGER},
+            </if>
+            <if test="menuName != null">
+                menu_name = #{menuName,jdbcType=VARCHAR},
+            </if>
+            <if test="menuUrl != null">
+                menu_url = #{menuUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="menuDescription != null">
+                menu_description = #{menuDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="menuCode != null">
+                menu_code = #{menuCode,jdbcType=VARCHAR},
+            </if>
+            last_access_time = now(),
+            version          =version + 1,
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <!--为 菜单和权限分配行为-->
+    <insert id="assignActionToMenuAndPermission">
+        insert into t_menu_action_per(menu_id, per_id, action_id)
+        values (#{menuId}, #{perId}, #{actionId})
+    </insert>
+    <!--查询所有的菜单的基本信息不包含父子关联-->
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_menu
+    </select>
+    <!--自关联查询 查询所有的子菜单-->
+    <select id="selectMenuChild" resultMap="ChildMenu">
+        select p.id               pid,
+               p.menu_name        pname,
+               p.menu_url         purl,
+               p.menu_description pdesc,
+               p.menu_code        pcode,
+               p.create_time      pctime,
+               p.last_access_time pltime,
+               p.version          pv,
+               c.id               cid,
+               c.menu_name        cname,
+               c.menu_url         curl,
+               c.menu_description cdesc,
+               c.menu_code        ccode,
+               c.create_time      cctime,
+               c.last_access_time cltime,
+               c.version          cv
+        from t_menu p
+                     left join t_menu c on c.fk_parent_id = p.id
+        <where>
+            <if test="_parameter != 0">
+                p.id = #{menuId}
+            </if>
+            <if test="_parameter == 0">
+                and p.fk_parent_id is null
+            </if>
+        </where>
+    </select>
+    <resultMap id="ChildMenu" type="com.kclm.owep.entity.Menu">
+        <id column="pid" property="id"/>
+        <result column="pname" property="menuName"/>
+        <result column="purl" property="menuUrl"/>
+        <result column="pdesc" property="menuDescription"/>
+        <result column="pcode" property="menuCode"/>
+        <result column="pctime" property="createTime"/>
+        <result column="pltime" property="lastAccessTime"/>
+        <result column="pv" property="version"/>
+        <collection property="childMenus" ofType="com.kclm.owep.entity.Menu">
+            <id column="cid" property="id"/>
+            <result column="cname" property="menuName"/>
+            <result column="curl" property="menuUrl"/>
+            <result column="cdesc" property="menuDescription"/>
+            <result column="ccode" property="menuCode"/>
+            <result column="cctime" property="createTime"/>
+            <result column="cltime" property="lastAccessTime"/>
+            <result column="cv" property="version"/>
+        </collection>
+    </resultMap>
+    <!--查询菜单的父级 -->
+    <select id="selectParent" resultMap="ParentMenu">
+        select c.id               cid,
+               c.menu_name        cname,
+               c.menu_url         curl,
+               c.menu_description cdesc,
+               c.menu_code        ccode,
+               c.create_time      cctime,
+               c.last_access_time cltime,
+               c.version          cv,
+               p.id               pid,
+               p.menu_name        pname,
+               p.menu_url         purl,
+               p.menu_description pdesc,
+               p.menu_code        pcode,
+               p.create_time      pctime,
+               p.last_access_time pltime,
+               p.version          pv
+        from t_menu c
+                     left join t_menu p on c.fk_parent_id = p.id
+        <where>
+            <if test="_parameter != 0">
+                c.id = #{id}
+            </if>
+        </where>
+    </select>
+    <resultMap id="ParentMenu" type="Menu">
+        <id column="cid" property="id"/>
+        <result column="cname" property="menuName"/>
+        <result column="curl" property="menuUrl"/>
+        <result column="cdesc" property="menuDescription"/>
+        <result column="ccode" property="menuCode"/>
+        <result column="cctime" property="createTime"/>
+        <result column="cltime" property="lastAccessTime"/>
+        <result column="cv" property="version"/>
+        <association property="parent" javaType="Menu">
+            <id column="pid" property="id"/>
+            <result column="pname" property="menuName"/>
+            <result column="purl" property="menuUrl"/>
+            <result column="pdesc" property="menuDescription"/>
+            <result column="pcode" property="menuCode"/>
+            <result column="pctime" property="createTime"/>
+            <result column="pltime" property="lastAccessTime"/>
+            <result column="pv" property="version"/>
+        </association>
+    </resultMap>
+    <!--以菜单ID为准删除中间表的数据-->
+    <delete id="deleteByMenuIdInAPM">
+        delete
+        from t_menu_action_per
+                where menu_id in
+        <foreach collection="list" close=")" open="(" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
+    <delete id="deleteByPerIdInAPM">
+        delete
+        from t_menu_action_per
+                where per_id in
+        <foreach collection="list" close=")" open="(" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
+    <delete id="deleteByActionIdInAPM">
+        delete
+        from t_menu_action_per
+                where action_id in
+        <foreach collection="list" close=")" open="(" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
+    <delete id="deleteByPermIdAndMenuIdInAPM">
+        delete
+        from t_menu_action_per
+                where menu_id = #{menuId} and per_id = #{perId}
+    </delete>
+
+
+    <!--根据菜单ID更新中间表的数据-->
+    <update id="updateInAPMByMenuId">
+        update t_menu_action_per
+        set action_id=#{actionId},
+            per_id=#{perId}
+        where menu_id = #{menuId}
+    </update>
+    <!--根据权限Id更新中间表数据-->
+    <update id="updateInAPMByPerId">
+        update t_menu_action_per
+        set action_id=#{actionId},
+            menu_id  = #{menuId}
+        where per_id = #{perId}
+    </update>
+
+    <!--外联查询 查询菜单所关联的行为 可传入ID进入条件查询-->
+    <select id="selectActionInMenu" resultMap="MenuAction">
+        select m.id               mid,
+               menu_name,
+               menu_url,
+               menu_description,
+               menu_code,
+               m.create_time      mctime,
+               m.last_access_time mltime,
+               m.version          mv,
+               a.id               aid,
+               action_name,
+               action_description,
+               action_url,
+               a.create_time      actime,
+               a.last_access_time altime,
+               a.version          av,
+               action_code,
+               action_value
+        from t_menu m
+                     left join t_menu_action_per map on m.id = map.menu_id
+                     left join t_action a on map.action_id = a.id
+        <where>
+            <if test="_parameter != 0">
+                m.id = #{menuId}
+            </if>
+        </where>
+    </select>
+    <resultMap id="MenuAction" type="Menu">
+        <id column="mid" property="id"/>
+        <result column="menu_url" property="menuUrl"/>
+        <result column="menu_code" property="menuCode"/>
+        <result column="menu_name" property="menuName"/>
+        <result column="menu_description" property="menuDescription"/>
+        <result column="mv" property="version"/>
+        <result column="mltime" property="lastAccessTime"/>
+        <result column="mctime" property="createTime"/>
+        <collection property="actions" ofType="Action">
+            <id column="aid" property="id"/>
+            <result column="action_url" property="actionUrl"/>
+            <result column="action_code" property="actionCode"/>
+            <result column="action_name" property="actionName"/>
+            <result column="action_value" property="actionValue"/>
+            <result column="action_description" property="actionDescription"/>
+            <result column="av" property="version"/>
+            <result column="altime" property="lastAccessTime"/>
+            <result column="actime" property="createTime"/>
+        </collection>
+    </resultMap>
+    <!--外联查询 查询菜单所关联的权限-->
+    <select id="selectPermissionInMenu" resultMap="MenuPermission">
+        select m.id               mid,
+               menu_name,
+               menu_url,
+               menu_description,
+               menu_code,
+               m.create_time      mctime,
+               m.last_access_time mltime,
+               m.version          mv,
+               p.id               pid,
+               permission_name,
+               permission_description,
+               p.create_time      pctime,
+               p.last_access_time pltime,
+               p.version          pv
+        from t_menu m
+                     left join t_perm_menu pm on m.id = pm.menu_id
+                     left join t_permission p on pm.perm_id = p.id
+        <where>
+            <if test="_parameter != 0">
+                m.id = #{menuId}
+            </if>
+        </where>
+    </select>
+    <resultMap id="MenuPermission" type="com.kclm.owep.entity.Menu">
+        <id column="mid" property="id"/>
+        <result column="menu_url" property="menuUrl"/>
+        <result column="menu_code" property="menuCode"/>
+        <result column="menu_name" property="menuName"/>
+        <result column="menu_description" property="menuDescription"/>
+        <result column="mctime" property="createTime"/>
+        <result column="mltime" property="lastAccessTime"/>
+        <result column="mv" property="version"/>
+        <collection property="permissions" ofType="com.kclm.owep.entity.Permission">
+            <id column="pid" property="id"/>
+            <result column="permission_name" property="permissionName"/>
+            <result column="permission_description" property="permissionDescription"/>
+            <result column="pctime" property="createTime"/>
+            <result column="pltime" property="lastAccessTime"/>
+            <result column="pv" property="version"/>
+        </collection>
+    </resultMap>
+    <!--外联查询 三表关联查询同时附加menu自关联查询其子菜单-->
+    <select id="selectAllInAPM" resultMap="MenuActionPermission">
+        select m.id                mid,
+               m.menu_name         mname,
+               m.menu_url          murl,
+               m.menu_description  mdesc,
+               m.menu_code         mcode,
+               m.create_time       mctime,
+               m.last_access_time  mltime,
+               m.version           mv,
+               cm.id               cmid,
+               cm.menu_name        cmname,
+               cm.menu_url         cmurl,
+               cm.menu_description cmdesc,
+               cm.menu_code        cmcode,
+               cm.create_time      cmctime,
+               cm.last_access_time cmltime,
+               cm.version          cmv,
+               p.id                pid,
+               permission_name,
+               permission_description,
+               p.create_time       pctime,
+               p.last_access_time  pltime,
+               p.version           pv,
+               a.id                aid,
+               action_name,
+               action_description,
+               action_url,
+               a.create_time       actime,
+               a.last_access_time  altime,
+               a.version           av,
+               action_code,
+               action_value
+        from t_menu m
+                     left join t_menu_action_per map on map.menu_id = m.id
+                     left join t_action a on map.action_id = a.id
+                     left join t_permission p on map.per_id = p.id
+                     left join t_menu cm on m.id = cm.fk_parent_id
+        <where>
+            <if test="menuId != 0">
+                m.id = #{menuId}
+            </if>
+            <if test="actionId != 0">
+                and a.id = #{actionId}
+            </if>
+            <if test="perId != 0">
+                and p.id = #{perId}
+            </if>
+        </where>
+    </select>
+    <resultMap id="MenuActionPermission" type="Menu">
+        <id column="mid" property="id"/>
+        <result column="murl" property="menuUrl"/>
+        <result column="mcode" property="menuCode"/>
+        <result column="mname" property="menuName"/>
+        <result column="mdesc" property="menuDescription"/>
+        <result column="mctime" property="createTime"/>
+        <result column="mltime" property="lastAccessTime"/>
+        <result column="mv" property="version"/>
+        <collection property="childMenus" ofType="Menu">
+            <id column="cmid" property="id"/>
+            <result column="cmurl" property="menuUrl"/>
+            <result column="cmcode" property="menuCode"/>
+            <result column="cmname" property="menuName"/>
+            <result column="cmdesc" property="menuDescription"/>
+            <result column="cmctime" property="createTime"/>
+            <result column="cmltime" property="lastAccessTime"/>
+            <result column="cmv" property="version"/>
+        </collection>
+        <collection property="permissions" ofType="Permission">
+            <id column="pid" property="id"/>
+            <result column="permission_name" property="permissionName"/>
+            <result column="permission_description" property="permissionDescription"/>
+            <result column="pctime" property="createTime"/>
+            <result column="pltime" property="lastAccessTime"/>
+            <result column="pv" property="version"/>
+        </collection>
+        <collection property="actions" ofType="Action">
+            <id column="aid" property="id"/>
+            <result column="action_url" property="actionUrl"/>
+            <result column="action_code" property="actionCode"/>
+            <result column="action_name" property="actionName"/>
+            <result column="action_value" property="actionValue"/>
+            <result column="action_description" property="actionDescription"/>
+            <result column="av" property="version"/>
+            <result column="altime" property="lastAccessTime"/>
+            <result column="actime" property="createTime"/>
+        </collection>
+    </resultMap>
+    <!--查询中间表有多少数据-->
+    <select id="countInAPM" resultType="int">
+        select count(menu_id)
+        from t_menu_action_per
+    </select>
+    <!--查询菜单表中有多少数据-->
+    <select id="count" resultType="int">
+        select count(id)
+        from t_menu
+    </select>
+
+
+</mapper>

@@ -1,0 +1,17 @@
+[
+  {
+    "name":"张三",
+    "examinee": "zhangsan",
+    "examineeGroup": "扬州公司",
+    "idNumber": "2011001",
+    "startTime": "2020-06-08 14:18:00",
+    "endTime": "2020-06-08 14:18:08",
+    "examTime": 0,
+    "correctingState": true,
+    "score": 57,
+    "source": "116.236.48.13",
+    "testTime": "120",
+    "passMark": 60,
+    "totalPoints": 120
+  }
+]

@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kclm.owep.mapper.GroupMapper">
+    <resultMap id="baseResultMap" type="com.kclm.owep.entity.Group">
+        <id column="id" property="id"/>
+        <result column="group_name" jdbcType="VARCHAR" property="groupName"/>
+        <result column="group_description" jdbcType="VARCHAR" property="groupDescription"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="last_access_time" jdbcType="TIMESTAMP" property="lastAccessTime"/>
+        <result column="version" jdbcType="INTEGER" property="version"/>
+        <result column="max_count" jdbcType="INTEGER" property="maxCount"/>
+    </resultMap>
+    <!--基本字段集-->
+    <sql id="base_column_list">
+        <!--@sql select -->
+        id, group_name, group_description, create_time, last_access_time, version, max_count<!--@sql from t_group; -->
+    </sql>
+
+    <!--查询表中的记录数-->
+    <select id="count" resultType="int">
+        select count(id)
+        from t_group
+    </select>
+    <!--全部查询-->
+    <select id="selectAll" resultType="com.kclm.owep.entity.Group">
+        select
+        <include refid="base_column_list"/>
+        from t_group
+    </select>
+    <!--根据组名查询-->
+    <select id="selectByGroupName" resultType="com.kclm.owep.entity.Group">
+        select
+        <include refid="base_column_list"/>
+        from t_group
+        where group_name like concat('%', #{groupName}, '%')
+    </select>
+    <!--根据ID查询-->
+    <select id="selectById" resultType="com.kclm.owep.entity.Group">
+        select
+        <include refid="base_column_list"/>
+        from t_group
+        where id = #{id}
+    </select>
+    <insert id="save" keyProperty="id" parameterType="com.kclm.owep.entity.Group">
+        insert into t_group
+        <trim suffix=")" prefix="(" suffixOverrides=",">
+            <if test="groupName != null">
+                group_name,
+            </if>
+            <if test="groupDescription != null">
+                group_description,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="maxCount != null">
+                max_count
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="groupName != null">
+                #{groupName},
+            </if>
+            <if test="groupDescription != null">
+                #{groupDescription},
+            </if>
+            <if test="createTime != null">
+                #{createTime},
+            </if>
+            <if test="version != null">
+                #{version},
+            </if>
+            <if test="maxCount != null">
+                #{maxCount}
+            </if>
+        </trim>
+    </insert>
+    <!--更新-->
+    <update id="update" parameterType="com.kclm.owep.entity.Group">
+        update t_group
+        <set>
+            <if test="groupName != null">
+                group_name=#{groupName},
+            </if>
+            <if test="groupDescription != null">
+                group_description=#{groupDescription},
+            </if>
+            last_access_time=now(),
+            version=version + 1,
+            <if test="maxCount != null">
+                max_count=#{maxCount},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <!--根据ID进行批量删除-->
+    <delete id="deleteSelect">
+        delete
+        from t_group
+                where  id in
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!--根据ID进行批量删除-->
+    <delete id="deleteById">
+        delete
+        from t_group
+        where id = #{id}
+    </delete>
+    <!--向用合组和角色的中间表中添加数据-->
+    <insert id="assignRoleToGroup">
+        insert t_group_role(group_id, role_id) VALUE (#{groupId}, #{roleId})
+    </insert>
+    <!--删除某组分配的角色-->
+    <delete id="deleteByGroupIdInGR">
+        delete
+        from t_group_role
+        where
+        <foreach collection="list" item="item" separator="or">
+            group_id = #{item}
+        </foreach>
+    </delete>
+    <!--外联查询 根据用户组的iD查看分配的角色-->
+    <select id="selectRolesByGroupId" resultMap="GroupRole">
+        select g.id               gid,
+               group_name,
+               group_description,
+               g.create_time      gcreate_time,
+               g.last_access_time glast_access_time,
+               g.version          gv,
+               max_count,
+               r.id               rid,
+               role_name,
+               role_description,
+               r.create_time      rcreate_time,
+               r.last_access_time rlast_access_time,
+               r.version          rv
+
+        from t_group g
+                     left join t_group_role gr on g.id = gr.group_id
+                     left join t_role r on gr.role_id = r.id
+        <where>
+            <if test="groupId != null and groupId != 0">
+                g.id = #{groupId}
+            </if>
+        </where>
+    </select>
+    <resultMap id="GroupRole" type="com.kclm.owep.entity.Group">
+        <id property="id" column="gid"/>
+        <result property="groupName" column="group_name"/>
+        <result property="groupDescription" column="group_description"/>
+        <result property="maxCount" column="max_count"/>
+        <result property="createTime" column="gcreate_time"/>
+        <result property="lastAccessTime" column="glast_access_time"/>
+        <result property="version" column="gv"/>
+        <collection property="roles" ofType="com.kclm.owep.entity.Role">
+            <id property="id" column="rid"/>
+            <result property="roleName" column="role_name"/>
+            <result property="roleDescription" column="role_description"/>
+            <result property="version" column="rv"/>
+            <result property="createTime" column="rcreate_time"/>
+            <result property="lastAccessTime" column="rlast_access_time"/>
+        </collection>
+    </resultMap>
+    <!--统计某个组已经分配的角色数量-->
+    <select id="countRolesByGroupId" resultType="int">
+        select count(role_id)
+        from t_group_role
+        <where>
+            <if test="_parameter != 0">
+                group_id = #{groupId}
+            </if>
+        </where>
+    </select>
+    <!--删除某个组下的某个角色 可于删除某个组下的所有角色合并-->
+    <delete id="deleteByGroupIdAndRoleId">
+        delete
+        from t_group_role
+        where group_id = #{groupId}
+          and role_id = #{roleId}
+    </delete>
+    <!--查询某个组中所分配的所有用户-->
+    <select id="selectUserInGroup" resultMap="GroupInUser">
+        select g.id                gid,
+               g.group_name        gname,
+               g.group_description gdesc,
+               g.create_time       gctime,
+               g.last_access_time  gltime,
+               g.version           gv,
+               g.max_count         gmax,
+               u.id                uid,
+               u.user_name         uname,
+               u.user_pwd          upwd,
+               u.user_phone        uphone,
+               u.real_name         urname,
+               u.user_email        uemail,
+               u.email_code        uecode,
+               u.gender            ugender,
+               u.card_num          ucard,
+               u.status            ustatus,
+               u.effective_date    ueffective_date,
+               u.user_type         utype,
+               u.birth             ubirth,
+               u.image_url         uimg,
+               u.description       udesc,
+               u.title             utitle,
+               u.perfect_status    uperfect_status,
+               u.is_delete         uis_delete,
+               u.create_time       uctime,
+               u.last_access_time  ultime,
+               u.version           uv
+        from t_group g
+                     left join t_user_group ug on ug.group_id = g.id
+                     left join t_user u on u.id = ug.user_id
+        <where>
+            <if test="_parameter != 0">
+                g.id = #{groupId}
+            </if>
+        </where>
+    </select>
+    <resultMap id="GroupInUser" type="com.kclm.owep.entity.Group">
+        <id property="id" column="gid"/>
+        <result property="lastAccessTime" column="gltime"/>
+        <result property="createTime" column="gctime"/>
+        <result property="groupDescription" column="gdesc"/>
+        <result property="version" column="gv"/>
+        <result property="groupName" column="gname"/>
+        <result property="maxCount" column="gmax"/>
+        <collection property="users" ofType="com.kclm.owep.entity.User">
+            <id property="id" column="uid"/>
+            <result property="userName" column="uname"/>
+            <result property="userPwd" column="upwd"/>
+            <result property="userPhone" column="uphone"/>
+            <result property="realName" column="urname"/>
+            <result property="userEmail" column="uemail"/>
+            <result property="emailCode" column="uecode"/>
+            <result property="gender" column="ugender"/>
+            <result property="cardNum" column="ucard"/>
+            <result property="status" column="ustatus"/>
+            <result property="effectiveDate" column="ueffective_date"/>
+            <result property="userType" column="utype"/>
+            <result property="birth" column="ubirth"/>
+            <result property="imageUrl" column="uimg"/>
+            <result property="description" column="udesc"/>
+            <result property="title" column="utitle"/>
+            <result property="perfectStatus" column="uperfect_status"/>
+            <result property="isDelete" column="uis_delete"/>
+            <result property="createTime" column="uctime"/>
+            <result property="lastAccessTime" column="ultime"/>
+            <result property="version" column="uv"/>
+        </collection>
+    </resultMap>
+</mapper>

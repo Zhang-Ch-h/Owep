@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kclm.owep.mapper.PlanManagerMapper">
+    <resultMap id="BaseMap" type="PlanManager">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="plan_number" jdbcType="INTEGER" property="planNumber" />
+        <result column="plan_name" jdbcType="VARCHAR" property="planName" />
+        <result column="plan_status" jdbcType="INTEGER" property="planStatus" />
+        <result column="plan_desc" jdbcType="VARCHAR" property="planDesc" />
+        <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="version" jdbcType="INTEGER" property="version" />
+        <result column="last_access_time" jdbcType="TIMESTAMP" property="lastAccessTime" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, plan_number, plan_name, plan_status, plan_desc, is_delete, create_time, version,
+        last_access_time
+    </sql>
+
+    <select id="selectPlanName" resultMap="BaseMap">
+        select <include refid="Base_Column_List" />
+        from t_planmanager where is_delete = 1 and plan_status = 1
+    </select>
+
+    <select id="selectByPlanName" resultType="com.kclm.owep.entity.PlanManager">
+        select <include refid="Base_Column_List" />
+        from t_planmanager where plan_name = #{planName}
+    </select>
+</mapper>

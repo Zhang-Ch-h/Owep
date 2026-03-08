@@ -1,0 +1,51 @@
+[
+  {
+    "id":1,
+    "tName":"周国兵",
+    "clazz": "Java全栈开发",
+    "adress": "http://http://192.168.1.66:8080/owep-admin-web-page/appra/toapprapage?teapprId=4",
+    "grade": "优",
+    "time":"2020-06-01 00:00:00至2020-06-02 00:00:00",
+    "status":"结束（未审核）"
+  },{
+  "id":2,
+  "tName":"周国兵",
+  "clazz": "Java全栈开发",
+  "adress": "http://http://192.168.1.66:8080/owep-admin-web-page/appra/toapprapage?teapprId=4",
+  "grade": "优",
+  "time":"2020-06-01 00:00:00至2020-06-02 00:00:00",
+  "status":"进行中"
+},{
+  "id":3,
+  "tName":"周国兵",
+  "clazz": "Java全栈开发",
+  "adress": "http://http://192.168.1.66:8080/owep-admin-web-page/appra/toapprapage?teapprId=4",
+  "grade": "优",
+  "time":"2020-06-01 00:00:00至2020-06-02 00:00:00",
+  "status":"进行中"
+},{
+  "id":4,
+  "tName":"周国兵",
+  "clazz": "Java全栈开发",
+  "adress": "http://http://192.168.1.66:8080/owep-admin-web-page/appra/toapprapage?teapprId=4",
+  "grade": "优",
+  "time":"2020-06-01 00:00:00至2020-06-02 00:00:00",
+  "status":"进行中"
+},{
+  "id":5,
+  "tName":"周国兵",
+  "clazz": "Java全栈开发",
+  "adress": "http://http://192.168.1.66:8080/owep-admin-web-page/appra/toapprapage?teapprId=4",
+  "grade": "优",
+  "time":"2020-06-01 00:00:00至2020-06-02 00:00:00",
+  "status":"进行中"
+},{
+  "id":6,
+  "tName":"周国兵",
+  "clazz": "Java全栈开发",
+  "adress": "http://http://192.168.1.66:8080/owep-admin-web-page/appra/toapprapage?teapprId=4",
+  "grade": "优",
+  "time":"2020-06-01 00:00:00至2020-06-02 00:00:00",
+  "status":"进行中"
+}
+]

@@ -1,0 +1,41 @@
+[
+  {
+    "id": 1,
+    "uid": 12,
+    "name": "叶建雄",
+    "gender": "男",
+    "phone": "18807031363",
+    "email": "1210736981@qq.com",
+    "customType": "一面客户",
+    "customAff": "一面客户",
+    "professional": "软件技术",
+    "customSource": "智联招聘",
+    "interviewTime": "2020-6-10"
+  },
+  {
+    "id": 2,
+    "uid": 12,
+    "name": "杨万人",
+    "gender": "男",
+    "email": "473127846@qq.com",
+    "phone": "18807031363",
+    "customType": "一面客户",
+    "customAff": "一面客户",
+    "professional": "软件技术",
+    "customSource": "智联招聘",
+    "interviewTime": "2020-6-10"
+  },
+  {
+    "id": 3,
+    "uid": 12,
+    "name": "谭建",
+    "gender": "男",
+    "email": "12538228@qq.com",
+    "phone": "18807031363",
+    "customType": "一面客户",
+    "customAff": "一面客户",
+    "professional": "软件技术",
+    "customSource": "智联招聘",
+    "interviewTime": "2020-6-10"
+  }
+]

@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>乐码在线智慧平台-班级列表</title>
+    <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
+    <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
+
+    <link rel="shortcut icon" href="../../static/favicon.ico">
+    <link href="../../static/css/bootstrap.min.css?v=3.3.6" th:href="@{/static/css/bootstrap.min.css(v='3.3.6')}"
+          rel="stylesheet">
+    <link href="../../static/css/font-awesome.css?v=4.4.0" th:href="@{/static/css/font-awesome.css(v='4.4.0')}"
+          rel="stylesheet">
+    <link href="../../static/css/plugins/bootstrap-table/bootstrap-table.min.css"
+          th:href="@{/static/css/plugins/bootstrap-table/bootstrap-table.min.css}" rel="stylesheet">
+    <link href="../../static/css/animate.css" th:href="@{/static/css/animate.css}" rel="stylesheet">
+    <link href="../../static/css/style.css?v=4.1.0" th:href="@{/static/css/style.css(v='4.1.0')}" rel="stylesheet">
+    <!-- Sweet Alert -->
+    <link href="../../static/css/plugins/sweetalert/sweetalert.css"
+          th:href="@{/static/css/plugins/sweetalert/sweetalert.css}" rel="stylesheet">
+    <!--switchery-->
+    <link href="../../static/css/plugins/switchery/switchery.css"
+          th:href="@{/static/css/plugins/switchery/switchery.css}" rel="stylesheet">
+    <!--datapicker-->
+    <link href="../../static/css/plugins/datapicker/datepicker3.css"
+          th:href="@{/static/css/plugins/datapicker/datepicker3.css}" rel="stylesheet">
+    <style type="text/css">
+        .table>thead>tr>th{
+            color: #2a62bc;
+        }
+    </style>
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <form class="form-inline" style="margin:10px 1px">
+        <div class="pull-left">
+            <input type="hidden" name="classId">
+            <div class="form-group">
+                <input type="text" class="form-control" id="clazz_number" placeholder="班级编号">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" id="clazz_name" placeholder="班级名称">
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <input type="text" class="form-control org" placeholder="所属机构" id="org-search">
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <input type="text" class="form-control branch" placeholder="所属分支" id="branch-search">
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <input type="text" class="form-control direction" placeholder="专业方向" id="profession-search">
+                    <input type="hidden" id="profession-search-id">
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <input type="button" class="btn btn-primary btn-sm" value="查询" id="queryBtn"/>
+        </div>
+        <div class="pull-right" style="margin-left: 1px;margin-top: 3px">
+            <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#add">添加</a>
+            <button class="btn btn-danger btn-sm" id="deleteAll">删除</button>
+        </div>
+    </form>
+
+    <div style="margin-top: 60px">
+        <table id="tb_class"></table>
+    </div>
+</div>
+<!--更新班级模态框-->
+<div class="modal fade" id="update" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close" data-dismiss="modal">&times;</span>
+                <h3 class="modal-title">更新</h3>
+            </div>
+
+            <div class="modal-body" style="min-height: 400px;margin-top: 20px">
+                <form action="#" class="form-horizontal" method="post" name="updateClazzForm">
+                    <input type="hidden" name="id">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label right">班级编号：</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" name="classNumber">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label right">班级名称：</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" name="className">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label right">所属机构：</label>
+                        <div class="col-sm-7">
+                            <div class="input-group">
+                                <input type="text" class="form-control org" id="org_update" name="instituteName">
+                                <div class="input-group-btn" style="z-index:99999!important;">
+                                    <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label right">所属分支：</label>
+                        <div class="col-sm-7">
+                            <div class="input-group">
+                                <input type="text" class="form-control branch" id="branch_update" name="branchName">
+                                <div class="input-group-btn" style="z-index:99998!important;">
+                                    <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label right">专业方向：</label>
+                        <div class="col-sm-7">
+                            <div class="input-group">
+                                <input type="text" class="form-control direction" id="profession_update" name="professionName">
+                                <div class="input-group-btn" style="z-index:99997!important;">
+                                    <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label right">设置方案：</label>
+                        <div class="col-sm-7">
+                            <div class="input-group">
+                                <input type="text" class="form-control scheme" name="planManagerName">
+                                <div class="input-group-btn" style="z-index:99996!important;">
+                                    <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label right">分配教师：</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" name="teacherName">
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin:10px 30px">
+                        <table class="t_clazz" id="table_update"></table>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label right">时间范围：</label>
+                        <div class="col-sm-7">
+                            <div class="radio i-checks">
+                                <div class="input-daterange input-group datepicker"
+                                     style="z-index:99995!important;">
+                                    <input type="text" class="input-sm form-control" name="startTime"/>
+                                    <span class="input-group-addon">到</span>
+                                    <input type="text" class="input-sm form-control" name="endTime"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label right">班级介绍：</label>
+                        <div class="col-sm-7">
+                            <textarea class="form-control" type="text" placeholder="乐码学院，JavaEE企业级开发人才培养。" name="classDesc"></textarea>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-dismiss="modal">关闭</button>
+                <button class="btn btn-primary" id="update_sure">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--添加班级模态框-->
+<div class="modal fade" id="add" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close" data-dismiss="modal">&times;</span>
+                <h3 class="modal-title">添加</h3>
+            </div>
+
+            <div class="modal-body" style="min-height: 400px;margin-top: 20px">
+                <form action="#" class="form-horizontal" method="post" name="saveClazzForm">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label right">班级编号：</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" name="classNumber">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label right">班级名称：</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" name="className">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label right">所属机构：</label>
+                        <div class="col-sm-7">
+                            <div class="input-group">
+                                <input type="text" class="form-control org" id="org_save" name="instituteName">
+                                <div class="input-group-btn" style="z-index:99999!important;">
+                                    <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label right">所属分支：</label>
+                        <div class="col-sm-7">
+                            <div class="input-group">
+                                <input type="text" class="form-control branch" id="branch_save" name="branchName">
+                                <div class="input-group-btn" style="z-index:99998!important;">
+                                    <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label right">专业方向：</label>
+                        <div class="col-sm-7">
+                            <div class="input-group">
+                                <input type="text" class="form-control direction" id="profession_save" name="professionName">
+                                <div class="input-group-btn" style="z-index:99997!important;">
+                                    <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label right">设置方案：</label>
+                        <div class="col-sm-7">
+                            <div class="input-group">
+                                <input type="text" class="form-control scheme" name="planManagerName">
+                                <div class="input-group-btn" style="z-index:99996!important;">
+                                    <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label right">分配教师：</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" name="teacherName">
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin:10px 30px">
+                        <table class="t_clazz" id="table_add"></table>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label right">时间范围：</label>
+                        <div class="col-sm-7">
+                            <div class="radio i-checks">
+                                <div class="input-daterange input-group datepicker"
+                                     style="z-index:99995!important;">
+                                    <input type="text" class="input-sm form-control" name="startTime"/>
+                                    <span class="input-group-addon">到</span>
+                                    <input type="text" class="input-sm form-control" name="endTime"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">是否启用：</label>
+                        <div class="col-sm-7">
+                            <select class="form-control m-b" name="classStatus">
+                                <option value="1">启用</option>
+                                <option value="0">不启用</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label right">班级介绍：</label>
+                        <div class="col-sm-7">
+                            <textarea class="form-control" type="text" placeholder="乐码学院，JavaEE企业级开发人才培养。" name="classDesc"></textarea>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-dismiss="modal">关闭</button>
+                <button class="btn btn-primary" id="add_sure">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--学员模态框-->
+<div class="modal fade bs-example-modal-lg" id="stu" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close" data-dismiss="modal">&times;</span>
+                <h3 class="modal-title">学员管理</h3>
+
+            </div>
+
+            <div class="modal-body" style="min-height: 400px;margin-top: 20px">
+                <form class="form-inline" style="margin:15px 5px">
+                    <div class="form-group">
+                        <label>学号:</label>
+                        <input type="text" class="form-control" id="stu_number">
+                    </div>
+                    <div class="form-group">
+                        <label>姓名:</label>
+                        <input type="text" class="form-control" id="stu_name">
+                    </div>
+                    <input type="button" class="btn btn-primary" value="查询" id="stu_search">
+                    <div class="pull-right">
+                        <a class='btn btn-info' data-toggle="modal" data-target="#stu_import">批量导入学员</a>
+                        <button class="btn btn-danger" id="stu_delete">删除</button>
+                    </div>
+                </form>
+                <div>
+                    <table class="stu"></table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-dismiss="modal">关闭</button>
+                <button class="btn btn-primary" id="stu_sure" data-dismiss="modal">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--学员批量导入模态框-->
+<div class="modal fade" id="stu_import" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close" data-dismiss="modal">&times;</span>
+                <h3 class="modal-title">批量导入</h3>
+            </div>
+
+            <div class="modal-body" style="min-height: 140px;margin-top: 20px">
+                <form class="form-horizontal" style="margin:15px 5px" id="file_upload">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label right">选择文件：</label>
+                        <div class="col-sm-7">
+                            <input type="file" name="stu_file">
+                        </div>
+                    </div>
+                </form>
+                <div>
+                    <label class="col-sm-3" style="text-align: center;padding-right:0px">模板下载:</label>
+                    <button type="button" class="btn btn-white" title="点我下载xlsx模板" name="downloadTemplate">下载模板</button>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-dismiss="modal">关闭</button>
+                <button class="btn btn-primary" id="stu_upload_sure">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--资源管理模态框-->
+<div class="modal fade bs-example-modal-lg" id="stu_res" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close" data-dismiss="modal">&times;</span>
+                <h3 class="modal-title">资源管理</h3>
+            </div>
+
+            <div class="modal-body" style="min-height: 400px">
+                <div class="pull-left">
+                    <form class="form-inline" style="margin:5px 5px">
+                        <div class="form-group">
+                            <label>资源名称:</label>
+                            <input type="text" class="form-control" id="res_name">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-5"
+                                   style="margin-top: 25px;margin-right: 0px;padding: 0px ;float: left">&nbsp;&nbsp;&nbsp; 资源类型：</label>
+                            <div class="col-sm-3" style="margin-left: -20px;margin-top: 15px;float: left;">
+                                <select class="form-control m-b" name="res_type" id="res_type">
+                                    <option value="1">全部资源</option>
+                                    <option value="2">公共资源</option>
+                                    <option value="3">课程资源</option>
+                                    <option value="4">私有资源</option>
+                                </select>
+                            </div>
+                        </div>
+                        <input type="hidden" name="typeId">
+                        <input type="button" class="btn btn-primary" value="查询" id="res_search">
+                    </form>
+                </div>
+                <div class="pull-right" style="margin-top:18px;margin-right: 15px">
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#res_add">新增</button>
+                    <button class="btn btn-danger" id="res_delete">删除</button>
+                </div>
+                <div>
+                    <table class="res" id="resource_table"></table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-dismiss="modal">关闭</button>
+                <button class="btn btn-primary" id="res_sure">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--添加资源管理模态框-->
+<div class="modal fade bs-example-modal-lg" id="res_add" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close" data-dismiss="modal">&times;</span>
+                <h3 class="modal-title">添加资源</h3>
+            </div>
+
+            <div class="modal-body" style="min-height: 400px">
+                <div class="pull-left">
+                    <form class="form-inline" style="margin:10px 5px">
+                        <div class="form-group">
+                            <label>名称:</label>
+                            <input type="text" class="form-control" id="res_add_name">
+                        </div>
+                        <div class="form-group">
+                            <label>文件类型：</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control file_type" id="res_add_type">
+                                <div class="input-group-btn" style="z-index:99999!important;">
+                                    <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>时间范围：</label>
+                            <div class="radio i-checks">
+                                <div class="input-daterange input-group datepicker"
+                                     style="z-index:99995!important;">
+                                    <input type="text" class="input-sm form-control" name="start"/>
+                                    <span class="input-group-addon">到</span>
+                                    <input type="text" class="input-sm form-control" name="end"/>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="button" class="btn btn-primary" value="查询" id="res_add_search">
+                        <button type="button" class="btn btn-primary pull-right" id="res_add_selected">批量分配</button>
+                    </form>
+                </div>
+                <div>
+                    <table class="res_add"></table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-dismiss="modal">关闭</button>
+                <button class="btn btn-primary" id="res_add_sure">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 全局js -->
+<script src="../../static/js/jquery.min.js?v=2.1.4" th:src="@{/static/js/jquery.min.js(v='2.1.4')}"></script>
+<script src="../../static/js/bootstrap.min.js?v=3.3.6" th:src="@{/static/js/bootstrap.min.js(v='3.3.6')}"></script>
+<!-- 自定义js -->
+<script src="../../static/js/content.js?v=1.0.0" th:src="@{/static/js/content.js(v='1.0.0')}"></script>
+
+<!-- Bootstrap table -->
+<script src="../../static/js/plugins/bootstrap-table/bootstrap-table.min.js"
+        th:src="@{/static/js/plugins/bootstrap-table/bootstrap-table.min.js}"></script>
+<script src="../../static/js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"
+        th:src="@{/static/js/plugins/bootstrap-table/bootstrap-table-mobile.min.js}"></script>
+<script src="../../static/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"
+        th:src="@{/static/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js}"></script>
+<!--动态搜索-->
+<script src="../../static/js/plugins/suggest/bootstrap-suggest.min.js"
+        th:src="@{/static/js/plugins/suggest/bootstrap-suggest.min.js}"></script>
+<!-- Sweet alert -->
+<script src="../../static/js/plugins/sweetalert/sweetalert.min.js"
+        th:src="@{/static/js/plugins/sweetalert/sweetalert.min.js}"></script>
+<!-- Switchery -->
+<script src="../../static/js/plugins/switchery/switchery.js"
+        th:src="@{/static/js/plugins/switchery/switchery.js}"></script>
+<!-- Data picker -->
+<script src="../../static/js/plugins/datapicker/bootstrap-datepicker.js"
+        th:src="@{/static/js/plugins/datapicker/bootstrap-datepicker.js}"></script>
+<script src="../../static/js/plugins/datapicker/bootstrap-datepicker.zh-CN.min.js"
+        th:src="@{/static/js/plugins/datapicker/bootstrap-datepicker.zh-CN.min.js}"></script>
+<!-- Peity -->
+<!--<script src="../../static/js/demo/bootstrap-table-demo.js"></script>-->
+<script>
+    $(function () {
+        //初始化表格主表格
+        var init = new initdata();
+        init.Init('/owep/clazz/allClazz');
+
+        var courses = new courseData();
+        var a = courses.Init("",".t_clazz");
+        //点击按钮开始搜索
+        $("#queryBtn").click(function () {
+            let number = $("#clazz_number").val();
+            let name = $("#clazz_name").val();
+            let org = $("#org-search").val();
+            let branch = $("#branch-search").val();
+            let profession = $("#profession-search").val();
+            let professionId = $("#profession-search-id").val();
+            //判断条件是否存在
+            if (number == "" && name == "" && org == "" && branch == "" && profession =="") {
+                alert("请选择查询条件");
+                return;
+            }
+            //执行查询
+            init.Init('/owep/clazz/findClassByKeyword?classNumber=' + number + '&className=' + name +
+                        '&instituteName=' + org + '&instituteBranchName=' + branch + '&profession=' + profession);
+            //$("#tb_class").bootstrapTable('refresh');
+        });
+        //主表删除所有
+        $('#deleteAll').click(function () {
+            // 删除按钮事件
+            if (!confirm("是否确认删除？"))
+                return;
+            var rows = $("#tb_class").bootstrapTable('getSelections');// 获得要删除的数据
+            if (rows.length == 0) {// rows 主要是为了判断是否选中，下面的else内容才是主要
+                alert("请先选择要删除的记录!");
+                return;
+            } else {
+                var ids = new Array();// 声明一个数组 该数组将要存放所有选择的id
+                $(rows).each(function () {// 通过获得别选中的来进行遍历
+                    ids.push(this.id);// cid为获得到的整条数据中的一列
+                });
+                var idList=JSON.stringify(ids);
+                //TODO 发送ajax请求
+                $.ajax({
+                    url:"/owep/clazz/deleteSelectClazz",
+                    method:"POST",
+                    async:true,
+                    data:idList,
+                    dataType:"text",
+                    contentType:"application/json",
+                    processData:false,
+                    success:function (data) {
+                        alert(data);
+                        window.location.reload();
+                    },
+                    error:function(jqXHR){
+                        alert("删除失败");
+                    }
+                });
+            }
+        });
+        //主表动态搜索选择下拉框
+        /*testdataBsSuggest1;
+        testdataBsSuggest2;
+        testdataBsSuggest3;*/
+        //添加事件
+        $('#add_sure').click(function () {
+            //获取表单数据
+            var form = document.forms["saveClazzForm"];
+            var formData = new FormData(form);
+            //AJAX去提交表单数据
+            $.ajax({
+                url:"/owep/clazz/saveClazz",
+                method:"POST",
+                async:true,
+                data:formData,  //综合表单，使用formData来封装，不能用Serializable，否则无法提交
+                dataType:"text",
+                contentType:false,
+                processData:false,
+                success:function(data){
+                    console.log("data: " + data);
+                    if (data === "teacherNotExist") {
+                        swal("添加失败！", "教师不存在", "error");
+                    } else if (data === "error") {
+                        swal("添加失败！", "服务器内部错误，请联系开发人员", "error");
+                    } else {
+                        window.location.reload();
+                    }
+                },
+                error:function(jqXHR){
+                    alert("添加失败");
+                }
+            });
+        });
+        //更新时间
+        $('#update_sure').click(function () {
+            //获取表单数据
+            var form = document.forms["updateClazzForm"];
+            var formData = new FormData(form);
+            //AJAX去提交表单数据
+            $.ajax({
+                url:"/owep/clazz/updateClazz",
+                method:"POST",
+                async:true,
+                data:formData,  //综合表单，使用formData来封装，不能用Serializable，否则无法提交
+                dataType:"text",
+                contentType:false,
+                processData:false,
+                success:function(data){
+                    if (data === "teacherNotExist") {
+                        swal("更新失败！", "教师不存在", "error");
+                    } else if (data === "error") {
+                        swal("更新失败！", "服务器内部错误，请联系开发人员", "error");
+                    } else {
+                        swal("更新成功！", "", "success");
+                        $("#tb_class").bootstrapTable("refresh");
+                    }
+                },
+                error:function(jqXHR){
+                    alert("更新失败");
+                }
+            });
+        });
+        //日期
+        $(".datepicker :input").datepicker({
+            autoclose: true,
+            todayHighlight: true,
+            language: "zh-CN",
+            format: "yyyy-mm-dd",
+            startView: 1,
+            minView: 1
+        });
+        /*********************************学员管理******************************************/
+        //当学员模态框弹出之后 初始化学员管理的表格
+        $('#stu').on('show.bs.modal', function () {
+            // 调用方法...
+            stuMang('/owep/clazz/findStudentByClassId?id=' + $("input[name='classId']").val());
+        });
+        //学员管理里面的删除所有
+        $('#stu_delete').click(function () {
+            // 删除按钮事件
+            if (!confirm("是否确认删除？"))
+                return;
+            var rows = $(".stu").bootstrapTable('getSelections');// 获得要删除的数据
+            if (rows.length == 0) {// rows 主要是为了判断是否选中，下面的else内容才是主要
+                alert("请先选择要删除的记录!");
+                return;
+            } else {
+                var ids = new Array();// 声明一个数组 该数组将要存放所有选择的id
+                $(rows).each(function () {// 通过获得别选中的来进行遍历
+                    ids.push(this.id);// cid为获得到的整条数据中的一列
+                });
+                var idList=JSON.stringify(ids);
+                //TODO 发送ajax请求
+                $.ajax({
+                    url:"/owep/clazz/deleteSelectStudent",
+                    method:"POST",
+                    async:true,
+                    data:idList,
+                    dataType:"text",
+                    contentType:"application/json",
+                    processData:false,
+                    success:function (data) {
+                        //alert(data);
+                        $(".stu").bootstrapTable('refresh');
+                    },
+                    error:function(jqXHR){
+                        alert("删除失败");
+                    }
+                });
+            }
+        });
+        /*学员管理查询按钮*/
+        $('#stu_search').click(function () {
+            let class_id = $("input[name='classId']").val();
+            let stu_number = $("#stu_number").val();
+            let stu_name = $("#stu_name").val();
+            //判断条件是否存在
+            if (stu_number == "" && stu_name == "") {
+                alert("请选择查询条件");
+                return;
+            }else {
+                stuMang("/owep/clazz/findStudentByKeyword?id=" + class_id + "&studentNumber=" + stu_number + "&studentName=" + stu_name);
+            }
+
+        });
+        /************************学员批量导入********************************/
+        // 当点击'确定'按钮时触发
+        $("#stu_upload_sure").click(function () {
+            // 创建一个FormData对象，通过ID获取'file_upload'表单的数据
+            let class_id = $("input[name='classId']").val();
+            console.log("classId: " + class_id);
+            var formData = new FormData(document.getElementById("file_upload"));
+            formData.append('classId', class_id); // 添加classId到formData
+            // 检查文件输入是否已选择了文件
+            let fileInputValue = $("input[name='stu_file']").val();
+            if (fileInputValue == "") {
+                alert("请先选择文件");
+                return;
+            }
+
+            // 向服务器发送AJAX请求
+            $.ajax({
+                url: '/owep/clazz/import', // 后端处理上传的完整URL
+                type: 'POST',
+                data: formData,
+                contentType: false, // 由于是文件上传，这个设置为false
+                processData: false, // 由于是文件上传，这个也要设置为false
+                success: function(response) {
+                    // 文件上传成功后的操作，您可能需要解析响应的JSON数据
+                    alert("文件上传成功: " + response);
+                    $(".stu").bootstrapTable('refresh');
+                },
+                error: function(xhr, status, error) {
+                    // 如果发生错误，弹出状态码和后端返回的错误消息
+                    var errorMsg = xhr.status + ": " + xhr.responseText;
+                    alert("文件上传失败: " + errorMsg);
+                }
+            });
+        });
+
+        // 绑定'下载模板'按钮的点击事件
+        $("button[name='downloadTemplate']").click(function () {
+            window.location.href = '/owep/clazz/download-template';
+        });
+
+        /***********资源管理************/
+        //当资源管理模态框弹出之后 初始化表格
+        $('#stu_res').on('show.bs.modal', function () {
+            // 执行一些动作...
+            res('/owep/clazz/findResourceByClassId?classId='+$("input[name='classId']").val());
+        });
+        //资源管理里面的删除所有
+        $('#res_delete').click(function () {
+            // 删除按钮事件
+            if (!confirm("是否确认删除？"))
+                return;
+            var rows = $(".res").bootstrapTable('getSelections');// 获得要删除的数据
+            if (rows.length == 0) {// rows 主要是为了判断是否选中，下面的else内容才是主要
+                alert("请先选择要删除的记录!");
+                return;
+            } else {
+                var ids = new Array();// 声明一个数组 该数组将要存放所有选择的id
+                $(rows).each(function () {// 通过获得别选中的来进行遍历
+                    ids.push(this.id);// cid为获得到的整条数据中的一列
+                });
+                //TODO 发送ajax请求
+                var idList=JSON.stringify(ids);
+                $.ajax({
+                    url:"/owep/clazz/deleteSelectResourceFromClass?cid=" + $("input[name='classId']").val(),
+                    method:"POST",
+                    async:true,
+                    data:idList,
+                    dataType:"text",
+                    contentType:"application/json",
+                    processData:false,
+                    success:function (data) {
+                        alert(data);
+                        $("#resource_table").bootstrapTable('refresh');
+                    },
+                    error:function(jqXHR){
+                        alert("删除失败");
+                    }
+                });
+            }
+        });
+        /*学员管理查询按钮*/
+        $('#res_search').click(function () {
+            let class_id = $("input[name='classId']").val();
+            let res_name = $("#res_name").val();
+            let res_type = $("#res_type").val();
+            //判断条件是否存在
+            if (res_name == "" && res_type == "") {
+                alert("请填写查询条件");
+                return;
+            }
+            res("/owep/clazz/findResourceByKeyword?classId=" + class_id + "&resourceName=" + res_name + "&resourceType=" + res_type);
+        });
+        /*****************添加资源**************************/
+        //当资源管理模态框弹出之后 初始化表格
+        $('#res_add').on('show.bs.modal', function () {
+            // 执行一些动作...
+            res_add('/owep/clazz/getAllResource');
+        });
+        //学员管理里面的删除所有
+        $('#res_add_selected').click(function () {
+            // 删除按钮事件
+            var rows = $(".res_add").bootstrapTable('getSelections');// 获得要删除的数据
+            if (rows.length == 0) {// rows 主要是为了判断是否选中，下面的else内容才是主要
+                alert("请先选择要分配的记录!");
+                return;
+            } else {
+                var ids = new Array();// 声明一个数组 该数组将要存放所有选择的id
+                $(rows).each(function () {// 通过获得别选中的来进行遍历
+                    ids.push(this.id);// cid为获得到的整条数据中的一列
+                });
+                var idList=JSON.stringify(ids);
+                $.ajax({
+                    url:"/owep/clazz/insertSelectedResourceToClass?cid=" + $("input[name='classId']").val(),
+                    method:"POST",
+                    async:true,
+                    data:idList,
+                    dataType:"text",
+                    contentType:"application/json",
+                    processData:false,
+                    success:function (data) {
+                        if (data === "success") {
+                            swal("分配成功！", "您已经成功分配了所选信息", "success");
+                            $("#resource_table").bootstrapTable('refresh');
+                        } else {
+                            alert("分配失败");
+                        }
+                    },
+                    error:function(jqXHR){
+                        alert("分配失败");
+                    }
+                });
+            }
+        });
+        /*学员管理查询按钮*/
+        $('#res_add_search').click(function () {
+            let res_add_name = $("#res_add_name").val();
+            //文件类型
+            let res_add_type = $("#res_add_type").val();
+            //开始时间，拿到input标签的name值为start的值
+            let start = $("input[name='start']").val();
+            //结束时间，拿到input标签的name值为end的值
+            let end = $("input[name='end']").val();
+            //判断条件是否存在
+            if (res_add_name == "" && res_add_type == "" && start == "" && end == "") {
+                alert("请填写查询条件");
+                return;
+            }
+            res_add("/owep/clazz/findAllResourceByKeyword?resourceName=" + res_add_name + "&resourceType=" + res_add_type +
+                    "&startTime=" + start + "&endTime=" + end);
+        });
+
+    });
+
+
+    /***************以下是一些数据和函数 都在上面调用********************/
+    //查找班级选项
+    var testdataBsSuggest1 = $("#org-search").bsSuggest({
+        url:"/owep/clazz/getAllInstitute",
+        idField:"instituteId",
+        keyField:"instituteName",
+        effectiveFields: ["instituteName"],
+    }).on('onSetSelectValue',function (e,keyword) {
+        $("#branch-search").bsSuggest("destroy");
+        $("#branch-search").bsSuggest({
+            url: "/owep/clazz/getBranchByInstitute?id=" + keyword.id,
+            idField: "branchId",
+            keyField: "branchName",
+            effectiveFields: ["branchName"],
+        }).on('onSetSelectValue',function () {
+            $("#profession-search").bsSuggest("destroy");
+            $("#profession-search").bsSuggest({
+                url: "/owep/clazz/getProfession?instituteName=" + $("#org-search").val() + "&instituteBranchName=" + $("#branch-search").val(),
+                idField: "id",
+                keyField: "profName",
+                effectiveFields: ["profName"],
+            }).on('onSetSelectValue',function (e,keyword) {
+                $("#profession-search-id").val(keyword.id);
+            })
+        })
+        });
+
+    //更新班级选项
+    var testdataBsSuggest2 = $("#org_update").bsSuggest({
+        url:"/owep/clazz/getAllInstitute",
+        idField:"instituteId",
+        keyField:"instituteName",
+        effectiveFields: ["instituteName"],
+    }).on('onSetSelectValue',function (e,keyword) {
+        $("#branch_update").bsSuggest("destroy");
+        $("#branch_update").bsSuggest({
+            url: "/owep/clazz/getBranchByInstitute?id=" + keyword.id,
+            idField: "branchId",
+            keyField: "branchName",
+            effectiveFields: ["branchName"],
+        }).on('onSetSelectValue',function () {
+            $("#profession_update").bsSuggest("destroy");
+            $("#profession_update").bsSuggest({
+                url: "/owep/clazz/getProfession?instituteName=" + $("#org_update").val() + "&instituteBranchName=" + $("#branch_update").val(),
+                idField: "id",
+                keyField: "profName",
+                effectiveFields: ["profName"],
+            })
+        })
+    });
+
+    //添加班级选项
+    var testdataBsSuggest3 = $("#org_save").bsSuggest({
+        url:"/owep/clazz/getAllInstitute",
+        idField:"instituteId",
+        keyField:"instituteName",
+        effectiveFields: ["instituteName"],
+    }).on('onSetSelectValue',function (e,keyword) {
+        $("#branch_save").bsSuggest("destroy");
+        $("#branch_save").bsSuggest({
+            url: "/owep/clazz/getBranchByInstitute?id=" + keyword.id,
+            idField: "branchId",
+            keyField: "branchName",
+            effectiveFields: ["branchName"],
+        }).on('onSetSelectValue',function () {
+            $("#profession_save").bsSuggest("destroy");
+            $("#profession_save").bsSuggest({
+                url: "/owep/clazz/getProfession?instituteName=" + $("#org_save").val() + "&instituteBranchName=" + $("#branch_save").val(),
+                idField: "id",
+                keyField: "profName",
+                effectiveFields: ["profName"],
+            })
+        })
+    });
+
+    var testdataBsSuggest4 = $("form[name='saveClazzForm'] input[name='planManagerName']").bsSuggest({
+        url:"/owep/clazz/findAllPlanManager",
+        idField:"id",
+        keyField:"planName",
+        effectiveFields: ["planName"],
+    }).on('onSetSelectValue',function (e,keyword) {
+        var courses = new courseData();
+        courses.Init(keyword.id,"#table_add");
+    });
+
+    var testdataBsSuggest5 = $("form[name='updateClazzForm'] input[name='planManagerName']").bsSuggest({
+        url:"/owep/clazz/findAllPlanManager",
+        idField:"id",
+        keyField:"planName",
+        effectiveFields: ["planName"],
+    }).on('onSetSelectValue',function (e,keyword) {
+        var courses = new courseData();
+        courses.Init(keyword.id,"#table_update");
+    });
+
+        /*主表格*/
+        var initdata = function () {
+            var init = new Object();
+            init.Init = function (url) {
+                //加载之前先格式化 放在查询的时候起冲突
+                $("#tb_class").bootstrapTable('destroy');
+                $("#tb_class").bootstrapTable({
+                    url: url,
+                    method: 'get',
+                    striped: true,  //是否显示行间隔色
+                    cache: false, //是否使用缓存
+                    pagination: true, //是否分页
+                    pageSize: 5,  //每页记录行数
+                    uniqueId: 'id',  //唯一id
+                    pageList: [5, 10, 20],
+                    queryParams: init.queryParams, // 传递参数
+                    onLoadSuccess: check,  //页面加载成功执行方法
+                    onPageChange: check,   //页面发送改变执行的方法
+                    columns: [{
+                        field: "coo",
+                        checkbox: true,
+                    }, {
+                        field: 'id',
+                        title: "id",
+                        visible: false //隐藏 让该字段不可见 为了后面更新和删除做准备
+                    }, {
+                        field: 'classNumber',
+                        title: "班级编号",
+                        align: "center",
+                    }, {
+                        field: 'className',
+                        title: "班级名称",
+                        align: "center",
+                    }, {
+                        field: 'profession.profName',
+                        title: "专业方向",
+                        align: "center",
+                    }, {
+                        field: 'instituteName',
+                        title: "所属机构",
+                        align: "center",
+                    }, {
+                        field: 'branchName',
+                        title: "所属分支",
+                        align: "center",
+                    }, {
+                        field: 'startTime',
+                        title: "开始时间",
+                        align: "center",
+                    }, {
+                        field: 'endTime',
+                        title: "结束时间",
+                        align: "center",
+                    }, {
+                        field: 'classStatus',
+                        title: "是否启用",
+                        align: "center",
+                        formatter: addSlideChoiceBox
+                    }, {
+                        field: 'operator',
+                        title: "操作",
+                        align: "center",
+                        valign: "middle",
+                        formatter: actionFormatter, //方法调用
+                        events: {
+                            'click button[title=修改]': function (e, value, row, index) {
+                                $.ajax({
+                                    //发送AJAX请求·
+                                    url:"/owep/clazz/toUpdateClazz?id="+row.id,
+                                    method:"GET",
+                                    async:true,
+                                    dataType:"json",  //拿到json
+                                    success:function (clazzJson) {
+                                        console.log(clazzJson.planManagerList);
+                                        //alert(clazzJson.planManagerList[0].id);
+                                        //把返回的json对象添加到弹出层的更新表单域中
+                                        $("form[name='updateClazzForm'] input[name='id']").val(clazzJson.id);
+                                        $("form[name='updateClazzForm'] input[name='classNumber']").val(clazzJson.classNumber);
+                                        $("form[name='updateClazzForm'] input[name='className']").val(clazzJson.className);
+                                        $("form[name='updateClazzForm'] input[name='instituteName']").val(clazzJson.instituteName);
+                                        $("form[name='updateClazzForm'] input[name='branchName']").val(clazzJson.branchName);
+                                        $("form[name='updateClazzForm'] input[name='professionName']").val(clazzJson.profession.profName);
+                                        $("form[name='updateClazzForm'] input[name='planManagerName']").val(clazzJson.planManagerList[0].planName);
+                                        if (clazzJson.planManagerList[0].id != null) {
+                                            console.log("id不为空");
+                                            var courses = new courseData();
+                                            courses.Init(clazzJson.planManagerList[0].id,"#table_update");
+                                        } else {
+                                            var courses = new courseData();
+                                            courses.Init("","#table_update");
+                                        }
+                                        $("form[name='updateClazzForm'] input[name='teacherName']").val(clazzJson.teacherName);
+                                        $("form[name='updateClazzForm'] input[name='startTime']").val(clazzJson.startTime);
+                                        $("form[name='updateClazzForm'] input[name='endTime']").val(clazzJson.endTime);
+                                        $("form[name='updateClazzForm'] textarea[name='classDesc']").val(clazzJson.classDesc);
+                                    },
+                                    error:function(jqXHR){
+                                        alert("获取数据失败");
+                                        //重新加载页面
+                                        window.location.reload();
+                                    }
+                                });
+                            },
+                            'click button[title=删除]': function (e, value, row, index) {
+                                // console.log(row.id);
+                                swal({
+                                    title: "您确定要删除这条信息吗",
+                                    text: "删除后将无法恢复，请谨慎操作！",
+                                    type: "warning",
+                                    showCancelButton: true,
+                                    confirmButtonColor: "#DD6B55",
+                                    confirmButtonText: "删除",
+                                    closeOnConfirm: false
+                                }, function () {
+                                    //TODO 发送ajax请求
+                                    $.ajax({
+                                        //发送AJAX请求
+                                        url: "/owep/clazz/deleteClazz?id=" + row.id,
+                                        method: "GET",
+                                        async: true,
+                                        dataType: "text",
+                                        success: function (data) {
+                                            if (data == "success") {
+                                                swal("删除成功！", "您已经永久删除了这条信息。", "success");
+                                            } else {
+                                                alert("删除失败");
+                                            }
+                                            window.location.reload();
+                                        },
+                                        error: function (jqXHR) {
+                                            alert("删除失败");
+                                        }
+
+                                    });
+                                });
+                            },
+                            'click button[title=学生管理]':function (e,value,row,index) {
+                                $("input[name='classId']").val(row.id);
+                                /*stuMang('/owep/clazz/findStudentByClassId?id=' + $("input[name='classId']").val());*/
+                            },
+                            'click button[title=学生批量导入]':function (e,value,row,index) {
+                                $("input[name='classId']").val(row.id);
+                            },
+                            'click button[title=资源管理]':function (e,value,row,index) {
+                                $("input[name='classId']").val(row.id);
+                                /*res('/owep/clazz/findResourceByClassId?classId='+row.id);*/
+                                /*res("/owep/static/js/clazz/res.json");*/
+                            },
+                        }
+                    }]
+
+                });
+            };
+            init.queryParams = function (params) {
+                console.log(params);
+                console.log($('#name').val());
+                return {
+                    offset: params.offset,//从数据库第几条记录开始
+                    limit: params.limit,//找多少条
+                    name: $("#name").val(),
+                    org: $("#org").val(),
+                    branch: $("#branch").val()
+                };
+            };
+
+            //是否启用按钮
+            function addSlideChoiceBox(value, row) {
+                var check = "checked";
+                //判断状态
+                if (row.classStatus == 0) {
+                    check = "";
+                }
+                return "<input type=\"checkbox\" class=\"js-switch-1 form-control\"" + check + "/>"
+            };
+
+            function check(data) {
+                /*初始化滑动按钮*/
+                $(".js-switch-1").each(function (index, elements) {
+                    new Switchery(elements);
+                    //监听按钮点击事件
+                    $(elements).on("change", function () {
+                        //TODO 发送ajax请求s
+                        //获取滑动按钮爷级元素tr里面data-index的值
+                        // let index = $(elements).parent().parent().attr("data-index");
+                        let index = $(elements).parents("tr").attr("data-index");
+                        //获取id
+                        let id = data[index].id;
+                        console.log(id);
+                        $.ajax({
+                            //发送AJAX请求
+                            url: "/owep/clazz/clazzTrigger?id=" + id + "&check=" + elements.checked,
+                            method: "GET",
+                            async: true,
+                            dataType: "text",
+                            success: function (data) {
+                                swal("班级状态同步成功！", "", "success");
+                            },
+                            error: function (jqXHR) {
+                                alert("操作失败");
+                            }
+
+                        });
+                    })
+                })
+            };
+
+            //操作栏的格式化
+            function actionFormatter(value, row, index) {
+                var id = value;
+                var result = "";
+                // console.log(row.id);
+                // console.log(row.name+"--"+index +"--"+value);
+                result += "<button class='btn btn-primary btn-sm' title='修改' style='margin-right: 10px' data-toggle=\"modal\" data-target=\"#update\"><span class='glyphicon glyphicon-wrench'></span></button>";
+                result += "<button class='btn btn-danger btn-sm delete'  title='删除' style='margin-right: 10px'><span class='glyphicon glyphicon-trash'></span></button>";
+                result += "<button class='btn btn-primary btn-sm' title='学生管理' style='margin-right: 10px' data-toggle=\"modal\" data-target=\"#stu\"><span class='fa fa-user'></span></button>";
+                result += "<button class='btn btn-warning btn-sm' title='学生批量导入' style='margin-right: 10px' data-toggle=\"modal\" data-target=\"#stu_import\"><span class='fa fa-users'></span></button>";
+                result += "<button class='btn btn-info btn-sm' title='资源管理' style='margin-right: 10px' data-toggle=\"modal\" data-target=\"#stu_res\"><span class='fa fa-th'></span></button>";
+
+                return result;
+            };
+            return init;
+        }
+
+        var courseData = function(){
+            var init = new Object();
+            init.Init = function (planId,selectedTable) {
+                $(selectedTable).bootstrapTable('destroy')
+                $(selectedTable).bootstrapTable({
+                    url: '/owep/clazz/findAllCourseByPlan?id=' + planId,
+                    method: 'get',
+                    striped: true,  //是否显示行间隔色
+                    cache: false, //是否使用缓存
+                    pagination: true, //是否分页
+                    pageSize: 5,  //每页记录行数
+                    uniqueId: 'id',  //唯一id
+                    pageList: [5, 10, 20],
+                    queryParams: init.queryParams, // 传递参数
+                    columns: [{
+                        field: 'id',
+                        title: 'id',
+                        visible: false //隐藏 让该字段不可见 为了后面更新和删除做准备
+                    }, {
+                        field: 'courseNumber',
+                        title: '课程编号',
+                        align: "center",
+                    }, {
+                        field: 'courseName',
+                        title: '课程名称',
+                        align: "center",
+                    }]
+                });
+            };
+
+            return init;
+        }
+
+        /*添加班级里面的表格*/
+
+        /**********学员管理**********/
+        function stuMang(url) {
+            $(".stu").bootstrapTable('destroy');
+            $('.stu').bootstrapTable({
+                url: url,
+                method: 'get',
+                striped: true,  //是否显示行间隔色
+                cache: false, //是否使用缓存
+                pagination: true, //是否分页
+                pageSize: 5,  //每页记录行数
+                uniqueId: 'id',  //唯一id
+                queryParams: queryParams,
+                pageList: [5, 10, 20],
+                columns: [{
+                    checkbox: true,
+                }, {
+                    field: 'id',
+                    title: 'id',
+                    visible: false //隐藏 让该字段不可见 为了后面更新和删除做准备
+                }, {
+                    field: 'stuNumber',
+                    title: '学号',
+                }, {
+                    field: 'stuRealName',
+                    title: '姓名',
+                }, {
+                    field: 'effectiveDate',
+                    title: '有效期',
+                }, {
+                    field: 'status',
+                    title: '有效状态',
+                }]
+            });
+
+            //向服务端发送请求的参数
+            function queryParams(params) {
+                return {
+                    offset: params.offset,//从数据库第几条记录开始
+                    limit: params.limit,//找多少条
+                    stu_number: $("#stu_number").val(),
+                    stu_name: $("#stu_name").val(),
+                };
+            };
+        };
+
+        /**********资源管理**********/
+        function res(url) {
+            $("#resource_table").bootstrapTable('destroy');
+            $('#resource_table').bootstrapTable({
+                url: url,
+                method: 'get',
+                striped: true,  //是否显示行间隔色
+                cache: false, //是否使用缓存
+                pagination: true, //是否分页
+                pageSize: 5,  //每页记录行数
+                uniqueId: 'id',  //唯一id
+                queryParams: queryParams,
+                pageList: [5, 10, 20],
+                columns: [{
+                    checkbox: true,
+                }, {
+                    field: 'id',
+                    title: 'id',
+                    visible: false //隐藏 让该字段不可见 为了后面更新和删除做准备
+                }, {
+                    field: 'resourceName',
+                    title: '资源名称',
+                }, {
+                    field: 'resourceType.typeName',
+                    title: '资源类型',
+                }, {
+                    field: 'resourceSize',
+                    title: '资源大小',
+                }, {
+                    field: 'status',
+                    title: '操作',
+                    formatter: action,
+                    align: "center",
+                    events: {
+                        'click button[title=下载]': function (e, value, row, index) {
+                            window.location.href = '/owep/clazz/downloadResource/' + row.id;
+                        },
+                        'click button[title=删除]': function (e, value, row, index) {
+                            // console.log(row.id);
+                            swal({
+                                title: "您确定要删除这条信息吗",
+                                text: "删除后将无法恢复，请谨慎操作！",
+                                type: "warning",
+                                showCancelButton: true,
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "删除",
+                                closeOnConfirm: false
+                            }, function () {
+                                $.ajax({
+                                    //发送AJAX请求
+                                    url: "/owep/clazz/deleteResourceFromClass?cid=" +  $("input[name='classId']").val() + "&rid=" + row.id,
+                                    method: "GET",
+                                    async: true,
+                                    dataType: "text",
+                                    success: function (data) {
+                                        if (data == "success") {
+                                            swal("删除成功！", "您已经永久删除了这条信息。", "success");
+                                        } else {
+                                            alert("删除失败");
+                                        }
+                                        $("#resource_table").bootstrapTable('refresh');
+                                    },
+                                    error: function (jqXHR) {
+                                        alert("删除失败");
+                                    }
+
+                                });
+                            });
+                        }
+                    }
+                }],
+            });
+
+            //向服务端发送请求的参数
+            function queryParams(params) {
+                return {
+                    offset: params.offset,//从数据库第几条记录开始
+                    limit: params.limit,//找多少条
+                    res_name: $("#res_name").val(),
+                    stu_name: $("select[name='res']").val(),
+                };
+            };
+
+            function action(value, row, index) {
+                var id = value;
+                var result = "";
+                // console.log(row.id);
+                // console.log(row.name+"--"+index +"--"+value);
+                result += "<button class='btn btn-info btn-sm' title='下载' style='margin-right: 10px'><span class='glyphicon glyphicon-save'></span></button>";
+                result += "<button class='btn btn-danger btn-sm' title='删除' style='margin-right: 10px'><span class='glyphicon glyphicon-trash'></span></button>";
+                return result;
+            }
+        };
+        /************添加资源****************/
+        var testdataBsSuggest5 = $(".file_type").bsSuggest({
+            indexId: 2, //data.value 的第几个数据，作为input输入框的内容
+            indexKey: 1, //data.value 的第几个数据，作为input输入框的内容
+            //TODO 通过json显示数据
+            data: {
+                'value': [
+                    {
+                        'id': "",
+                        'word': 'docx',
+                    },
+                    {
+                        'id': "",
+                        'word': 'txt',
+                    },
+                    {
+                        'id': "",
+                        'word': 'excel',
+                    },
+                    {
+                        'id': "",
+                        'word': 'ppt',
+                    },
+                    {
+                        'id': "",
+                        'word': 'pdf',
+                    }
+                ]
+            }
+        });
+
+        function res_add(url) {
+            $(".res_add").bootstrapTable('destroy');
+            $('.res_add').bootstrapTable({
+                url: url,
+                method: 'get',
+                striped: true,  //是否显示行间隔色
+                cache: false, //是否使用缓存
+                pagination: true, //是否分页
+                pageSize: 5,  //每页记录行数
+                uniqueId: 'id',  //唯一id
+                queryParams: queryParams,
+                pageList: [5, 10, 20],
+                columns: [{
+                    checkbox: true,
+                }, {
+                    field: 'id',
+                    title: 'id',
+                    visible: false //隐藏 让该字段不可见 为了后面更新和删除做准备
+                }, {
+                    field: 'resourceName',
+                    title: '名称',
+                }, {
+                    field: 'createTime',
+                    title: '上传时间',
+                }, {
+                    field: 'resourceType.typeName',
+                    title: '分类',
+                }, {
+                    field: 'resourceSuffix',
+                    title: '类型',
+                }, {
+                    field: 'resourceSize',
+                    title: '大小(kb)',
+                }, {
+                    field: 'status',
+                    title: '操作',
+                    formatter: action,
+                    align: "center",
+                    events: {
+                        'click button[title=分配到班级]': function (e, value, row, index) {
+                            // 拿到班级id
+                            let classId = $("input[name='classId']").val();
+                            // 拿到资源id
+                            let resourceId = row.id;
+                            console.log(classId + "----" + resourceId);
+                            $.ajax({
+                                //发送AJAX请求
+                                url: "/owep/clazz/addResourceToClass?cid=" + classId + "&rid=" + resourceId,
+                                method: "GET",
+                                async: true,
+                                dataType: "text",
+                                success: function (data) {
+                                    if (data == "success") {
+                                        swal("分配成功！", "您已经成功分配了这条信息。", "success");
+                                        $("#resource_table").bootstrapTable('refresh');
+                                    } else {
+                                        alert("分配失败");
+                                    }
+                                },
+                                error: function (jqXHR) {
+                                    alert("分配失败");
+                                }
+                            });
+                        },
+                    }
+                }],
+            });
+
+            //向服务端发送请求的参数
+            function queryParams(params) {
+                return {
+                    offset: params.offset,//从数据库第几条记录开始
+                    limit: params.limit,//找多少条
+                    res_name: $("#res_name").val(),
+                    stu_name: $("select[name='res']").val(),
+                };
+            };
+
+            function action(value, row, index) {
+                var id = value;
+                var result = "";
+                // console.log(row.id);
+                // console.log(row.name+"--"+index +"--"+value);
+                result += "<button class='btn btn-info btn-sm' title='分配到班级' style='margin-right: 10px'><span class='glyphicon glyphicon-export'></span></button>";
+                return result;
+            }
+        };
+</script>
+</body>
+</html>

@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!--by qikran-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <meta name="keywords" content="菜单管理">
+    <meta name="description" content="菜单管理">
+    <title>菜单管理</title>
+    <link rel="shortcut icon" href="../../static/favicon.ico" th:href="@{/static/favicon.ico}">
+    <link href="../../static/css/bootstrap.min.css?v=3.3.6" rel="stylesheet"
+          th:href="@{/static/css/bootstrap.min.css(v=3.3.6)}">
+    <link href="../../static/css/font-awesome.css?v=4.4.0" rel="stylesheet"
+          th:href="@{/static/css/font-awesome.css(v=4.4.0)}">
+    <link href="../../static/css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet"
+          th:href="@{/static/css/plugins/bootstrap-table/bootstrap-table.min.css}">
+    <link href="../../static/css/plugins/treegrid/jquery.treegrid.css" rel="stylesheet"
+          th:href="@{/static/css/plugins/treegrid/jquery.treegrid.css}">
+    <!-- Sweet Alert -->
+    <link href="../../static/css/plugins/sweetalert/sweetalert.css" rel="stylesheet"
+          th:href="@{/static/css/plugins/sweetalert/sweetalert.css}">
+    <link href="../../static/css/animate.css" rel="stylesheet" th:href="@{/static/css/animate.css}">
+    <link href="../../static/css/style.css?v=4.1.0" rel="stylesheet" th:href="@{/static/css/style.css(v=4.1.0)}">
+    <style type="text/css">
+        .treeStyle {
+            height: 300px;
+            overflow: auto;
+            position: absolute;
+            top: 37px;
+            left: 0;
+            z-index: 4;
+            width: 85%;
+            margin: 0 0 0 15px;
+            /*     margin-left: 15px;
+                 margin-right: 17px;*/
+        }
+
+        .treeStyle::-webkit-scrollbar { /*滚动条整体样式*/
+
+            width: 2px; /*高宽分别对应横竖滚动条的尺寸*/
+
+        }
+
+        .treeStyle::-webkit-scrollbar-thumb { /*滚动条里面小方块*/
+
+            border-radius: 10px;
+
+            -webkit-box-shadow: inset 0 0 5px rgb(64, 64, 64);
+
+            background: #cbcbcb;
+
+        }
+
+        .treeStyle::-webkit-scrollbar-track { /*滚动条里面轨道*/
+
+            -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+
+            border-radius: 10px;
+            background: #EDEDED;
+
+        }
+        th{
+            color:#2a62bc;
+        }
+    </style>
+</head>
+<body class="gray-bg">
+<div class="ibox-content">
+    <div id="toolbar">
+        <button class="btn btn-success" style="margin: 5px" id="btnAdd">添加</button>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="animated fadeInRight">
+                <table id="menuListTable" class="treeStyle">
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!--添加模态窗-->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <!-- 模态框头部定义 -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">添加</h4>
+            </div>
+            <!--体部定义-->
+            <div class="modal-body">
+                <!-- 表单定义 -->
+                <form th:action="@{/privilege/menuList/addMenu}" id="addForm" method="post" class="form-horizontal">
+                    <div class="form-group  has-feedback">
+                        <label class="col-md-2 control-label">菜单名:</label>
+                        <div class="col-md-6">
+                            <input type="text" name="menuName" class="form-control">
+                        </div>
+<!--                        <div class="col-md-offset-1 col-md-2">-->
+<!--                            <label class="control-label" tip="name">添加成功</label>-->
+<!--                        </div>-->
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label ">上级菜单:</label>
+                        <div class="col-md-6">
+                            <div class="input-group"  style="width: 95%" data-tree-click="true">
+                                <input type="text" name="parentMenuId" value="" hidden=""/>
+                                <input type="text" name="parentMenu" class="form-control" readonly
+                                       placeholder="请选择菜单" aria-describedby="icon">
+                                <span class="input-group-addon" style="background-color: #eeeeee"><i
+                                        name="tree-icon_add" class="glyphicon glyphicon-chevron-left"></i></span>
+                            </div>
+                            <div hidden class="treeStyle" name="menuTree_add"></div>
+                        </div>
+                    </div>
+                    <div class="form-group  has-feedback">
+                        <label class="col-md-2 control-label ">菜单描述:</label>
+                        <div class="col-md-6">
+                            <textarea name="menuDescription" class="form-control" rows="3"></textarea>
+                        </div>
+<!--                        <div class="col-md-offset-1 col-md-2">-->
+<!--                            <label class="control-label" tip="description">添加成功</label>-->
+<!--                        </div>-->
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="submit" id="btnAddModal" class="btn btn-primary">添加</button>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!--修改模态窗-->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <!-- 模态框头部定义 -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">修改</h4>
+            </div>
+            <!--体部定义-->
+            <div class="modal-body">
+                <!-- 表单定义 -->
+                <form th:action="@{/privilege/menuList/editMenu}" id="editForm" method="post" class="form-horizontal">
+                    <input name="id" value="" th:value="menuId" hidden>
+                    <div class="form-group  has-feedback">
+                        <label class="col-md-2 control-label">菜单名:</label>
+                        <div class="col-md-6">
+                            <input type="text" name="menuName" class="form-control" value="" th:value="menuName">
+                        </div>
+                        <div class="col-md-offset-1 col-md-2">
+                            <label class="control-label" tip="name"></label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label ">上级菜单:</label>
+                        <div class="col-md-6">
+                            <div class="input-group"  style="width: 95%" data-tree-click="true">
+                                <input type="text" name="parentMenuId" value="" hidden=""/>
+                                <input type="text" name="parentMenu" class="form-control" readonly
+                                       placeholder="请选择菜单" aria-describedby="icon">
+                                <span class="input-group-addon" style="background-color: #eeeeee"><i
+                                        name="tree-icon_edit" class="glyphicon glyphicon-chevron-left"></i></span>
+                            </div>
+                            <div hidden class="treeStyle" name="menuTree_edit"></div>
+                        </div>
+                    </div>
+                    <div class="form-group  has-feedback">
+                        <label class="col-md-2 control-label ">菜单描述:</label>
+                        <div class="col-md-6">
+                            <textarea name="menuDescription" class="form-control" rows="3" value=""
+                                      th:value="menuDescription"></textarea>
+                        </div>
+                        <div class="col-md-offset-1 col-md-2">
+                            <label class="control-label" tip="description"></label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="submit" id="btnEditModal" class="btn btn-primary">保存</button>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!--分配角色模态窗-->
+<div class="modal fade" id="allocateModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <!-- 模态框头部定义 -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">分配行为</h4>
+            </div>
+            <!--体部定义-->
+            <div class="modal-body">
+                <div class="row form-horizontal">
+                    <div class="form-group  has-feedback">
+                        <label class="col-md-2 control-label">权限名称:</label>
+                        <div class="col-md-6">
+                            <div class="input-group" id="permission_SG">
+                                <input type="text" name="permissionId" value="1"  hidden>
+                                <input type="text" class="form-control" id="permissionName" name="permissionName" value="" placeholder="权限名">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-right" name="permissionList" role="menu">
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-md-offset-1 col-md-2">
+                            <label class="control-label" tip="name"></label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="menuId" value="1" th:value="menuId" hidden>
+                        <label class="col-md-2 control-label" readonly="">菜单名称:</label>
+                        <div class="col-md-6">
+                            <input type="text" name="menuName" class="form-control" style="width: 100%" readonly value="" th:value="menuName_undefined">
+                        </div>
+
+                    </div>
+                    <!--树形复选框-->
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">分配行为:</label>
+                        <div class="col-md-6">
+                            <div id="ActionNodeTree" style="overflow-y:scroll;height: 300px"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="submit" id="btnAllocateModal" class="btn btn-primary">保存</button>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<script src="../../static/js/jquery.min.js?v=2.1.4" th:src="@{/static/js/jquery.min.js(v=2.1.4)}"></script>
+<script src="../../static/js/bootstrap.min.js?v=3.3.6" th:src="@{/static/js/bootstrap.min.js(v=3.3.6)}"></script>
+<script src="../../static/js/plugins/treegrid/bootstrap-table.min.js"
+        th:src="@{/static/js/plugins/treegrid/bootstrap-table.min.js}"></script>
+<script src="../../static/js/plugins/treegrid/bootstrap-table-treegrid.min.js"
+        th:src="@{/static/js/plugins/treegrid/bootstrap-table-treegrid.min.js}"></script>
+<script src="../../static/js/plugins/treegrid/jquery.treegrid.min.js"
+        th:src="@{/static/js/plugins/treegrid/jquery.treegrid.min.js}"></script>
+<script src="../../static/js/plugins/treeview/bootstrap-treeview.min.js"
+        th:src="@{/static/js/plugins/treeview/bootstrap-treeview.min.js}"></script>
+<script src="../../static/public/privilege/menuList_treeCheckBox.js"
+        th:src="@{/static/public/privilege/menuList_treeCheckBox.js}"></script>
+<script src="../../static/js/plugins/sweetalert/sweetalert.min.js"
+        th:src="@{/static/js/plugins/sweetalert/sweetalert.min.js}"></script>
+<script src="../../static/js/plugins/suggest/bootstrap-suggest.min.js"
+        th:src="@{/static/js/plugins/suggest/bootstrap-suggest.min.js}"></script>
+<script>
+    $(function () {
+
+        let $menuListTable = $('#menuListTable');
+        $menuListTable.bootstrapTable({
+            // url: '../../static/js/demo/privilege/menuList_gridTree_test.json',
+            url:"/owep/privilege/menuList/getTable",
+            striped: true,
+            toolbar: '#toolbar',
+            toolbarAlign: "right",
+            mobileResponsive: true,
+            idField: 'id',
+            columns: [
+                {
+                    field: 'menuName',
+                    title: '菜单名称'
+
+                },
+                {
+                    field: 'menuDescription',
+                    title: '菜单描述'
+                },
+                {
+                    field: 'operate',
+                    title: '操作',
+                    width: '300',
+                    events: operateEvents,
+                    formatter: 'operateFormatter'
+                }
+
+            ],
+            //在哪一列展开树形
+            treeShowField: 'menuName',
+            //指定父id列
+            parentIdField: 'pid',
+            onResetView: function (data) {
+                $menuListTable.treegrid({
+                    //initialState: 'collapsed',// 所有节点都折叠
+                    initialState: 'expanded',// 所有节点都展开，默认展开
+                    treeColumn: 0,//指定哪列 有树形结构
+                    expanderExpandedClass: 'glyphicon glyphicon-minus',  //图标样式
+                    expanderCollapsedClass: 'glyphicon glyphicon-plus'
+                });
+            },
+
+
+        });
+
+
+        /*添加按钮事件*/
+        let $tree_add = $("div[name='menuTree_add']");
+        $("#btnAdd").click(function () {
+            initSelectTree($tree_add, null);
+            $("#addModal").modal();
+            // $("#btnAddModal").submit();//按键本身不在表单内部，用submit不管用
+        });
+
+
+        let $inputGroup =$("[data-tree-click=true]");
+        let $inputGroup_add = $inputGroup;
+        // console.log($inputGroup_add);
+        /*绑定树形下拉框点击事件*/
+        let $i_add = $("i[name='tree-icon_add']");
+        $inputGroup_add.click(function (event) {
+            $tree_add.toggle();
+            $i_add.toggleClass("glyphicon glyphicon-chevron-down").toggleClass("glyphicon glyphicon-chevron-up");
+            event.stopPropagation();
+        });
+        let $tree_edit = $("div[name='menuTree_edit']");
+        let $i_edit = $("i[name='tree-icon_edit']");
+        let $inputGroup_edit = $inputGroup;
+        $inputGroup_edit.click(function (event) {
+            $tree_edit.toggle();
+            $i_edit.toggleClass("glyphicon glyphicon-chevron-down").toggleClass("glyphicon glyphicon-chevron-up");
+            event.stopPropagation();
+        });
+
+        // // data-toggle="dropdown"
+        // let $permList = $("ul[name='permissionList']");
+        // let $permissionListBtn = $("botton[data-toggle='dropdown']");
+        // console.log($permissionListBtn);
+        // $permissionListBtn.click(function(event){
+        //     console.log("按键被按下了");
+        //     console.log($permList);
+        //     event.stopPropagation();
+        // });
+
+
+
+        /*添加模态窗提交*/
+        $("#btnAddModal").click(function () {
+            $("#addForm").submit();
+        });
+        /*修改模态窗提交*/
+        $("#btnEditModal").click(function () {
+            $("#editForm").submit();
+        });
+
+        /*分配行为模态窗向后台传送数据*/
+        $("#btnAllocateModal").click(function () {
+            let menuId = $("#menuId").val();
+            let datas = [];
+            let $menuTree = $("#ActionNodeTree");
+            let checks = $menuTree.treeview('getChecked');
+            // let permName = $("input[name='permissionName']").val();
+            let permId = $("input[name='permissionId']").val();
+            // console.log(permId);
+            // console.log(permid.valueOf());
+            $.each(checks, function (index, item) {
+                if (item.parentId != undefined) {
+                    datas.push(item.tags);
+                }
+            });
+            console.log(datas);
+            let s = {"menuId": menuId, "actionIds": datas, "permissionId":permId};
+            s = JSON.stringify(s);
+            console.log(s);
+            if (datas == 0) {
+                alert("至少选中一个")
+            } else {
+                if (confirm("确定添加这些数据么")) {
+                    alert("添加数据:" + s);
+                    window.location.reload();
+                    //ajax发送异步请求
+                    $.ajax({
+                        url:  "/owep/privilege/menuList/treeCheck_edit",
+                        method: "post",
+                        data: s,
+                        dataType: "text",
+                        async: "true",
+                        contentType: "application/json",
+                        success: function (data) {
+                            /!*重新加载本页面*!/
+                            alert(data);
+                            window.location.reload();
+                        },
+                        error: function (jqXRH) {
+                            console.log(jqXRH);
+                            alert("删除失败")
+                        }
+                    })
+                }
+            }
+        })
+
+        /*搜索自动补全*/
+        $("#permissionName").bsSuggest({
+            // url: '../../static/js/demo/privilege/menuList_suggest_test.json',
+            url:"/owep/privilege/menuList/suggest",
+            idField: "id",
+            keyField: "permissionName",
+            effectiveFields: ['id','permissionName'],
+            effectiveFieldSAlias: {id:'权限id',permissionName:'权限名'},
+            searchFields:['permissionName'],
+            showHeader: true,
+            showBtn: false,
+            clearable:true
+        })
+            .on("onDataRequestSuccess", function(e, result) {
+            console.log("onDataRequestSuccess: ", result);
+        }) .on("onSetSelectValue", function(e, keyword) {
+            $("input[name='permissionId']").val(keyword.id);
+            console.log("onSetSelectValue: ", keyword);
+        })
+            .on("onUnsetSelectValue", function() {
+                console.log("onUnsetSelectValue");
+            })
+        //     .on('onSetSelectValue',function (e,keyword,data) {
+        //     console.log(keyword);
+        //     console.log(e);
+        //     console.log(keyword.id);
+        //     console.log(keyword.permissionName);
+        //     $("#permissionId").val(keyword.id);
+        //     $("#permissionName").val(keyword.permissionName)
+        // })
+
+    });
+
+
+    // 格式化按钮
+    function operateFormatter(value, row, index) {
+        // console.log(row);
+        let parentId ;
+        let parentName;
+
+        let va;
+        if (row.pid !== 0) {
+            /*console.log("打印"+"pid:"+row.pid)*/
+            // console.log(row);
+            va = ['<button class="btn btn-white" value="'+row.id+'"  type="button" data-toggle="tooltip" data-placement="bottom" title="修改"><i class="glyphicon glyphicon-edit"/> </button>',
+                '<button class="btn btn-white" value="' + row.id + '" type="button" data-toggle="tooltip" data-placement="bottom" title="删除"><i class="glyphicon glyphicon-trash text-danger"/></button>',
+                '<button class="btn btn-white" value="' + row.id + '" type="button" data-toggle="tooltip" data-placement="bottom" title="预置行为分配"><i class="glyphicon glyphicon-share text-success"/> </button>'].join('')
+        } else {
+            va = ['<button class="btn btn-white" value="' + row.id + '" type="button" data-toggle="tooltip" data-placement="bottom" title="修改"><i class="glyphicon glyphicon-edit"/> </button>',
+                '<button class="btn btn-white" value="' + row.id + '" type="button" data-toggle="tooltip" data-placement="bottom" title="删除"><i class="glyphicon glyphicon-trash text-danger"/></button>'].join('')
+        }
+        return va
+    }
+
+    //给动态按钮绑定事件
+    window.operateEvents = {
+        'click button[title="预置行为分配"]': function (e, value, row, index) {
+            let $actionNodes = $("#ActionNodeTree");
+            /*初始化树形复选框（在外部JS中）;*/
+            // console.log(row);
+            // console.log(row.id);
+            $("input[id='menuId']").val(row.id);
+            $("input[name='menuName']").val(row.menuName);
+            $("input[id='privilegeData']").val(row.permission);
+            initCheckTree($actionNodes, row.id);
+            $("#allocateModal").modal();
+        },
+        'click button[title="修改"]': function (e, value, row, index) {
+            let $tree = $("div[name='menuTree_edit']");
+            // console.log(this.parentNode.parentNode);
+            initSelectTree($tree, null);
+            console.log($(this));
+            console.log(row);
+            let id =row.id;
+            let name = row.menuName;
+            let description = row.menuDescription;
+
+            if(row.parent!==null){//parent可能为null，为null则设置无意义
+                let parentName =row.parent.menuName;
+                let parentId = row.parent.id;
+                $("input[name='parentMenuId']").val(parentId);
+                $("input[name='parentMenu']").val(parentName);
+
+            }
+            $("input[name='id']").val(id);
+            $("input[name='menuName']").val(name);
+            $("textarea[name='menuDescription']").val(description);
+
+            // console.log(id+","+name+","+description+","+parentId+","+parentName);
+            initSelectTree($tree, row.id);
+            $("#editModal").modal();
+            $("#btnEditModal").submit();
+        },
+        'click button[title="删除"]': function (e, value, row, index) {
+            swal({
+                title: "您确定要删除这条数据吗",
+                text: "删除后将无法恢复，请谨慎操作！",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "删除",
+                cancelButtonText: "取消",
+                closeOnConfirm: false
+            }, function () {
+                swal("删除成功！", "您已经永久删除了这条信息。", "success");
+            });
+             let id=$(this).val();
+             $.ajax({
+                 url:"/owep/privilege/menuList/deleteMenu",
+                 method:"post",
+                 data:id,
+                 dataType:"text",
+                 contentType:"application/json",
+                 success:function () {
+                     swal("删除成功！", "您已经永久删除了这条信息。", "success");
+                     window.location.reload();
+                 },
+                 error:function (jqXHR) {
+                     swal("删除失败","后台请求失败"+jqXHR,"error");
+                 }
+             })
+        }
+    };
+
+    /*初始化树形下拉框*/
+    function initSelectTree(o, id) {
+        $.ajax({
+            // url: '../../static/js/demo/privilege/menuList_treeSelect_test.json',
+            url:"/owep/privilege/menuList/treeSelect",
+            dataType: "json",
+            async: false,
+            method: "get",
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                o.treeview({
+                    levels: 3,//默认显示情况下  树显示到2级深度 默认是2
+                    data: data,
+                    onhoverColor: 'rgba(67,143,207)',
+                    selectedColor: '#000000',
+                    selectedBackColor: '#EEEEEE',
+                    collapseIcon:"",
+                    backColor: '#EEEEEE',
+                    showBorder: false,
+                    onNodeSelected: function (evetn, node) {
+                        /*点击后 输入框回显值*/
+                        $("input[name=parentMenuId]").val(node.tags);
+                        $("input[name=parentMenu]").val(node.text);
+                        $("#tree-icon").toggleClass("glyphicon glyphicon-chevron-down").toggleClass("glyphicon glyphicon-chevron-up");
+                    },
+                    onNodeCollapsed: function (event, node) {
+               /*         console.log("触发树形收缩事件:触发事件的元素" + event.target);
+                        console.log("触发树形收缩事件:当前元素" + event.currentTarget);
+                        console.log("触发树形收缩事件:事件类型" + event.type);*/
+                        event.stopPropagation();
+                        event.stopImmediatePropagation();
+
+                    },
+                    onNodeExpanded: function (event, node) {
+               /*        console.log("触发树形展开事件:触发事件的元素" + event.target);
+                        console.log("触发树形展开事件:当前元素" + event.currentTarget);
+                        console.log("触发树形展开事件:事件类型" + event.type);*/
+                        event.stopPropagation();
+                        event.stopImmediatePropagation();
+                       // console.log("事件是否阻止" + event.isPropagationStopped());
+
+                    }
+                });
+            }
+        });
+    }
+    /*点击其他区域隐藏树形下拉框*/
+    $(document).click(function (event) {
+        $("div[name='tree']").hide();
+    });
+</script>
+
+</body>
+</html>

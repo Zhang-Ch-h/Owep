@@ -1,0 +1,56 @@
+[{
+  "id": 1,
+  "resourceName": "springboot学习笔记",
+  "resourceType":{"id":1,"typeName":"公共资源","typeDesc":"公开的资源 ","createTime":"2020-07-08 19:07:12","isDelete":1,"version":1,"lastAccessTime":"2020-07-16 14:35:27"},
+  "resourceSize": "239.11"
+},
+  {"id":6,
+    "resourceName":"springboot学习笔记",
+    "type":1,
+    "resourceSize":6165,
+    "resourceType":{"id":1,"typeName":"公共资源","typeDesc":"公开的资源 ","createTime":"2020-07-08 19:07:12","isDelete":1,"version":1,"lastAccessTime":"2020-07-16 14:35:27"},
+    "resourceDesc":"JAVA功夫好呵呵",
+    "createTime":"2020-07-13 09:09:24",
+    "isDelete":1
+  },
+  {"id":7,
+    "resourceName":"springboot学习笔记",
+    "type":1,
+    "resourceSize":6165,
+    "resourceType":{"id":1,"typeName":"公共资源","typeDesc":"公开的资源 ","createTime":"2020-07-08 19:07:12","isDelete":1,"version":1,"lastAccessTime":"2020-07-16 14:35:27"},
+    "resourceDesc":"JAVA功夫好呵呵",
+    "createTime":"2020-07-13 15:34:47",
+    "isDelete":1
+  }
+  ,{
+  "id": 1,
+  "resourceName": "springboot学习笔记",
+  "resourceType.typeName": "公共资源",
+  "resourceSize": "239.11"
+},{
+  "id": 1,
+  "resourceName": "springboot学习笔记",
+  "resourceType.typeName": "公共资源",
+  "resourceSize": "239.11"
+},{
+  "id": 1,
+  "resourceName": "springboot学习笔记",
+  "resourceType.typeName": "公共资源",
+  "resourceSize": "239.11"
+},{
+  "id": 1,
+  "res_name": "springboot学习笔记",
+  "resourceType.typeName": "公共资源",
+  "resourceSize": "239.11"
+},{
+  "id": 1,
+  "res_name": "springboot学习笔记",
+  "resourceType.typeName": "公共资源",
+  "resourceSize": "239.11"
+},{
+  "id": 1,
+  "res_name": "springboot学习笔记",
+  "resourceType.typeName": "公共资源",
+  "resourceSize": "239.11"
+}
+]

@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "courseNumber": "KC_20181203145910",
+    "courseName": "企业级框架（Spring）"
+  },
+  {
+    "id": 2,
+    "courseNumber": "KC_20180928175649",
+    "courseName": "企业级框架（Hibernate）"
+  },
+  {
+    "id": 3,
+    "courseNumber": "KC_20180925180437",
+    "courseName": "企业级框架（Struts2）"
+  }
+]

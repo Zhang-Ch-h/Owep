@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kclm.owep.mapper.BranchInstituteMapper">
+
+    <resultMap id="BaseResultMap" type="com.kclm.owep.entity.BranchInstitute">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="branch_name" jdbcType="VARCHAR" property="branchName" />
+        <result column="version" jdbcType="INTEGER" property="version" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="last_access_time" jdbcType="TIMESTAMP" property="lastAccessTime" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, branch_name, version, create_time, last_access_time
+    </sql>
+
+    <select id="selectAll" resultMap="BranchAllMap">
+        select b.id bid,
+        branch_name,
+        case when o.is_delete = 1 then o.institute_name end as institute_name,
+        b.create_time b_create_time
+        from t_branch_institute b left join t_org_institute o on b.fk_org_id = o.id
+    </select>
+
+    <resultMap id="BranchAllMap" type="BranchInstitute">
+        <id column="bid" property="id" />
+        <result column="branch_name" property="branchName" />
+        <result column="b_create_time" property="createTime" />
+        <association property="orgInstitute" javaType="com.kclm.owep.entity.OrgInstitute">
+            <result column="institute_name" property="instituteName" />
+        </association>
+    </resultMap>
+
+    <select id="getBranchByOrgId" resultType="com.kclm.owep.entity.BranchInstitute">
+        select <include refid="Base_Column_List" />
+        from t_branch_institute where fk_org_id = #{orgId}
+    </select>
+
+    <select id="selectByKeyWords" resultMap="BranchAllMap">
+        select b.id bid,
+        branch_name,
+        case when o.is_delete = 1 then o.institute_name end as institute_name,
+        b.create_time b_create_time
+        from t_branch_institute b left join t_org_institute o on b.fk_org_id = o.id
+        <where>
+            <if test="name != '' and name != null">
+                branch_name = #{name}
+            </if>
+            <if test="id != '' and id != null">
+                and fk_org_id = #{id}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteById">
+        delete from t_branch_institute where id = #{id}
+    </delete>
+
+    <delete id="deleteSelect">
+        delete from t_branch_institute where id in
+        <foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <insert id="save">
+        insert into t_branch_institute(branch_name, fk_org_id, create_time, last_access_time)
+        values(#{branchName}, #{orgInstitute.id}, #{createTime}, #{lastAccessTime})
+    </insert>
+
+    <select id="selectById" resultMap="BranchAllMap">
+        select branch_name,
+        case when o.is_delete = 1 then o.institute_name end as institute_name
+        from t_branch_institute b left join t_org_institute o on b.fk_org_id = o.id
+        where b.id = #{id}
+    </select>
+
+    <update id="updateBranch">
+        update t_branch_institute
+        <set>
+            <if test="name != null and name != ''">
+                branch_name = #{name},
+            </if>
+            <if test="orgId != null and orgId != ''">
+                fk_org_id = #{orgId}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+</mapper>

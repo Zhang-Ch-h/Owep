@@ -1,0 +1,58 @@
+[{
+  "cid": 1,
+  "id": 1,
+  "courseName": "数据库(oracle)",
+  "chapterName": "Oracle 基础知识",
+  "chapterDesc": "Oracle 基础知识",
+  "status": "启用"
+},{
+  "cid": 2,
+  "id": 2,
+  "courseName": "数据库(oracle)",
+  "chapterName": "Oracle 语句操作",
+  "chapterDesc": "Oracle 语句操作",
+  "status": "不启用"
+},{
+  "cid": 3,
+  "id": 3,
+  "courseName": "数据库(oracle)",
+  "chapterName": "Oracle 语句操作",
+  "chapterDesc": "Oracle 高级应用",
+  "status": "启用"
+},{
+  "cid": 4,
+  "id": 4,
+  "courseName": "数据库(oracle)",
+  "chapterName": "Oracle 编程开发",
+  "chapterDesc": "Oracle 编程开发",
+  "status": "启用"
+},{
+  "cid": 5,
+  "id": 5,
+  "courseName": "数据库(oracle)",
+  "chapterName": "Oracle 基础知识",
+  "chapterDesc": "Oracle 基础知识",
+  "status": "启用"
+},{
+  "cid": 6,
+  "id": 6,
+  "courseName": "数据库(oracle)",
+  "chapterName": "Oracle 语句操作",
+  "chapterDesc": "Oracle 语句操作",
+  "status": "不启用"
+},{
+  "cid": 7,
+  "id": 7,
+  "courseName": "数据库(oracle)",
+  "chapterName": "Oracle 语句操作",
+  "chapterDesc": "Oracle 高级应用",
+  "status": "启用"
+},{
+  "cid": 8,
+  "id": 8,
+  "courseName": "数据库(oracle)",
+  "chapterName": "Oracle 编程开发",
+  "chapterDesc": "Oracle 编程开发",
+  "status": "启用"
+}
+]

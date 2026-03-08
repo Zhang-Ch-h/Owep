@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+
+    <title>乐码在线智慧平台 - 用户设置</title>
+
+    <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
+    <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
+
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html" />
+    <![endif]-->
+
+    <link rel="shortcut icon" href="../../static/favicon.ico" th:href="@{/static/favicon.ico}">
+    <link href="../../static/css/bootstrap.min.css?v=3.3.6" th:href="@{/static/css/bootstrap.min.css(v='3.3.6')}" rel="stylesheet">
+    <link href="../../static/css/font-awesome.min.css?v=4.4.0" th:href="@{/static/css/font-awesome.min.css(v='4.4.0')}" rel="stylesheet">
+    <link href="../../static/css/animate.css" th:href="@{/static/css/animate.css}" rel="stylesheet">
+    <link href="../../static/css/style.css?v=4.1.0" th:href="@{/static/css/style.css(v='4.1.0')}" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="animated fadeInRightBig">
+                <!-- 表单 -->
+                <form class="form-horizontal" action="xxxxx" name="profileSettingForm">
+                    <div class="form-group">
+                        <label for="userName" class="col-sm-2 control-label">用户名:</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="userName" name="userName" value="admin" disabled>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gender" class="col-sm-2 control-label">性别:</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="gender" name="gender" value="男" disabled>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="realName" class="col-sm-2 control-label">真实姓名:</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="realName" name="realName" value="叶加飞" disabled>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="effectiveDate" class="col-sm-2 control-label">帐户有效期:</label>
+                        <div class="col-sm-6">
+                            <input type="datetime-local" class="form-control" id="effectiveDate" name="effectiveDate" value="2022-01-01 00:00:00" disabled>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="userPwd" class="col-sm-2 control-label">登录密码:</label>
+                        <div class="col-sm-6">
+                            <input type="password" class="form-control" id="userPwd" name="userPwd" value="xxxxx">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="newUserPwd" class="col-sm-2 control-label">新密码:</label>
+                        <div class="col-sm-6">
+                            <input type="password" class="form-control" id="newUserPwd" name="newUserPwd">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="newUserPwd2" class="col-sm-2 control-label">再次输入新密码:</label>
+                        <div class="col-sm-6">
+                            <input type="password" class="form-control" id="newUserPwd2" name="newUserPwd2">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="userPhone" class="col-sm-2 control-label">手机号码:</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="userPhone" name="userPhone" value="18699773355">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="userEmail" class="col-sm-2 control-label">邮箱:</label>
+                        <div class="col-sm-6">
+                            <input type="email" class="form-control" id="userEmail" name="userEmail" value="yejf@163.com">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-6">
+                            <button type="submit" class="btn btn-primary">修改</button>
+                            <button type="reset" class="btn btn-danger">重置</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 全局js -->
+<script src="../../static/js/jquery.min.js?v=2.1.4" th:src="@{/static/js/jquery.min.js(v='2.1.4')}"></script>
+<script src="../../static/js/bootstrap.min.js?v=3.3.6" th:src="@{/static/js/bootstrap.min.js(v='3.3.6')}"></script>
+
+<!-- 自定义js -->
+<script src="../../static/js/content.js?v=1.0.0" th:src="@{/static/js/content.js(v='1.0.0')}"></script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kclm.owep.mapper.ResourceMapper">
+
+    <resultMap id="BaseMap" type="Resource">
+        <id property="id" column="id" />
+        <result property="resourceName" column="resource_name" />
+        <result property="type" column="resource_type" />
+        <result property="resourceSuffix" column="resource_suffix" />
+        <result property="resourceSize" column="resource_size" />
+        <result property="resourcePath" column="resource_path" />
+        <result property="resourceLabel" column="resource_label" />
+        <result property="resourceDesc" column="resource_desc" />
+        <result property="createTime" column="create_time" />
+        <result property="isDelete" column="is_delete" />
+        <result property="oldResourcename" column="old_resourcename" />
+        <result property="version" column="version" />
+        <result property="lastAccessTime" column="last_access_time" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, resource_name, resource_type, resource_suffix, resource_size, resource_path, resource_label,
+        resource_desc, create_time, is_delete, old_resourcename, version, last_access_time
+    </sql>
+
+    <select id="selectResourceByClassId" resultMap="selectResourceByClassIdMap">
+        select r.id rid,
+        resource_name,
+        resource_size,
+        type_name
+        from t_class_resource cr join t_resource r on cr.fk_resource_id = r.id
+        left join t_resource_type rt on r.fk_resource_type_id = rt.id
+        where cr.fk_class_id = #{classId} and r.is_delete = 1 and rt.is_delete = 1
+    </select>
+
+    <resultMap id="selectResourceByClassIdMap" type="Resource">
+            <result property="id" column="rid" />
+            <result property="resourceName" column="resource_name" />
+            <result property="resourceSize" column="resource_size" />
+            <result property="createTime" column="r_create_time" />
+            <result property="resourceSuffix" column="resource_suffix" />
+            <association property="resourceType" javaType="com.kclm.owep.entity.ResourceType">
+                <result property="typeName" column="type_name" />
+            </association>
+    </resultMap>
+
+    <delete id="deleteResourceFromClass">
+       delete from t_class_resource where fk_class_id = #{cid} and fk_resource_id = #{rid}
+    </delete>
+
+    <delete id="deleteResourcesFromClass">
+            DELETE FROM t_class_resource
+            WHERE fk_class_id = #{cid}
+            AND fk_resource_id IN
+            <foreach item="id" collection="idList" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+    </delete>
+
+    <select id="selectResourceByKeyword" resultMap="selectResourceByKeywordMap">
+        select r.id rid,
+        resource_name,
+        resource_size,
+        type_name
+        from t_class_resource cr join t_resource r on cr.fk_resource_id = r.id
+        left join t_resource_type rt on r.fk_resource_type_id = rt.id
+        where
+        <if test="classId != null">
+            cr.fk_class_id = #{classId}
+        </if>
+        <if test="resourceName != null">
+        and r.resource_name = #{resourceName}
+        </if>
+        <if test="resourceTypeName != null">
+        and rt.type_name = #{resourceTypeName}
+        </if>
+        and r.is_delete = 1 and rt.is_delete = 1
+    </select>
+
+    <resultMap id="selectResourceByKeywordMap" type="Resource">
+        <result property="id" column="rid" />
+        <result property="resourceName" column="resource_name" />
+        <result property="resourceSize" column="resource_size" />
+        <association property="resourceType" javaType="com.kclm.owep.entity.ResourceType">
+            <result property="typeName" column="type_name" />
+        </association>
+    </resultMap>
+
+    <select id="selectById" resultMap="BaseMap">
+        select <include refid="Base_Column_List" />
+        from t_resource where id = #{id}
+    </select>
+
+    <select id="selectAll" resultMap="selectResourceByClassIdMap">
+        select r.id rid,
+               resource_name,
+               resource_size,
+               resource_suffix,
+               r.create_time r_create_time,
+               type_name
+        from t_resource r left join t_resource_type rt on r.fk_resource_type_id = rt.id
+        where r.is_delete = 1 and rt.is_delete = 1
+    </select>
+
+    <insert id="insertResourceToClass">
+        INSERT INTO t_class_resource (fk_class_id, fk_resource_id) VALUES (#{cid}, #{rid})
+        ON DUPLICATE KEY UPDATE fk_class_id = fk_class_id;
+    </insert>
+
+    <select id="selectAllResourceByKeyWord" resultMap="selectResourceByClassIdMap">
+        select r.id rid,
+        resource_name,
+        resource_size,
+        resource_suffix,
+        r.create_time r_create_time,
+        type_name
+        from t_resource r left join t_resource_type rt on r.fk_resource_type_id = rt.id
+        where r.is_delete = 1 and rt.is_delete = 1
+        <if test="name != null">
+            and resource_name like concat('%', #{name}, '%')
+        </if>
+        <if test="type != null">
+            and resource_suffix like concat('%', #{type}, '%')
+        </if>
+        <if test="start != null">
+            and r.create_time >= #{start}
+        </if>
+        <if test="end != null">
+            and r.create_time &lt;= #{end}
+        </if>
+    </select>
+
+    <insert id="insertSelectedResourceToClass">
+        INSERT INTO t_class_resource (fk_class_id, fk_resource_id)
+        VALUES
+        <foreach collection="ridList" item="rid" separator=",">
+            (#{cid}, #{rid})
+        </foreach>
+        ON DUPLICATE KEY UPDATE fk_class_id = fk_class_id;
+    </insert>
+</mapper>

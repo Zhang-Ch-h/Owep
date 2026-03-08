@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>乐码在线智慧平台-专业方向</title>
+    <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
+    <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
+
+    <link rel="shortcut icon" href="../../static/favicon.ico">
+    <link href="../../static/css/bootstrap.min.css?v=3.3.6" th:href="@{/static/css/bootstrap.min.css(v='3.3.6')}"
+          rel="stylesheet">
+    <link href="../../static/css/font-awesome.css?v=4.4.0" th:href="@{/static/css/font-awesome.css(v='4.4.0')}"
+          rel="stylesheet">
+    <link href="../../static/css/plugins/bootstrap-table/bootstrap-table.min.css"
+          th:href="@{/static/css/plugins/bootstrap-table/bootstrap-table.min.css}" rel="stylesheet">
+    <link href="../../static/css/animate.css" th:href="@{/static/css/animate.css}" rel="stylesheet">
+    <link href="../../static/css/style.css?v=4.1.0" th:href="@{/static/css/style.css(v='4.1.0')}" rel="stylesheet">
+    <!-- Sweet Alert -->
+    <link href="../../static/css/plugins/sweetalert/sweetalert.css"
+          th:href="@{/static/css/plugins/sweetalert/sweetalert.css}" rel="stylesheet">
+    <!--switchery-->
+    <link href="../../static/css/plugins/switchery/switchery.css"
+          th:href="@{/static/css/plugins/switchery/switchery.css}" rel="stylesheet">
+    <style type="text/css">
+        .table>thead>tr>th{
+            color: #2a62bc;
+        }
+    </style>
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+
+    <div class="pull-left">
+        <form class="form-inline" style="margin:15px 5px">
+            <div class="form-group">
+                <label>&nbsp;&nbsp;</label>
+                <div class="input-group">
+                    <input type="text" class="form-control org" placeholder="所属机构">
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                        </ul>
+                    </div>
+                    <!-- /btn-group -->
+                </div>
+            </div>
+            <div class="form-group">
+                <label>&nbsp;&nbsp; </label>
+                <div class="input-group">
+                    <input type="text" class="form-control branch" placeholder="所属分支">
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>&nbsp;&nbsp; </label>
+                <div class="input-group">
+                    <input type="text" class="form-control branch" placeholder="专业方向">
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>&nbsp;&nbsp; </label>
+                <div class="input-group">
+                    <input type="text" class="form-control branch" placeholder="班级">
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <input type="button" class="btn btn-primary" value="查询" id="queryBtn"/>
+        </form>
+    </div>
+    <div>
+        <table id="tb_major"></table>
+    </div>
+</div>
+<!--详情模态框-->
+<div class="modal fade" id="details2" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close" data-dismiss="modal">&times;</span>
+                <h3 class="modal-title">详情</h3>
+            </div>
+
+            <div class="modal-body" style="min-height: 400px;margin-top: 20px">
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-dismiss="modal">关闭</button>
+                <button class="btn btn-primary" id="add_sure">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 全局js -->
+<script src="../../static/js/jquery.min.js?v=2.1.4" th:src="@{/static/js/jquery.min.js(v='2.1.4')}"></script>
+<script src="../../static/js/bootstrap.min.js?v=3.3.6" th:src="@{/static/js/bootstrap.min.js(v='3.3.6')}"></script>
+<!-- 自定义js -->
+<script src="../../static/js/content.js?v=1.0.0" th:src="@{/static/js/content.js(v='1.0.0')}"></script>
+<!-- Bootstrap table -->
+<script src="../../static/js/plugins/bootstrap-table/bootstrap-table.min.js"
+        th:src="@{/static/js/plugins/bootstrap-table/bootstrap-table.min.js}"></script>
+<script src="../../static/js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"
+        th:src="@{/static/js/plugins/bootstrap-table/bootstrap-table-mobile.min.js}"></script>
+<script src="../../static/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"
+        th:src="@{/static/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js}"></script>
+<!--动态搜索-->
+<script src="../../static/js/plugins/suggest/bootstrap-suggest.min.js"
+        th:src="@{/static/js/plugins/suggest/bootstrap-suggest.min.js}"></script>
+<!-- Sweet alert -->
+<script src="../../static/js/plugins/sweetalert/sweetalert.min.js"
+        th:src="@{/static/js/plugins/sweetalert/sweetalert.min.js}"></script>
+<!-- Switchery -->
+<script src="../../static/js/plugins/switchery/switchery.js"
+        th:src="@{/static/js/plugins/switchery/switchery.js}"></script>
+<script>
+    $(function () {
+        //初始化表格
+        var init = new initdata();
+        init.Init();
+        //点击按钮开始搜索
+        $("#queryBtn").click(function () {
+            let name = $("#name").val();
+            let org = $("#org").val();
+            let branch = $("#branch").val();
+            //判断条件是否存在
+            if (name == "" && org == "" && branch == "") {
+                alert("请选择查询条件");
+                return;
+            }
+            //执行查询
+            init.Init();
+        });
+        //删除所有
+        $('#deleteAll').click(function () {
+            // 删除按钮事件
+            if (!confirm("是否确认删除？"))
+                return;
+            var rows = $("#tb_major").bootstrapTable('getSelections');// 获得要删除的数据
+            if (rows.length == 0) {// rows 主要是为了判断是否选中，下面的else内容才是主要
+                alert("请先选择要删除的记录!");
+                return;
+            } else {
+                var ids = new Array();// 声明一个数组 该数组将要存放所有选择的id
+                $(rows).each(function () {// 通过获得别选中的来进行遍历
+                    ids.push(this.id);// cid为获得到的整条数据中的一列
+                });
+                //TODO 发送ajax请求
+            }
+        });
+        //动态搜索选择下拉框
+        testdataBsSuggest1;
+        testdataBsSuggest2;
+        //添加事件
+        $('#add_sure').click(function () {
+            alert("添加成功");
+        });
+        //更新时间
+        $('#update_sure').click(function () {
+            alert("更新成功");
+        });
+
+
+        /*多个滑动按钮同时存在不可少代码*/
+        var elems = Array.prototype.slice.call($('.js-switch'));
+        elems.forEach(function (html) {
+            var switchery = new Switchery(html);
+        });
+
+    });
+
+    var testdataBsSuggest1 = $(".org").bsSuggest({
+        indexId: 2, //data.value 的第几个数据，作为input输入框的内容
+        indexKey: 1, //data.value 的第几个数据，作为input输入框的内容
+        //TODO 通过json显示数据
+        data: {
+            'value': [
+                {
+                    'id': "",
+                    'word': '天龙八部',
+                },
+                {
+                    'id': "",
+                    'word': '神雕侠侣',
+                },
+                {
+                    'id': "",
+                    'word': '仙剑奇侠传',
+                },
+                {
+                    'id': "",
+                    'word': 'flyme',
+                }
+            ]
+        }
+    });
+
+    var testdataBsSuggest2 = $(".branch").bsSuggest({
+        indexId: 2, //data.value 的第几个数据，作为input输入框的内容
+        indexKey: 1, //data.value 的第几个数据，作为input输入框的内容
+        //TODO 通过json显示数据
+        data: {
+            'value': [
+                {
+                    'id': "",
+                    'word': '英语',
+                },
+                {
+                    'id': "",
+                    'word': '书法',
+                },
+                {
+                    'id': "",
+                    'word': '钢琴',
+                },
+                {
+                    'id': "",
+                    'word': 'flyme',
+                }
+            ]
+        }
+    });
+
+    var initdata = function () {
+        var init = new Object();
+        init.Init = function () {
+            //加载之前先格式化 放在查询的时候起冲突
+            $("#tb_major").bootstrapTable('destroy')
+            $("#tb_major").bootstrapTable({
+                url: '../../static/js/clazz/pre.json',
+                method: 'get',
+                striped: true,  //是否显示行间隔色
+                cache: false, //是否使用缓存
+                pagination: true, //是否分页
+                pageSize: 5,  //每页记录行数
+                uniqueId: 'id',  //唯一id
+                pageList: [5, 10, 20],
+                queryParams: init.queryParams, // 传递参数
+                columns: [{
+                    field: "coo",
+                    checkbox: true,
+                }, {
+                    field: 'id',
+                    title: "id",
+                    align: "center",
+                    visible: false //隐藏 让该字段不可见 为了后面更新和删除做准备
+                }, {
+                    field: 'name',
+                    title: "学生姓名",
+                    align: "center",
+                }, {
+                    field: 'stu_pre',
+                    title: "学习进度",
+                    align: "center",
+                    formatter: studyPro,
+                }, {
+                    field: 'homework_pre',
+                    title: "作业进度",
+                    align: "center",
+                    formatter:homeworkPro,
+                }, {
+                    field: 'operator',
+                    title: "操作",
+                    align: "center",
+                    valign: "middle",
+                    formatter: actionFormatter, //方法调用
+                    events: {
+                        'click button[title=删除]': function (e, value, row, index) {
+                            // console.log(row.id);
+                            swal({
+                                title: "您确定要删除这条信息吗",
+                                text: "删除后将无法恢复，请谨慎操作！",
+                                type: "warning",
+                                showCancelButton: true,
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "删除",
+                                closeOnConfirm: false
+                            }, function () {
+                                //TODO 发送ajax请求
+                                swal("删除成功！", "您已经永久删除了这条信息。", "success");
+                            });
+                        },
+                    }
+                }]
+
+            });
+        };
+        init.queryParams = function (params) {
+            console.log(params);
+            console.log($('#name').val());
+            return {
+                offset: params.offset,//从数据库第几条记录开始
+                limit: params.limit,//找多少条
+                name: $("#name").val(),
+                org: $("#org").val(),
+                branch: $("#branch").val()
+            };
+        }
+        //作业进度
+        //学习进度
+        function homeworkPro(value, row, index) {
+            var id = value;
+            var result = "";
+            // console.log(row.id);
+            // console.log(row.name+"--"+index +"--"+value);
+            result += "                                                <div class=\"progress\">\n" +
+                "                                                    <div style=\"width: "+row.homework_pre+"%;\" class=\"progress-bar\"><span style=\"color:black;\">"+row.homework_pre+"%</span></div>\n" +
+                "                                                </div>";
+            return result;
+        };
+
+        //学习进度
+        function studyPro(value, row, index) {
+            var id = value;
+            var result = "";
+            // console.log(row.id);
+            // console.log(row.name+"--"+index +"--"+value);
+            result += "                                                <div class=\"progress\">\n" +
+                "                                                    <div style=\"width: "+row.stu_pre+"%;\" class=\"progress-bar\"><span style=\"color:black;\">"+row.stu_pre+"%</span></div>\n" +
+                "                                                </div>";
+            return result;
+        };
+
+        //操作栏的格式化
+        function actionFormatter(value, row, index) {
+            var id = value;
+            var result = "";
+            // console.log(row.id);
+            // console.log(row.name+"--"+index +"--"+value);
+            result += "<a href='../analysis/clazzCount.html' class='btn btn-primary btn-sm' title='详情' style='margin-right: 10px'><span class='glyphicon glyphicon-wrench'></span></a>";
+            return result;
+        };
+        return init;
+    }
+
+</script>
+</body>
+</html>

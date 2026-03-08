@@ -1,0 +1,26 @@
+[ 
+    {
+    "text": "大学",
+    "hideCheckbox":"false",
+    "nodes": [
+        {
+        "text": "萍乡学院",
+        "hideCheckbox":"false",
+        "nodes": [
+            {
+            "text": "JavaEE企业级开发",
+            "hideCheckbox":"false",
+            "nodes": [
+                {
+                "text": "Java全栈开发"
+                },
+                {
+                "text": "Java企业班级" 
+                }
+            ]
+            }
+        ]
+        }
+    ]
+    }
+]

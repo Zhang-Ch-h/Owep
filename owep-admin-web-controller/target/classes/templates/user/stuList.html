@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>学生管理</title>
+</head>
+<link rel="shortcut icon" href="../../static/favicon.ico"
+      th:href="@{/static/favicon.ico}">
+<link href="../../static/css/bootstrap.min.css?v=3.3.6" rel="stylesheet"
+      th:href="@{/static/css/bootstrap.min.css(v=3.3.6) }">
+<link href="../../static/css/font-awesome.css?v=4.4.0" rel="stylesheet"
+      th:href="@{/static/css/font-awesome.css(v=4.4.0) }">
+<link href="../../static/css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet"
+      th:href="@{/static/css/plugins/bootstrap-table/bootstrap-table.min.css }">
+<link href="../../static/css/animate.css" rel="stylesheet"
+      th:href="@{/static/css/animate.css }">
+<link href="../../static/css/style.css?v=4.1.0" rel="stylesheet"
+      th:href="@{/static/css/style.css(v=4.1.0) }">
+<!--上传控件-->
+<link href="../../static/public/user/bootstrap-fileinput/css/fileinput.min.css" media="all" rel="stylesheet"
+      type="text/css"
+      th:href="@{/static/public/user/bootstrap-fileinput/css/fileinput.min.css}"/>
+<link href="../../static/public/user/bootstrap-fileinput/themes/explorer/theme.css" media="all" rel="stylesheet"
+      type="text/css"
+      th:href="@{/static/public/user/bootstrap-fileinput/themes/explorer/theme.css}"/>
+<!--树形控件-->
+<link href="../../static/css/plugins/treeview/bootstrap-treeview.css" rel="stylesheet"
+      th:href="@{/static/css/plugins/treeview/bootstrap-treeview.css }">
+<!-- 弹出框插件 -->
+<link href="../../static/css/plugins/sweetalert/sweetalert.css" rel="stylesheet"
+      th:href="@{/static/css/plugins/sweetalert/sweetalert.css }">
+<!--时间控件-->
+<link href="../../static/public/user/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"
+      th:href="@{/static/public/user/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css}"
+      rel="stylesheet">
+<!--滑动按钮-->
+<link href="../../static/css/plugins/switchery/switchery.css"
+      th:href="@{/static/css/plugins/switchery/switchery.css}" rel="stylesheet">
+<style type="text/css">
+    .table > thead > tr > th {
+        color: #2a62bc;
+    }
+
+    #stu_query .col-md-2, .col-md-4, .col-md-1 {
+        padding-left: 0px;
+        padding-right: 8px;
+    }
+</style>
+<body class="gray-bg">
+<!--表单-->
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox-title">
+        <div class="row row-lg">
+            <div class="col-sm-12">
+                <div class="tabs-container">
+                    <ul class="nav nav-tabs">
+                        <li class="active" id="allStu"><a data-toggle="tab" href="#tab-1"
+                                                          aria-expanded="true">全部学生信息</a>
+                        </li>
+                        <li class="" id="notAllStu"><a data-toggle="tab" href="#tab-2"
+                                                       aria-expanded="false">签约未分班学生信息</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div id="tab-1" class="tab-pane active">
+                            <div class="panel-body">
+                                <div id="toolbar_1">
+                                    <form class="form-inline" id="stu_query">
+                                        <div class="col-md-7" style="padding: 0">
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <input type="text" name="class" class="form-control"
+                                                               id="testNoBtn"
+                                                               placeholder=" 班级">
+                                                        <div class="input-group-btn">
+                                                            <button type="button" class="btn btn-white dropdown-toggle"
+                                                                    data-toggle="dropdown">
+                                                                <span class="caret"></span>
+                                                            </button>
+                                                            <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                                            </ul>
+                                                        </div>
+                                                        <!-- /btn-group -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" id="testNoBtn2"
+                                                               name="name"
+                                                               placeholder="姓名">
+                                                        <div class="input-group-btn">
+                                                            <button type="button" class="btn btn-white dropdown-toggle"
+                                                                    data-toggle="dropdown">
+                                                                <span class="caret"></span>
+                                                            </button>
+                                                            <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                                            </ul>
+                                                        </div>
+                                                        <!-- /btn-group -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" id="testNoBtn3"
+                                                               name="school"
+                                                               placeholder="学校">
+                                                        <div class="input-group-btn">
+                                                            <button type="button" class="btn btn-white dropdown-toggle"
+                                                                    data-toggle="dropdown">
+                                                                <span class="caret"></span>
+                                                            </button>
+                                                            <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                                            </ul>
+                                                        </div>
+                                                        <!-- /btn-group -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" id="testNoBtn4"
+                                                               name="college"
+                                                               placeholder="学院">
+                                                        <div class="input-group-btn">
+                                                            <button type="button" class="btn btn-white dropdown-toggle"
+                                                                    data-toggle="dropdown">
+                                                                <span class="caret"></span>
+                                                            </button>
+                                                            <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                                            </ul>
+                                                        </div>
+                                                        <!-- /btn-group -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control datepicker" name="start"
+                                                               placeholder="起始时间"/>
+                                                        <span class="input-group-addon">到</span>
+                                                        <input type="text" class="form-control datepicker" name="end"
+                                                               placeholder="结束时间"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <button class="btn btn-success query" type="button">查询</button>
+                                        </div>
+                                        <div class="col-md-4" style="padding: 0">
+                                            <div style="float: right">
+                                                <button class="btn btn-danger deleteAll" type="button">删除</button>
+                                                <button class="btn btn-info" type="button" data-toggle="modal"
+                                                        data-target="#modal_add">添加
+                                                </button>
+                                                <button class="btn btn-primary export" type="button">导出</button>
+                                                <button class="btn btn-warning to_lead" type="button"
+                                                        data-toggle="modal"
+                                                        data-target="#modal_to_channel">导入
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <table id="tb_departments"></table>
+                            </div>
+                        </div>
+                        <div id="tab-2" class="tab-pane">
+                            <div class="panel-body">
+                                <div id="toolbar">
+                                    <button type="button" class="btn btn-success" data-toggle="modal"
+                                            data-target="#modal_allocation_2">批量班级分配
+                                    </button>
+                                </div>
+<!--                                <table id="tb_departments_2"></table>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--添加-->
+<div class="modal  fade" id="modal_add" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title">添加学生</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post" th:action="@{/user/stuList/addStudent}" class="form-horizontal" id="form_add">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">
+                            学号</label>
+                        <div class="col-sm-8">
+                            <input type="text" id="add_stuNumber" name="stuNumber" class="form-control" placeholder="请输入学号">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">
+                            用户名</label>
+                        <div class="col-sm-8">
+                            <input type="text" id="add_stuName" name="stuName" class="form-control" placeholder="请输入姓名">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">
+                            手机</label>
+                        <div class="col-sm-8">
+                            <input type="text" id="add_stuPhone" name="stuPhone" class="form-control" placeholder="请输入手机号">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">
+                            邮箱</label>
+                        <div class="col-sm-8">
+                            <input type="email" id="add_stuEmail" name="stuEmail" class="form-control" placeholder="请输入邮箱">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">
+                            密码</label>
+                        <div class="col-sm-8">
+                            <input type="password" id="add_stuPwd" name="stuPwd" class="form-control"
+                                   placeholder="请输入密码">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">
+                            有效期</label>
+                        <div class="col-sm-8">
+                            <input type="text" id="add_effectiveDate" name="effectiveDate"
+                                   class="form-control myData_add"
+                                   placeholder="请输入截至日期">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">是否启用</label>
+                        <div class="col-sm-6">
+                            <input type="checkbox" id="add_status" name="status"
+                                   class="js-switch-2 form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">
+                            性别</label>
+                        <div class="col-sm-8">
+                            <label class="control-label">
+                                <input type="radio" checked="checked" value="1" name="add_gender">
+                                <span>男</span>
+                            </label>&nbsp;&nbsp;
+
+                            <label class="control-label">
+                                <input type="radio" value="0" name="add_gender">
+                                <span>女</span>
+                            </label>
+                        </div>
+                    </div>
+<!--                    <div class="form-group">-->
+<!--                        <label class="col-sm-2 control-label">-->
+<!--                            毕业院校</label>-->
+<!--                        <div class="col-sm-8">-->
+<!--                            <input type="text" name="school" disabled="" class="form-control " placeholder="">-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="form-group">-->
+<!--                        <label class="col-sm-2 control-label">-->
+<!--                            省市区</label>-->
+<!--                        <div class="col-sm-8">-->
+<!--                            <input type="text" name="region" disabled="" class="form-control " placeholder="">-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                <button type="button" id="model_add_submit_btn" class="btn btn-primary add">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--模窗 修改-->
+<div class="modal  fade" id="modal_modification" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title">修改</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post" th:action="@{/user/stuList/edit}" class="form-horizontal" id="form_modification">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">
+                            <input type="text" id="edit_id" name="id" hidden>
+                            学号</label>
+                        <div class="col-sm-8">
+                            <input type="text" id="edit_stuNumber" name="stuNumber" disabled="" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">
+                            用户名</label>
+                        <div class="col-sm-8">
+                            <input type="text" id="edit_stuName" name="stuName" class="form-control" placeholder="请输入姓名">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">
+                            手机</label>
+                        <div class="col-sm-8">
+                            <input type="text" id="edit_stuPhone" name="stuPhone" class="form-control" placeholder="请输入手机号">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">
+                            邮箱</label>
+                        <div class="col-sm-8">
+                            <input type="email" id="edit_stuEmail" name="stuEmail" class="form-control" placeholder="请输入邮箱">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">
+                            密码</label>
+                        <div class="col-sm-8">
+                            <input type="password" id="edit_stuPwd" name="stuPwd" class="form-control" placeholder="请输入密码">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">
+                            有效期</label>
+                        <div class="col-sm-8">
+                            <input type="text" id="edit_effectiveDate" name="effectiveDate" class="form-control myData_add"
+                                   placeholder="请输入截至日期">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">是否启用</label>
+                        <div class="col-sm-6">
+                            <input type="checkbox" id="edit_status" name="status" class="js-switch-3 form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">
+                            性别</label>
+                        <div class="col-sm-8">
+                            <label class="control-label">
+                                <input type="radio" value="1" name="edit_gender">
+                                <span>男</span>
+                            </label>&nbsp;&nbsp;
+
+                            <label class="control-label">
+                                <input type="radio" value="0" name="edit_gender">
+                                <span>女</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">
+                            毕业院校</label>
+                        <div class="col-sm-8">
+                            <input type="text" id="edit_school" name="stuSchool" disabled="" class="form-control myData_add" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">
+                            省市区</label>
+                        <div class="col-sm-8">
+                            <input type="text" id="edit_region" name="region" disabled="" class="form-control myData_add" placeholder="">
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary modification">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--分配班级-->
+<div class="modal  fade" id="modal_allocation" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title">分配班级</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="form_allocation_1">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">
+                            学生姓名</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="name" disabled="" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"></label>
+                        <div class="col-sm-8">
+                            <button type="button" class="btn btn-primary allocation">分配班级</button>
+                            <button type="button" class="btn btn-default class_transfer">学生转班</button>
+                        </div>
+                    </div>
+                    <div id="allocation">
+                        <input type="text" id="allc_id_0" name="id" hidden>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">
+                                分配班级</label>
+                            <div class="col-sm-8">
+                                <div class="ibox-content">
+                                    <div class="treeview_allocation"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="class_transfer" style="display:none;">
+                        <input type="text" id="allc_id_1" name="id" hidden>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">
+                                所在班级</label>
+                            <div class="col-sm-8">
+                                <div class="input-group">
+                                    <input type="text" name="class_start" class="form-control" id="testNoBtn6">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-white dropdown-toggle"
+                                                data-toggle="dropdown">
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                        </ul>
+                                    </div>
+                                    <!-- /btn-group -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label class="col-sm-2 control-label">
+                                转到班级</label>
+                            <div class="col-sm-8">
+                                <div class="input-group">
+                                    <input type="text" name="class_end" class="form-control" id="testNoBtn7">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-white dropdown-toggle"
+                                                data-toggle="dropdown">
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                        </ul>
+                                    </div>
+                                    <!-- /btn-group -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label class="col-sm-2 control-label">
+                                相关描述</label>
+                            <div class="col-sm-8">
+                                <textarea class="form-control" name="describe" rows="4"></textarea>
+                                <!-- /btn-group -->
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary save-btn" data-action="allocate">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--分配班级-模块二-->
+<div class="modal  fade" id="modal_allocation_1" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title">分配班级</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="form_allocation_2">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">
+                            学生姓名</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="name" disabled="" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">
+                            分配班级</label>
+                        <div class="col-sm-8">
+                            <div class="ibox-content">
+                                <div class="treeview_allocation"></div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary allocation_2">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--批量分配班级-模块二-->
+<div class="modal  fade" id="modal_allocation_2" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title">分配班级</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="form_allocation_3">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">
+                            分配班级</label>
+                        <div class="col-sm-8">
+                            <div class="ibox-content">
+                                <div class="treeview_allocation"></div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary allocation_3">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--导入-->
+<div class="modal  fade" id="modal_to_channel" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title">批量导入</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post" enctype="multipart/form-data" class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">
+                            选择文件</label>
+                        <div class="col-sm-8">
+                            <input type="file" id="file" name="file" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">
+                            模板下载</label>
+                        <div class="col-sm-8">
+                            <button type="button" class="btn btn-white" title="点我下载xlsx模板" onclick="downloadTemplate()">下载模板</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<!-- 全局js -->
+<script src="../../static/js/jquery.min.js?v=2.1.4"
+        th:src="@{/static/js/jquery.min.js(v=2.1.4) }"></script>
+<script src="../../static/js/bootstrap.min.js?v=3.3.6"
+        th:src="@{/static/js/bootstrap.min.js(v=3.3.6) }"></script>
+<!-- 自定义js -->
+<script src="../../static/js/content.js?v=1.0.0"
+        th:src="@{/static/js/content.js(v=1.0.0) }"></script>
+<!-- Bootstrap table -->
+<script src="../../static/js/plugins/bootstrap-table/bootstrap-table.min.js"
+        th:src="@{/static/js/plugins/bootstrap-table/bootstrap-table.min.js }"></script>
+<script src="../../static/js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"
+        th:src="@{/static/js/plugins/bootstrap-table/bootstrap-table-mobile.min.js }"></script>
+<script src="../../static/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"
+        th:src="@{/static/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js }"></script>
+<!-- 树形控件 -->
+<script src="../../static/js/plugins/treeview/bootstrap-treeview.min.js"
+        th:src="@{/static/js/plugins/treeview/bootstrap-treeview.min.js}"></script>
+<script src="../../static/public/user/treeCheckBox.js"
+        th:src="@{/static/public/user/treeCheckBox.js }"></script>
+<!--动态搜索-->
+<script src="../../static/js/plugins/suggest/bootstrap-suggest.min.js"
+        th:src="@{/static/js/plugins/suggest/bootstrap-suggest.min.js}"></script>
+<script src="../../static/public/user/bsSuggest.js"
+        th:src="@{/static/public/user/bsSuggest.js }"></script>
+<!-- 弹出框插件 -->
+<script src="../../static/js/plugins/sweetalert/sweetalert.min.js"
+        th:src="@{/static/js/plugins/sweetalert/sweetalert.min.js }"></script>
+<!-- 时间控件 -->
+<script src="../../static/public/user/bootstrap-datetimepicker/bootstrap-datetimepicker.js"
+        th:src="@{/static/public/user/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js}"></script>
+<script src="../../static/public/user/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"
+        th:src="@{/static/public/user/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js}"></script>
+<script src="../../static/public/user/timeAllocation.js"
+        th:src="@{/static/public/user/timeAllocation.js }"></script>
+<!--滑动按钮-->
+<script src="../../static/js/plugins/switchery/switchery.js"
+        th:src="@{/static/js/plugins/switchery/switchery.js}"></script>
+<!-- 文件上传 -->
+<script src="../../static/public/user/bootstrap-fileinput/js/fileinput.js" type="text/javascript"
+        th:src="@{/static/public/user/bootstrap-fileinput/js/fileinput.js}"></script>
+<script src="../../static/public/user/bootstrap-fileinput/js/plugins/sortable.js" type="text/javascript"
+        th:src="@{/static/public/user/bootstrap-fileinput/js/plugins/sortable.js}"></script>
+<script src="../../static/public/user/bootstrap-fileinput/themes/explorer/theme.js" type="text/javascript"
+        th:src="@{/static/public/user/bootstrap-fileinput/themes/explorer/theme.js}"></script>
+<script src="../../static/public/user/bootstrap-fileinput/js/locales/zh.js" type="text/javascript"
+        th:src="@{/static/public/user/bootstrap-fileinput/js/locales/zh.js}"></script>
+<!--自定义js---表格操作-->
+<script src="../../static/public/exam/tableOperation.js"
+        th:src="@{/static/public/exam/tableOperation.js}"></script>
+<!--时间控制-->
+<script>
+    $(function () {
+        /*时间控件配置*/
+        let object = '.datepicker';
+        let object1 = '.myData_add';
+        timeAllocationForTime(object);
+        timeAllocationForTime(object1);
+    });
+</script>
+<!--滑动按钮大小控制-->
+<script>
+    //页面如何有多个互动按钮必须需要这些js代码
+    var switchery;
+    let elems = Array.prototype.slice.call($('.js-switch-2'));
+    elems.forEach(function (html) {
+        /* size: 'normal' 控制大小*/
+        switchery = new Switchery(html);
+        html.onchange = function () {
+            //alert(html.checked)
+        }
+    });
+</script>
+
+<!--上传文件控制-->
+<script>
+    //初始化fileinput控件（第一次初始化）
+    function initFileInput(ctrlName, uploadUrl) {
+        var control = $('#' + ctrlName);
+        control.fileinput({
+            language: 'zh', //设置语言
+            uploadUrl: uploadUrl, //上传的地址
+            allowedFileExtensions: ['xls', 'xlsx'],//接收的文件后缀
+            showUpload: true, //是否显示上传按钮
+            showCaption: false,//是否显示标题
+            browseClass: "btn btn-primary", //按钮样式
+            textEncoding: 'UTF-8',//编码格式
+            uploadAsync: false, //默认异步上传
+            showPreview: false, //是否显示预览
+            maxFileCount: 1, //表示允许同时上传的最大文件个数
+            previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
+        });
+
+    }
+
+    //初始化fileinput控件（第一次初始化）
+    initFileInput("file", "/owep/user/stuList/import");
+
+    //下载模板
+    function downloadTemplate() {
+        window.location.href = '/owep/user/stuList/download-template';
+    }
+</script>
+<!--表单数据-->
+<script>
+    $(function () {
+        let TableInit = function () {
+            let oTableInit = new Object();
+            //初始化Table
+            oTableInit.Init = function () {
+                $('#tb_departments').bootstrapTable({
+                    url: '/owep/user/stuList/getTable',       //请求后台的URL（*）
+                    method: 'get',                      //请求方式（*）
+                    toolbar: '#toolbar_1',                //工具按钮用哪个容器
+                    toolbarAlign: "right",
+                    striped: true,                      //是否显示行间隔色
+                    cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                    pagination: true,                   //是否显示分页（*）
+                    sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
+                    pageNumber: 1,                       //初始化加载第一页，默认第一页
+                    pageSize: 10,                       //每页的记录行数（*）
+                    pageList: [5, 10, 15, 20],        //可供选择的每页的行数（*）
+                    minimumCountColumns: 2,             //最少允许的列数
+                    //clickToSelect: true,                //是否启用点击选中行
+                    height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                    uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+                    onPostBody: switchInit,
+                    columns: [{
+                        checkbox: true
+                    }, {
+                        field: 'id',
+                        title: '编号',
+                        visible: false
+                    }, {
+                        field: 'stuNumber',
+                        title: '学号',
+                        color: "red"
+                    }, {
+                        field: 'stuPwd',
+                        title: '密码',
+                        visible: false
+                    }, {
+                        field: 'stuName',
+                        title: '用户名',
+                        visible: false
+                    }, {
+                        field: 'stuRealName',
+                        title: '姓名'
+                    }, {
+                        field: 'gender',
+                        title: '性别'
+                    }, {
+                        field: 'stuPhone',
+                        title: '手机'
+                    }, {
+                        field: 'stuEmail',
+                        title: '邮箱'
+                    }, {
+                        field: 'status',
+                        title: '有效状态',
+                        formatter: addSlideChoiceBox
+                    }, {
+                        field: 'lastAccessTime',
+                        title: '最后登陆时间'
+                    }, {
+                        field: 'effectiveDate',
+                        title: '有效期',
+                        visible: false
+                    }, {
+                        field: 'stuSchool',
+                        title: '学校',
+                        visible: false
+                    }, {
+                        field: 'operate',
+                        title: '操作',
+                        width: 150,
+                        formatter: addFunctionAlty,//表格中增加按钮  
+                        events: {
+                            'click button[title=删除]': function (e, value, row, index) {//动态嵌入按键：删除
+                                console.log(row);
+                                deleteRecord(e, value, row, index, "/owep/user/stuList/delete", '#tb_departments');
+
+
+                            },
+
+                            'click button[title=修改]': function (e, value, row, index) {
+                                //回显数据
+                                echoDataForm_2('form[id="form_modification"]', new Array('id', 'stuNumber',
+                                    'stuPwd', 'stuName', 'stuPhone', 'stuEmail', 'effectiveDate',
+                                    'status', 'gender', 'stuSchool'
+                                ), row);
+                                $('#modal_modification').modal();
+                            },
+
+                            'click button[title=分配班级]': function (e, value, row, index) {
+                                //回显数据
+                                $('form[id="form_allocation_1"] input[name="name"]').val(row.stuName);
+                                $("#allc_id_1").val(row.id);
+                                getClass();
+                                $("#allc_id_0").val(row.id);
+                                getTreeView();
+                                $('#modal_allocation').modal();
+                            },
+                        }
+                    }]
+                });
+
+                let $treeview = $('.treeview_allocation');
+                function getTreeView() {
+                    let url = "/owep/user/stuList/treeCheck";
+                    let id = $("#allc_id_0").val();
+                    initCheckTree($treeview, url,id);
+                }
+
+                function getClass() {
+                    let studentId = $("#allc_id_1").val();
+                    // 获取学生所在班级并填充
+                    $.get(`/owep/user/stuList/inClass?studentId=${studentId}`, function(className) {
+                        $('#testNoBtn6').val(className);
+                    });
+
+                    let otherClassUrl = `/owep/user/stuList/otherClassSuggest?studentId=${studentId}`;
+                    // 销毁现有的 bsSuggest 实例
+                    $("#testNoBtn7").bsSuggest('destroy');
+
+                    /*转班*/
+                    $("#testNoBtn7").bsSuggest({
+                        url: otherClassUrl,
+                        showBtn: true,
+                        getDataMethod: "firstByUrl",
+                        idField: "id",
+                        keyField: "className",
+                        effectiveFields: ["className"],
+                        searchFields:["className"]
+                    });
+                }
+
+                /*修改提交表单*/
+                $('.modification').click(function () {
+                    let id = $("#edit_id").val();
+                    let stuNumber=$("#edit_stuNumber").val();
+                    let stuName=$("#edit_stuName").val();
+                    let stuPhone=$("#edit_stuPhone").val();
+                    let stuEmail=$("#edit_stuEmail").val();
+                    let stuPwd=$("#edit_stuPwd").val();
+                    let effectiveDate=$("#edit_effectiveDate").val();
+                    let status = $("#edit_status").is(":checked");
+                    let gender = $("input[name='edit_gender']:checked").val();
+
+                    console.log("status"+status);
+                    if(status){
+                        status = 1;
+                    }else{
+                        status = 0;
+                    }
+                    let stuData={
+                        id:id,
+                        stuNumber:stuNumber,
+                        stuName:stuName,
+                        stuPhone:stuPhone,
+                        stuEmail:stuEmail,
+                        stuPwd:stuPwd,
+                        effectiveDate:effectiveDate,
+                        status:status,
+                        gender:gender
+
+                    };
+                    console.log(stuData);
+                    let stuJson=JSON.stringify(stuData);
+
+                    $.ajax({
+                        method:"post",
+                        url:"/owep/user/stuList/edit",
+                        async: "true",
+                        data:stuJson,
+                        dataType:"text",
+                        contentType:"application/json",
+                        success:function(feedback){
+                            alert(feedback);
+                            window.location.reload();
+                        },
+                        error: function (jqXRH) {
+                            console.log(jqXRH);
+                            alert("修改未成功")
+                        }
+                    })
+                })
+            };
+            /*滑动按钮初始化*/
+            let switchInit = function (value, row, index) {
+                //页面如何有多个互动按钮必须需要这些js代码
+                let elems = Array.prototype.slice.call($('.js-switch'));
+                elems.forEach(function (html) {
+                    /* size: 'normal' 控制大小*/
+                    var switchery = new Switchery(html);
+                    html.onchange = function () {
+                        let stuId = $(this).attr("stuId");
+                        let status;
+                        if(html.checked==true){
+                            alert("用户启用"+stuId);
+                            status = 1;
+                        }else{
+                            alert("禁用用户"+stuId);
+                            status = 0;
+                        }
+                        let switch_data ={
+                            stuId: stuId,
+                            status: status
+                        };
+                        //ajax
+                        $.ajax({
+                            url: "/owep/user/stuList/switch",
+                            method: "get",
+                            async: true,
+                            data:switch_data,
+                            dataType: "text",   //期望服务端返回的数据类型
+                            //contentType: "application/json",
+                            success: function (data) {
+                                if(data == "success"){
+                                    swal("同步成功！", "用户状态已同步", "success");
+                                    //刷新页面
+                                    $('#tb_departments').bootstrapTable('refresh');
+                                }else{
+                                    swal("同步失败！", "请稍后重试", "error");
+                                }
+                            },
+                            error: function (jqXHR) {
+                                swal("同步失败！", "请稍后重试", "error");
+                            }
+                        });
+                    }
+                });
+            }
+
+            function addSlideChoiceBox(value, row, index) {
+                if (value == '1') {
+                    return ' <input type="checkbox" class="js-switch form-control" stuId="'+row.id+'" checked/>'
+                }
+                if (value == '0') {
+                    return ' <input type="checkbox" class="js-switch form-control" stuId="'+row.id+'" />'
+                }
+            }
+
+            function addFunctionAlty(value, row, index) {
+                return '<button id = "+id+" type = "button" class = "btn btn-white" title="修改" ' +
+                    '> <i class="glyphicon glyphicon-edit"/> </button>' +
+                    '<button id = "+id+" type = "button" class = "btn btn-white" title="删除"> <i class="glyphicon glyphicon-trash text-danger"/> </button>' +
+                    '<button id = "+id+" type = "button" class = "btn btn-white" title="分配班级"' +
+                    ' > <i class="glyphicon glyphicon-share text-success"/> </button>'
+                    ;
+            }
+
+            function addFunctionAlty_1(value, row, index) {
+                return '<button id = "+id+" type = "button" class = "btn btn-white" title="修改" ' +
+                    '> <i class="glyphicon glyphicon-edit"/> </button>' +
+                    '<button id = "+id+" type = "button" class = "btn btn-white" title="删除"> <i class="glyphicon glyphicon-trash text-danger"/> </button>' +
+                    '<button id = "+id+" type = "button" class = "btn btn-white" title="分配班级"' +
+                    '> <i class="glyphicon glyphicon-share text-success"/> </button>'
+                    ;
+            }
+
+            //得到查询的参数
+            oTableInit.queryParams = function (params) {
+                var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+                    limit: params.limit,   //页面大小
+                    offset: params.offset,  //页码
+                    departmentname: $("#txt_search_departmentname").val(),
+                    statu: $("#txt_search_statu").val()
+                };
+                return temp;
+            };
+            return oTableInit;
+        };
+
+        //1.初始化Table
+        TableInit().Init();
+
+
+
+        $('.allocation_2').click(function () {
+            $('#form_allocation_2').submit();
+        });
+        $('.allocation_3').click(function () {
+            $('#form_allocation_3').submit();
+        });
+
+
+
+
+        $('.query').click(function () {
+            let dataList = new Array('class', 'name', 'school', 'college', 'start', 'end');
+            let url = "/owep/user/stuList/search";
+            queryRecords('form[id="stu_query"]', dataList, url);
+        });
+
+        /*导出按钮操作*/
+        $('.export').click(function () {
+            exportRecord("/owep/user/stuList/export", "学生信息")
+        });
+    });
+    /**
+    * 显示下拉按钮
+    */
+
+    let stuUrl = "/owep/user/stuList/stuSuggest";
+    let classUrl = "/owep/user/stuList/classSuggest";
+    /*班级*/
+    bsSuggest("#testNoBtn", classUrl, "className");
+    /*姓名*/
+    bsSuggest("#testNoBtn2", stuUrl, "stuRealName");
+    /*学校*/
+    bsSuggest("#testNoBtn3", stuUrl, "stuSchool");
+    /*学院*/
+    bsSuggest("#testNoBtn4", stuUrl, "stuCollege");
+    /*客服归属*/
+    //bsSuggest("#testNoBtn5", url, "customerBelongs");
+
+
+    function echoDataForm_2(eventParentName, echoDataList, row) {
+        // console.log(eventParentName);
+        // console.log(echoDataList);
+        // console.log(row);
+
+        function value(item, row) {
+            console.log("item:"+item);
+            let value = "";
+            for (let i in row) {
+
+                if(i === item ){
+                    console.log("i："+i);
+                    value = row[i];
+                } //从row中找item,找到则复制值
+            }
+            value === "" ? value = item : "";//值若为空(row中没有对应值)，用item顶位
+            console.log("value"+value);
+            return value;
+        }
+
+            echoDataList.forEach(function (item, index) {
+                if (item === "gender") { //性别特别处理
+                    let gender_val = value("gender", row); // 获取性别的值
+
+                    // 首先清除所有性别的单选按钮选择
+                    $(eventParentName + ' input[name="edit_gender"]').prop('checked', false);
+
+                    // 根据性别的值选择相应的单选按钮
+                    if (gender_val === "男") {
+                        $(eventParentName + ' input[name="edit_gender"][value="1"]').prop('checked', true);
+                    } else if (gender_val === "女") {
+                        $(eventParentName + ' input[name="edit_gender"][value="0"]').prop('checked', true);
+                    }
+                } else if (item === "status") {
+                let status_val = value("status", row);
+                let checkbox = $(eventParentName + ' .js-switch-3')[0];
+
+                // 移除之前的Switchery DOM元素和事件监听器
+                if ($(checkbox).next().hasClass('switchery')) {
+                    $(checkbox).next().remove();
+                    $(checkbox).removeAttr('data-switchery');
+                }
+
+                // 为特定的checkbox创建Switchery实例
+                let switchery = new Switchery(checkbox);
+
+                if (status_val == 1) {
+                    checkbox.checked = true;
+                } else {
+                    checkbox.checked = false;
+                }
+
+                // 更新Switchery的状态
+                switchery.setPosition(false); // 这将会更新滑动按钮的视觉状态，不会触发onChange事件
+            } else {
+                    $(eventParentName + ' input[name=\"' + item + '\"]').val(value(item, row));//其他普通文本
+                }
+        });
+    }
+
+    /*查询记录操作*/
+    function queryRecords_2(eventParentName, dataList, url) {
+        let queryList = dataList;
+        let queryMap = new Map();
+        let queryNullList = new Array()
+        queryList.forEach(function (item, index) {
+            let event = $('' + eventParentName + ' input[name=' + item + ']');
+            event.val() == "" ?
+                queryNullList.push($('' + eventParentName + ' input[name=' + item + ']'))
+                : queryMap.set(event.attr('name'), event.val());
+        })
+
+        let formData="";
+        queryMap.forEach(function (value, key){
+            formData += key +'='+value +'&';
+        });
+        formData = formData.substr(0,formData.length - 1);
+
+        //静态假数据
+        /*let fakeData = [
+            {id: 1, userName: 'John', realName: 'John', userPhone: 18812345678, userEmail: "zch@163.com", status: 1, lastAccessTime: "2019-01-01"},
+            //...可以添加更多的假数据...
+        ];*/
+        //发送ajax 查询
+        $.ajax({
+            url: url,
+            method: "get",
+            async: true,
+            data:formData,
+            dataType: "json",   //期望服务端返回的数据类型
+            success: function (data) {
+                let jsonString = JSON.stringify(data.data);
+                console.log("这是Result里的data数据:"+jsonString);
+                if (data.status === "701") {
+                    $('#tb_departments').bootstrapTable("load", []);  // 清空表格数据
+                } else if (data.status === "200") {
+                    $('#tb_departments').bootstrapTable("load", data.data); // 修复了这里
+                }
+            },
+            error: function (jqXHR) {
+                swal("搜索失败！", "未知错误", "error");
+            }
+        });
+
+        if (queryNullList.length > 0) {
+            swal("搜索失败", "搜索数据不允许为空", "error");
+        } else {
+            swal("搜索成功！", "已为你重新加载数据", "success")
+        }
+        queryMap.forEach(function (key,value) {
+            console.log(value);
+            $(''+eventParentName+' input[name='+value+']').css('border-color',"");
+        })
+    }
+</script>
+<!--分配按钮切换-->
+<script>
+    $(function () {
+        // 当模态框显示时，设置默认状态
+        $('#modal_allocation').on('show.bs.modal', function (e) {
+            resetModal();
+        });
+
+        // 当模态框隐藏时，重置模态框状态
+        $('#modal_allocation').on('hide.bs.modal', function (e) {
+            resetModal();
+        });
+
+        function resetModal() {
+            $('.save-btn').attr('data-action', 'allocate');
+            $('.save-btn').text('分配');
+
+            $('.class_transfer').attr("class", "btn btn-default class_transfer");
+            $('#class_transfer').css("display", "none");
+            $('.allocation').attr("class", "btn btn-primary allocation");
+            $('#allocation').css("display", "");
+        }
+
+        $('.allocation').click(function () {
+            // 设置保存按钮的 data-action 属性和文本
+            $('.save-btn').attr('data-action', 'allocate');
+            $('.save-btn').text('分配');
+
+            $('.class_transfer').attr("class", "btn btn-default class_transfer");
+            $('#class_transfer').css("display", "none");
+            $('.allocation').attr("class", "btn btn-primary allocation");
+            $('#allocation').css("display", "");
+        });
+
+        $('.class_transfer').click(function () {
+            // 设置保存按钮的 data-action 属性和文本
+            $('.save-btn').attr('data-action', 'transfer');
+            $('.save-btn').text('转班');
+
+            $('.allocation').attr("class", "btn btn-default allocation");
+            $('#allocation').css("display", "none");
+            $('.class_transfer').attr("class", "btn btn-primary class_transfer");
+            $('#class_transfer').css("display", "");
+        });
+
+        $('.save-btn').click(function () {
+            var action = $(this).attr('data-action');
+            let $treeview = $('.treeview_allocation');
+            if(action === 'allocate') {
+                // 这里添加分配班级的代码
+                let stuId = $("#allc_id_0").val();
+                let classId;
+                console.log("stuId:" + stuId);
+                let check = $treeview.treeview('getChecked');
+                console.log("Checked items:", check); // 打印整个 check 数组
+                if(check.length === 0) {
+                    console.log("No items checked."); // 如果没有选中的项，则打印
+                }
+                $.each(check, function (index, item) {
+                    console.log("Checking item:", item); // 打印整个项目来查看其结构
+                    if (item.parentId!==undefined) {
+                        console.log("Item with parentId:", item); // 如果 item 有 parentId，则打印
+                        if (item.tags) {
+                            console.log("Tags:", item.tags); // 如果 tags 存在且有值，则打印
+                        } else {
+                            console.log("No tags available for this item."); // 如果没有 tags，则打印
+                        }
+                        classId = item.tags;
+                    }
+                });
+                if (classId === undefined) {
+                    swal("请选择班级", "", "warning");
+                    return;
+                } else if (check.length > 1) {
+                    swal("只能选择一个班级", "", "warning");
+                    return;
+                }
+                console.log("classId:" + classId);
+                $.ajax({
+                    url: "/owep/user/stuList/allocation",
+                    type: "post",
+                    data: {
+                        "stuId": stuId,
+                        "classId": classId
+                    },
+                    dataType: "text",
+                    success: function (data) {
+                        console.log("data1:" + data);
+                        if (data === "success") {
+                            swal("分配成功!", "", "success");
+                            //$('#allocation').modal('hide');
+                            //$('#table').bootstrapTable('refresh');
+                        } else if (data === "failure") {
+                            swal("分配失败!", "已经存在班级", "info");
+                        }
+                    },
+                    error: function (jqXRH) {
+                        console.log(jqXRH.status);
+                        swal("分配失败!", "未知错误", "error");
+                    }
+                });
+            } else if(action === 'transfer') {
+                // 这里添加学生转班的代码
+                let stuId = $("#allc_id_1").val();
+                let className = $("#testNoBtn7").val();
+                console.log("stuId:" + stuId);
+                console.log("className:" + className);
+                $.ajax({
+                    url: "/owep/user/stuList/transfer",
+                    type: "post",
+                    data: {
+                        "stuId": stuId,
+                        "className": className
+                    },
+                    success: function (data) {
+                        if (data === "success") {
+                            swal("转班成功!", "", "success");
+                        } else if (data === "existFalse") {
+                            swal("转班失败!", "没有该班级", "error");
+                        } else if (data === "failure") {
+                            swal("转班失败！", "未知错误，请联系管理员", "error");
+                        }
+                    },
+                    error: function (jqXRH) {
+                        console.log(jqXRH.status);
+                        swal("转班失败!", "未知错误", "error");
+                    }
+                })
+            }
+        });
+    });
+</script>
+
+<!--右上角按钮对的监听处理-->
+<script>
+    $(document).ready(function () {
+    /*删除多个按钮操作*/
+       $('.deleteAll').click(function () {
+           deleteAllRecords("/owep/user/stuList/deleteByGroup", '#tb_departments')
+       });
+        /*重名验证和添加提交表单*/
+        let $add_submit_btn = $('#model_add_submit_btn');
+        $add_submit_btn.click(function () {
+            let stuNumber=$("#add_stuNumber").val();
+            let stuName = $("#add_stuName").val();
+            let stuPhone = $("#add_stuPhone").val();
+            let stuEmail = $("#add_stuEmail").val();
+            let stuPwd = $("#add_stuPwd").val();
+            let effectiveDate = $("#add_effectiveDate").val();
+            let status = $("#add_status").is(":checked");
+            let gender = $("input[name='add_gender']:checked").val();
+
+            console.log("status:"+status);
+            if(status){
+                status = 1;
+            }else{
+                status = 0;
+            }
+
+            let stuData = {
+                stuNumber:stuNumber,
+                stuName: stuName,
+                stuPhone: stuPhone,
+                stuEmail: stuEmail,
+                stuPwd: stuPwd,
+                effectiveDate: effectiveDate,
+                status: status,
+                gender: gender
+            };
+            console.log(stuData);
+            let stuJson = JSON.stringify(stuData);
+            //
+            $.ajax({
+                url: "/owep/user/adminList/checkStuNameAndStuNum",
+                type: "post",
+                data: {
+                    stuName: stuName,
+                    stuNumber:stuNumber
+                },
+                success: function (data) {
+                    console.log("data:" + data);
+                    if (data === "nameFalse") {
+                        swal({
+                            title: "添加失败",
+                            text: "用户名已存在",
+                            type: "warning",
+                            confirmButtonColor: "#FFA07A",
+                            confirmButtonText: "确定",
+                            closeOnConfirm: false
+                        });
+                        //
+                        return; }
+                    else if (data === "numFalse") {
+                        swal({
+                            title: "添加失败",
+                            text: "学号已存在",
+                            type: "warning",
+                            confirmButtonColor: "#FFA07A",
+                            confirmButtonText: "确定",
+                            closeOnConfirm: false
+                        });
+                        //
+                        return; }
+                    /*添加提交表单*/
+                    $.ajax({
+                        method: "POST",
+                        url: "/owep/user/stuList/addStudent",
+                        async: "true",
+                        data: stuJson,
+                        dataType: "text",
+                        contentType: "application/json",
+                        success: function (feedback) {
+                            alert(feedback);
+                            window.location.reload();
+                        },
+                        error: function (jqXRH) {
+                            console.log(jqXRH);
+                            alert("添加未成功")
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
+</html>

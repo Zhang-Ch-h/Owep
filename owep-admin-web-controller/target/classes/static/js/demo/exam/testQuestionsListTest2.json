@@ -1,0 +1,34 @@
+{
+  "message": "",
+  "value": [
+    {
+      "id": "1",
+      "testPaperName":"三年高考，六年模拟",
+      "state": "正常",
+      "type": "普通试卷",
+      "classification":"统考",
+      "adminPermissions": "完全私有",
+      "trySorting": "固定排序",
+      "paperShow": "整卷展示",
+      "announcedAnswer": "公布答案(公布成绩后，同时公布正确答案)",
+      "checkDetails": "允许 考生查看历史答卷详情"
+    },
+    {
+      "id": "2",
+      "state": "禁用",
+      "type": "随机试卷",
+      "classification":"个人能力考试",
+      "adminPermissions": "只读共享",
+      "trySorting": "随机排序",
+      "paperShow": "单题展示",
+      "announcedAnswer": "不公布答案(公布成绩后，不公布正确答案)",
+      "checkDetails": "不允许 考生查看历史答卷详情"
+    },
+    {
+      "id": "3",
+      "classification":"政策"
+    }
+  ],
+  "code": 200,
+  "redirect": ""
+}

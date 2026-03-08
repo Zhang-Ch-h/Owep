@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kclm.owep.mapper.TeacherPollMapper">
+    <resultMap id="BaseMap" type="TeacherPoll">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="teacher_name" jdbcType="VARCHAR" property="teacherName" />
+        <result column="class_name" jdbcType="VARCHAR" property="className" />
+        <result column="poll_address" jdbcType="VARCHAR" property="pollAddress" />
+        <result column="poll_grade" jdbcType="VARCHAR" property="pollGrade" />
+        <result column="effective_time" jdbcType="TIMESTAMP" property="effectiveTime" />
+        <result column="poll_status" jdbcType="VARCHAR" property="pollStatus" />
+        <result column="poll_count" jdbcType="VARCHAR" property="pollCount" />
+        <result column="poll_suggest" jdbcType="VARCHAR" property="pollSuggest" />
+        <result column="allow_ip" jdbcType="VARCHAR" property="allowIp" />
+        <result column="ip_limit" jdbcType="INTEGER" property="ipLimit" />
+        <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+        <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="version" jdbcType="INTEGER" property="version" />
+        <result column="last_access_time" jdbcType="TIMESTAMP" property="lastAccessTime" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, teacher_name, class_name, poll_address, poll_grade, effective_time, poll_status,
+        poll_count, poll_suggest, allow_ip, ip_limit, start_time, end_time, create_time, version, last_access_time
+    </sql>
+
+    <insert id="insertByUser">
+        insert into t_teacher_poll(teacher_name, fk_user_id, effective_time) values (#{name}, #{id}, #{effectiveTime})
+    </insert>
+</mapper>

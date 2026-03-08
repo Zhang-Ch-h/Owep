@@ -1,0 +1,38 @@
+[
+  {
+    "id": "1",
+    "question_bank": "开发",
+    "hints": "考试用",
+    "status": "禁用",
+    "question_size": "1",
+    "authority_management": "完全私有",
+    "founder": "admin",
+    "modified_by": "admin",
+    "creation_time": "2020-06-16 17:14:34",
+    "change_modified": "2020-06-16 17:14:34"
+  },
+  {
+    "id": "2",
+    "question_bank": "开发",
+    "hints": "测试",
+    "status": "禁用",
+    "question_size": "1",
+    "authority_management": "只读共享",
+    "founder": "admin",
+    "modified_by": "admin",
+    "creation_time": "2020-06-16 17:14:34",
+    "change_modified": "2020-06-16 17:14:34"
+  },
+  {
+    "id": "3",
+    "question_bank": "开发",
+    "hints": "考试用",
+    "status": "正常",
+    "question_size": "1",
+    "authority_management": "完全私有",
+    "founder": "admin",
+    "modified_by": "admin",
+    "creation_time": "2020-06-16 17:14:34",
+    "change_modified": "2020-06-16 17:14:34"
+  }
+]

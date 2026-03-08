@@ -1,0 +1,69 @@
+[
+  {
+    "text": "包含行为",
+    "href": "#action0",
+    "tags": ["0"],
+    "nodes": [
+      {
+        "text": "发送邮件",
+        "href": "#action1",
+        "tags": ["1"]
+      },
+      {
+        "text": "跟进记录",
+        "href": "#action2",
+        "tags": ["2"]
+      },
+      {
+        "text": "视频设置",
+        "href": "#action3",
+        "tags": ["3"]
+      },
+      {
+        "text": "分配客户",
+        "href": "#action4",
+        "tags": ["4"]
+      },
+      {
+        "text": "签约",
+        "href": "#action5",
+        "tags": ["5"]
+      },
+      {
+        "text": "转班记录",
+        "href": "#action6",
+        "tags": ["6"]
+      },
+      {
+        "text": "拒绝",
+        "href": "#action7",
+        "tags": ["7"]
+      },
+      {
+        "text": "拒绝请假",
+        "href": "#action8",
+        "tags": ["8"]
+      },
+      {
+        "text": "评价",
+        "href": "#action9",
+        "tags": ["9"]
+      },
+      {
+        "text": "审批",
+        "href": "#action10",
+        "tags": ["10"]
+      },
+      {
+        "text": "批改",
+        "href": "#action11",
+        "tags": ["11"]
+      },
+      {
+        "text": "详情",
+        "href": "#action12",
+        "tags": ["12"]
+      }
+    ]
+  }
+]

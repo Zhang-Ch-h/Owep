@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC
+        "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+
+    <!--数据库驱动jar包的真实路径 -->
+    <classPathEntry
+            location="D:\BuildTool\maven\repos\mysql\mysql-connector-java\8.0.20\mysql-connector-java-8.0.20.jar"/>
+
+    <context id="context" targetRuntime="MyBatis3">
+
+        <!-- 自动识别数据库关键字，默认false，如果设置为true，根据SqlReservedWords中定义的关键字列表； 一般保留默认值，遇到数据库关键字（Java关键字），使用columnOverride覆盖 -->
+        <property name="autoDelimitKeywords" value="false" />
+        <!-- 生成的Java文件的编码 -->
+        <property name="javaFileEncoding" value="UTF-8" />
+        <!-- 格式化java代码 -->
+        <property name="javaFormatter"
+                  value="org.mybatis.generator.api.dom.DefaultJavaFormatter" />
+        <!-- 格式化XML代码 -->
+        <property name="xmlFormatter"
+                  value="org.mybatis.generator.api.dom.DefaultXmlFormatter" />
+
+        <!-- beginningDelimiter和endingDelimiter：指明数据库的用于标记数据库对象名的符号，比如ORACLE就是双引号，MYSQL默认是`反引号； -->
+        <property name="beginningDelimiter" value="`" />
+        <property name="endingDelimiter" value="`" />
+
+        <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+        <commentGenerator>
+            <!-- 消除所有的注释 -->
+            <property name="suppressAllComments" value="true"/>
+            <property name="suppressDate" value="true"/>
+        </commentGenerator>
+
+        <!--数据库连接的信息：驱动类、连接地址、用户名、密码 -->
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://127.0.0.1:3306/owep-dev-base1?useUnicode=true&amp;characterEncoding=utf8&amp;serverTimezone=GMT%2B8&amp;useSSL=false"
+                        userId="root"
+                        password="123456">
+            <!--预防不同数据库中有名字相同的表-->
+            <property name="nullCatalogMeansCurrent" value="true"/>
+        </jdbcConnection>
+        <!-- 默认false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer，为 true时把JDBC DECIMAL 和
+            NUMERIC 类型解析为java.math.BigDecimal -->
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <!--指定包名生成实体类 以及生成的地址 （可以自定义地址，如果路径不存在会自动创建） -->
+        <javaModelGenerator targetPackage="com.kclm.owep.entity" targetProject="D:\学习工作区\1.codeArea\3.JavaEE_Workspace\2.ProjectCase\owep\owep-admin-entity\src\main\java">
+            <!-- enableSubPackages:是否让schema作为包的后缀 -->
+            <property name="enableSubPackages" value="false"/>
+            <!-- 从数据库返回的值被清理前后的空格 -->
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!-- !!!! Mapper XML Configurations !!!! -->
+        <sqlMapGenerator targetPackage="mybatis\mapper" targetProject=".\src\main\resources">
+            <property name="enableSubPackages" value="false"/>
+        </sqlMapGenerator>
+
+        <!-- !!!! Mapper Interface Configurations !!!! -->
+        <javaClientGenerator targetPackage="com.kclm.owep.mapper" targetProject=".\src\main\java"
+                             type="XMLMAPPER">
+            <property name="enableSubPackages" value="false"/>
+        </javaClientGenerator>
+
+        <!-- 指定数据库和表  domainObjectName="User" 指定表生成对应的实体类名-->
+        <table schema="" tableName="t_action" domainObjectName="Action"></table>
+        <table schema="" tableName="t_advice" domainObjectName="Advice"></table>
+        <table schema="" tableName="t_assign_record" domainObjectName="AssignRecord"></table>
+        <table schema="" tableName="t_branch_institute" domainObjectName="BranchInstitute"></table>
+        <table schema="" tableName="t_channel" domainObjectName="Channel"></table>
+        <table schema="" tableName="t_channel_type" domainObjectName="ChannelType"></table>
+        <table schema="" tableName="t_chapter" domainObjectName="Chapter"></table>
+        <table schema="" tableName="t_class" domainObjectName="Clazz"></table>
+        <!-- t_class_planmanager 不需要实体类，它是中间表 -->
+        <table schema="" tableName="t_class_question" domainObjectName="ClassQuestion"></table>
+        <!-- t_class_resource 不需要实体类，它是中间表 -->
+        <table schema="" tableName="t_client" domainObjectName="Client"></table>
+        <table schema="" tableName="t_client_note" domainObjectName="ClientNote"></table>
+        <table schema="" tableName="t_course" domainObjectName="Course"></table>
+        <table schema="" tableName="t_course_category" domainObjectName="CourseCategory"></table>
+        <table schema="" tableName="t_course_comment" domainObjectName="CourseComment"></table>
+        <table schema="" tableName="t_course_report" domainObjectName="CourseReport"></table>
+        <table schema="" tableName="t_db_copy" domainObjectName="DbCopy"></table>
+        <table schema="" tableName="t_evaluate" domainObjectName="Evaluate"></table>
+        <table schema="" tableName="t_group" domainObjectName="Group"></table>
+        <!-- t_group_role 不需要实体，它是中间表-->
+        <table schema="" tableName="t_homework" domainObjectName="Homework"></table>
+        <table schema="" tableName="t_homework_answer" domainObjectName="HomeworkAnswer"></table>
+        <table schema="" tableName="t_illegal" domainObjectName="Illegal"></table>
+        <table schema="" tableName="t_leave" domainObjectName="Leave"></table>
+        <table schema="" tableName="t_menu" domainObjectName="Menu"></table>
+        <!-- t_menu_action_per 不需要实体类 -->
+        <table schema="" tableName="t_message" domainObjectName="Message"></table>
+        <table schema="" tableName="t_news" domainObjectName="News"></table>
+        <table schema="" tableName="t_notice" domainObjectName="Notice"></table>
+        <table schema="" tableName="t_org_institute" domainObjectName="OrgInstitute"></table>
+        <!-- t_perm_menu 不需要实体类 -->
+        <table schema="" tableName="t_permission" domainObjectName="Permission"></table>
+        <table schema="" tableName="t_planmanager" domainObjectName="PlanManager"></table>
+        <table schema="" tableName="t_planmanager_course" domainObjectName="PlanManagerCourse"></table>
+        <table schema="" tableName="t_poll_item" domainObjectName="PollItem"></table>
+        <table schema="" tableName="t_poll_record" domainObjectName="PollRecord"></table>
+        <table schema="" tableName="t_poll_template" domainObjectName="PollTemplate"></table>
+        <table schema="" tableName="t_profession" domainObjectName="Profession"></table>
+        <table schema="" tableName="t_question_reply" domainObjectName="QuestionReply"></table>
+        <table schema="" tableName="t_resource" domainObjectName="Resource"></table>
+        <table schema="" tableName="t_resource_type" domainObjectName="ResourceType"></table>
+        <table schema="" tableName="t_role" domainObjectName="Role"></table>
+        <!--  t_role_permission 中间表，无需实体类-->
+        <table schema="" tableName="t_section" domainObjectName="Section"></table>
+        <table schema="" tableName="t_section_video" domainObjectName="SectionVideo"></table>
+        <table schema="" tableName="t_student" domainObjectName="Student"></table>
+        <table schema="" tableName="t_student_note" domainObjectName="StudentNote"></table>
+        <table schema="" tableName="t_student_report" domainObjectName="StudentReport"></table>
+        <table schema="" tableName="t_studyrecord" domainObjectName="StudyRecord"></table>
+        <table schema="" tableName="t_syslog" domainObjectName="SystLog"></table>
+        <table schema="" tableName="t_system_config" domainObjectName="SystemConfig"></table>
+        <table schema="" tableName="t_teacher_poll" domainObjectName="TeacherPoll"></table>
+        <!-- t_template_item 不需要，它是中间表 -->
+        <table schema="" tableName="t_user" domainObjectName="User"></table>
+        <!-- t_user_group 不需要 -->
+        <table schema="" tableName="t_video" domainObjectName="Video"></table>
+        <table schema="" tableName="t_video_collect" domainObjectName="VideoCollect"></table>
+        <table schema="" tableName="t_question" domainObjectName="Question"></table>
+        <table schema="" tableName="t_question_reply" domainObjectName="QuestionReply"></table>
+        <table schema="" tableName="t_videowatch_history" domainObjectName="VideoWatchHistory"></table>
+        <table schema="" tableName="t_videowatch_record" domainObjectName="VideoWatchRecord"></table>
+
+        <!--<table schema="db_wechat" tableName="t_automessage"
+               enableCountByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false" enableUpdateByExample="false"/>
+        <table schema="db_wechat" tableName="t_command"
+               enableCountByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false" enableUpdateByExample="false"/>-->
+    </context>
+</generatorConfiguration>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kclm.owep.mapper.ConfigDataMapper">
+    <update id="updateNameAndInfo">
+        update t_system_config
+        <set>
+            <if test="name != null and name != ''">
+                system_name = #{name},
+            </if>
+            <if test="info != null and info != ''">
+                copy_name = #{info},
+            </if>
+        </set>
+        where id = 1
+    </update>
+
+    <update id="insertLoginImage">
+        update t_system_config
+        <set>
+            <if test="name != null and name != ''">
+                login_page_logo = #{name}
+            </if>
+        </set>
+        where id = 1
+    </update>
+
+    <update id="insertSystemImage">
+        update t_system_config
+        <set>
+            <if test="name != null and name != ''">
+                system_page_logo = #{name}
+            </if>
+        </set>
+        where id = 1
+    </update>
+
+    <select id="selectPage" resultType="SystemConfig">
+        select system_name, copy_name, login_page_logo, system_page_logo
+        from t_system_config
+        where id = 1
+    </select>
+</mapper>

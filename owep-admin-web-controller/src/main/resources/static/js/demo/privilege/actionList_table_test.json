@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "actionName": "发送邮件",
+    "actionDescription": "发送邮件"
+  },
+  {
+    "id": 2,
+    "actionName": "跟进记录",
+    "actionDescription": "跟进记录"
+  },
+  {
+    "id": 3,
+    "actionName": "视频设置",
+    "actionDescription": "视频设置"
+  },
+  {
+    "id": 4,
+    "actionName": "分配客户",
+    "actionDescription": "分配客户"
+  },
+  {
+    "id": 5,
+    "actionName": "签约",
+    "actionDescription": "签约"
+  },
+  {
+    "id": 10,
+    "actionName": "转班记录",
+    "actionDescription": "转班记录"
+  }
+]

@@ -1,0 +1,46 @@
+[
+  {
+    "text": "系统配置",
+    "href": "#ro1",
+    "tags": [0],
+    "state": {
+      "selected": false,
+      "expanded": true
+    },
+    "nodes": [
+      {
+        "text": "参数信息",
+        "href": "#ro2",
+        "tags": [1]
+      },
+      {
+        "text": "资料配置",
+        "href": "#ro3",
+        "tags": [2]
+      },
+      {
+        "text": "数据库备份",
+        "href": "#ro4",
+        "tags": [3]
+      }
+    ]
+  },
+  {
+    "text": "用户管理",
+    "tags": [4],
+    "nodes": [
+      {
+        "text": "管理员管理",
+        "tags": [5]
+      },
+      {
+        "text": "学生管理",
+        "tags": [6]
+      },
+      {
+        "text": "老师管理",
+        "tags": [7]
+      }
+    ]
+  }
+]

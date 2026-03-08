@@ -1,0 +1,102 @@
+[
+  {
+    "Id": 1,
+    "LogThime":"系统配置-参数信息",
+    "IpAddress":"127.0.0.1",
+    "RequestAddress":"system/toSystemDirect",
+    "RequestType":"GET",
+    "UserName":"admin",
+    "Type":"后台管理端",
+    "CountTime":"2020-06-15 11:22:12"
+  },{
+  "Id": 2,
+  "LogThime":"系统配置-参数信息",
+  "IpAddress":"127.0.0.1",
+  "RequestAddress":"system/toSystemDirect",
+  "RequestType":"GET",
+  "UserName":"admin",
+  "Type":"后台管理端",
+  "CountTime":"2020-06-15 11:22:12"
+},{
+  "Id": 3,
+  "LogThime":"系统配置-参数信息",
+  "IpAddress":"127.0.0.1",
+  "RequestAddress":"system/toSystemDirect",
+  "RequestType":"GET",
+  "UserName":"admin",
+  "Type":"后台管理端",
+  "CountTime":"2020-06-15 11:22:12"
+},{
+  "Id": 4,
+  "LogThime":"系统配置-参数信息",
+  "IpAddress":"127.0.0.1",
+  "RequestAddress":"system/toSystemDirect",
+  "RequestType":"GET",
+  "UserName":"admin",
+  "Type":"后台管理端",
+  "CountTime":"2020-06-15 11:22:12"
+},{
+  "Id": 5,
+  "LogThime":"系统配置-参数信息",
+  "IpAddress":"127.0.0.1",
+  "RequestAddress":"system/toSystemDirect",
+  "RequestType":"GET",
+  "UserName":"admin",
+  "Type":"后台管理端",
+  "CountTime":"2020-06-15 11:22:12"
+},{
+  "Id": 6,
+  "LogThime":"系统配置-参数信息",
+  "IpAddress":"127.0.0.1",
+  "RequestAddress":"system/toSystemDirect",
+  "RequestType":"GET",
+  "UserName":"admin",
+  "Type":"后台管理端",
+  "CountTime":"2020-06-15 11:22:12"
+},{
+  "Id": 7,
+  "LogThime":"系统配置-参数信息",
+  "IpAddress":"127.0.0.1",
+  "RequestAddress":"system/toSystemDirect",
+  "RequestType":"GET",
+  "UserName":"admin",
+  "Type":"后台管理端",
+  "CountTime":"2020-06-15 11:22:12"
+},{
+  "Id": 8,
+  "LogThime":"系统配置-参数信息",
+  "IpAddress":"127.0.0.1",
+  "RequestAddress":"system/toSystemDirect",
+  "RequestType":"GET",
+  "UserName":"admin",
+  "Type":"后台管理端",
+  "CountTime":"2020-06-15 11:22:12"
+},{
+  "Id": 9,
+  "LogThime":"系统配置-参数信息",
+  "IpAddress":"127.0.0.1",
+  "RequestAddress":"system/toSystemDirect",
+  "RequestType":"GET",
+  "UserName":"admin",
+  "Type":"后台管理端",
+  "CountTime":"2020-06-15 11:22:12"
+},{
+  "Id": 10,
+  "LogThime":"系统配置-参数信息",
+  "IpAddress":"127.0.0.1",
+  "RequestAddress":"system/toSystemDirect",
+  "RequestType":"GET",
+  "UserName":"admin",
+  "Type":"后台管理端",
+  "CountTime":"2020-06-15 11:22:12"
+},{
+  "Id": 11,
+  "LogThime":"系统配置-参数信息",
+  "IpAddress":"127.0.0.1",
+  "RequestAddress":"system/toSystemDirect",
+  "RequestType":"GET",
+  "UserName":"admin",
+  "Type":"后台管理端",
+  "CountTime":"2020-06-15 11:22:12"
+}
+]

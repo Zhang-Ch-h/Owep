@@ -1,0 +1,60 @@
+{
+  "groups": [
+    {
+      "name": "ftp",
+      "type": "com.kclm.owep.web.controller.ftp.FtpProperties",
+      "sourceType": "com.kclm.owep.web.controller.ftp.FtpProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "ftp.buffer-size",
+      "type": "java.lang.Integer",
+      "sourceType": "com.kclm.owep.web.controller.ftp.FtpProperties",
+      "defaultValue": 4096
+    },
+    {
+      "name": "ftp.encoding",
+      "type": "java.lang.String",
+      "sourceType": "com.kclm.owep.web.controller.ftp.FtpProperties",
+      "defaultValue": "UTF-8"
+    },
+    {
+      "name": "ftp.initial-size",
+      "type": "java.lang.Integer",
+      "sourceType": "com.kclm.owep.web.controller.ftp.FtpProperties",
+      "defaultValue": 0
+    },
+    {
+      "name": "ftp.ip",
+      "type": "java.lang.String",
+      "sourceType": "com.kclm.owep.web.controller.ftp.FtpProperties",
+      "defaultValue": "127.0.0.1"
+    },
+    {
+      "name": "ftp.password",
+      "type": "java.lang.String",
+      "sourceType": "com.kclm.owep.web.controller.ftp.FtpProperties",
+      "defaultValue": "123456"
+    },
+    {
+      "name": "ftp.port",
+      "type": "java.lang.String",
+      "sourceType": "com.kclm.owep.web.controller.ftp.FtpProperties",
+      "defaultValue": "21"
+    },
+    {
+      "name": "ftp.retry-count",
+      "type": "java.lang.Integer",
+      "sourceType": "com.kclm.owep.web.controller.ftp.FtpProperties",
+      "defaultValue": 3
+    },
+    {
+      "name": "ftp.username",
+      "type": "java.lang.String",
+      "sourceType": "com.kclm.owep.web.controller.ftp.FtpProperties",
+      "defaultValue": "zch"
+    }
+  ],
+  "hints": []
+}

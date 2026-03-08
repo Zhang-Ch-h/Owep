@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kclm.owep.mapper.QuestionMapper">
+    <select id="selectAllQuestion" resultMap="selectAllQuestionMap">
+        select
+        q.id q_id,
+        q.create_time q_create_time,
+        class_name,
+        c.institute_name c_institute_name,
+        c.branch_name c_branch_name,
+        prof_name,
+        course_name,
+        stu_real_name
+        from t_question q join t_class c on q.fk_class_id = c.id left join t_profession p on c.fk_profession_id = p.id
+        left join t_course co on q.fk_course_id = co.id left join t_student s on q.fk_student_id = s.id
+    </select>
+
+    <resultMap id="selectAllQuestionMap" type="Question">
+        <id property="id" column="q_id"/>
+        <result property="createTime" column="q_create_time"/>
+        <association property="clazz" javaType="com.kclm.owep.entity.Clazz">
+            <result property="className" column="class_name"/>
+            <result property="instituteName" column="c_institute_name"/>
+            <result property="branchName" column="c_branch_name"/>
+            <association property="profession" javaType="com.kclm.owep.entity.Profession">
+                <result property="profName" column="prof_name"/>
+            </association>
+        </association>
+        <association property="course" javaType="com.kclm.owep.entity.Course">
+            <result property="courseName" column="course_name"/>
+        </association>
+        <association property="student" javaType="com.kclm.owep.entity.Student">
+            <result property="stuRealName" column="stu_real_name"/>
+        </association>
+    </resultMap>
+
+    <delete id="deleteById" parameterType="int">
+        delete from t_question where id = #{id}
+    </delete>
+
+    <delete id="deleteSelect">
+        delete from t_question where id in
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </delete>
+
+    <select id="selectQuestionByKeyword" resultMap="selectAllQuestionMap">
+        select
+            q.id q_id,
+            q.create_time q_create_time,
+            class_name,
+            c.institute_name c_institute_name,
+            c.branch_name c_branch_name,
+            prof_name,
+            course_name,
+            stu_real_name
+        from t_question q join t_class c on q.fk_class_id = c.id left join t_profession p on c.fk_profession_id = p.id
+                          left join t_course co on q.fk_course_id = co.id left join t_student s on q.fk_student_id = s.id
+        <where>
+            <if test="classId != null and classId != ''">
+                q.fk_class_id = #{classId}
+            </if>
+            <if test="courseId != null and courseId != ''">
+                and q.fk_course_id = #{courseId}
+            </if>
+        </where>
+    </select>
+</mapper>

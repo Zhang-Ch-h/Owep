@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--学生表的SQL操作-->
+<mapper namespace="com.kclm.owep.mapper.StuMapper">
+    <resultMap id="BaseResultMap" type="com.kclm.owep.entity.Student">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="stu_name" jdbcType="VARCHAR" property="stuName" />
+    <result column="stu_pwd" jdbcType="VARCHAR" property="stuPwd" />
+    <result column="stu_number" jdbcType="VARCHAR" property="stuNumber" />
+    <result column="stu_phone" jdbcType="VARCHAR" property="stuPhone" />
+    <result column="stu_email" jdbcType="VARCHAR" property="stuEmail" />
+    <result column="stu_real_name" jdbcType="VARCHAR" property="stuRealName" />
+    <result column="email_code" jdbcType="VARCHAR" property="emailCode"/>
+    <result column="gender" jdbcType="INTEGER" property="gender"/>
+    <result column="card_num" jdbcType="VARCHAR" property="cardNum"/>
+    <result column="status" jdbcType="INTEGER" property="status"/>
+    <result column="effective_date" jdbcType="DATE" property="effectiveDate"/>
+    <result column="birth" jdbcType="DATE" property="birth"/>
+    <result column="image_url" jdbcType="VARCHAR" property="imageUrl"/>
+    <result column="description" jdbcType="VARCHAR" property="description"/>
+    <result column="stu_type" jdbcType="VARCHAR" property="stuType"/>
+    <result column="stu_school" jdbcType="VARCHAR" property="stuSchool"/>
+    <result column="stu_college" jdbcType="VARCHAR" property="stuCollege"/>
+    <result column="stu_major" jdbcType="VARCHAR" property="stuMajor"/>
+    <result column="stu_education" jdbcType="INTEGER" property="stuEducation"/>
+    <result column="english_level" jdbcType="INTEGER" property="englishLevel"/>
+    <result column="perfect_status" jdbcType="INTEGER" property="perfectStatus"/>
+    <result column="is_delete" jdbcType="INTEGER" property="isDelete"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    <result column="last_access_time" jdbcType="TIMESTAMP" property="lastAccessTime"/>
+    <result column="version" jdbcType="INTEGER" property="version"/>
+</resultMap>
+
+    <sql id="Base_Column_List">
+        id, stu_name, stu_pwd, stu_number, stu_phone, stu_email, stu_real_name, email_code,
+        gender, card_num, status, effective_date, birth, image_url, description, stu_type,
+        stu_school, stu_college, stu_major, stu_education, english_level, perfect_status,
+        is_delete, create_time, last_access_time, version
+    </sql>
+
+    <select id="selectAll" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_student where is_delete = 1
+    </select>
+
+    <select id="selectClassByStuId" resultMap="StuClass">
+        select s.id sid,
+        stu_name,
+        stu_pwd,
+        stu_number,
+        stu_phone,
+        stu_email,
+        stu_real_name,
+        email_code,
+        gender,
+        card_num,
+        status,
+        effective_date,
+        birth,
+        image_url,
+        description,
+        stu_type,
+        stu_school,
+        stu_college,
+        stu_major,
+        stu_education,
+        english_level,
+        perfect_status,
+        s.is_delete s_is_delete,
+        s.create_time s_create_time,
+        s.last_access_time s_last_access_time,
+        s.version s_version,
+        c.id cid,
+        class_number,
+        class_name,
+        start_time,
+        end_time,
+        class_status,
+        institute_name,
+        branch_name,
+        class_desc,
+        teacher_name,
+        c.is_delete c_is_delete,
+        c.version c_version,
+        c.create_time c_create_time,
+        c.last_access_time c_last_access_time,
+        old_class_name,
+        old_class_num
+        from t_student s left join t_class c on s.fk_class_id = c.id
+        <where>
+            <if test="stuId != null and stuId != 0">
+                s.id = #{stuId}
+            </if>
+            and s.is_delete = 1 and c.is_delete = 1
+        </where>
+    </select>
+    <resultMap id="StuClass" type="com.kclm.owep.entity.Student">
+        <id column="sid" jdbcType="INTEGER" property="id" />
+        <result column="stu_name" jdbcType="VARCHAR" property="stuName" />
+        <result column="stu_pwd" jdbcType="VARCHAR" property="stuPwd" />
+        <result column="stu_number" jdbcType="VARCHAR" property="stuNumber" />
+        <result column="stu_phone" jdbcType="VARCHAR" property="stuPhone" />
+        <result column="stu_email" jdbcType="VARCHAR" property="stuEmail" />
+        <result column="stu_real_name" jdbcType="VARCHAR" property="stuRealName" />
+        <result column="email_code" jdbcType="VARCHAR" property="emailCode"/>
+        <result column="gender" jdbcType="INTEGER" property="gender"/>
+        <result column="card_num" jdbcType="VARCHAR" property="cardNum"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="effective_date" jdbcType="DATE" property="effectiveDate"/>
+        <result column="birth" jdbcType="DATE" property="birth"/>
+        <result column="image_url" jdbcType="VARCHAR" property="imageUrl"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="stu_type" jdbcType="VARCHAR" property="stuType"/>
+        <result column="stu_school" jdbcType="VARCHAR" property="stuSchool"/>
+        <result column="stu_college" jdbcType="VARCHAR" property="stuCollege"/>
+        <result column="stu_major" jdbcType="VARCHAR" property="stuMajor"/>
+        <result column="stu_education" jdbcType="INTEGER" property="stuEducation"/>
+        <result column="english_level" jdbcType="INTEGER" property="englishLevel"/>
+        <result column="perfect_status" jdbcType="INTEGER" property="perfectStatus"/>
+        <result column="s_is_delete" jdbcType="INTEGER" property="isDelete"/>
+        <result column="s_create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="s_last_access_time" jdbcType="TIMESTAMP" property="lastAccessTime"/>
+        <result column="s_version" jdbcType="INTEGER" property="version"/>
+    <association property="clazz" javaType="com.kclm.owep.entity.Clazz">
+        <id column="cid" jdbcType="INTEGER" property="id" />
+        <result column="class_number" jdbcType="VARCHAR" property="classNumber" />
+        <result column="class_name" jdbcType="VARCHAR" property="className" />
+        <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+        <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+        <result column="class_status" jdbcType="INTEGER" property="classStatus" />
+        <result column="institute_name" jdbcType="VARCHAR" property="instituteName" />
+        <result column="branch_name" jdbcType="VARCHAR" property="branchName" />
+        <result column="class_desc" jdbcType="VARCHAR" property="classDesc" />
+        <result column="teacher_name" jdbcType="VARCHAR" property="teacherName" />
+        <result column="c_is_delete" jdbcType="INTEGER" property="isDelete" />
+        <result column="c_version" jdbcType="INTEGER" property="version" />
+        <result column="c_create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="c_last_access_time" jdbcType="TIMESTAMP" property="lastAccessTime" />
+        <result column="old_class_name" jdbcType="VARCHAR" property="oldClassName" />
+        <result column="old_class_num" jdbcType="VARCHAR" property="oldClassNum" />
+    </association>
+    </resultMap>
+
+    <select id="isExistClassId" resultType="integer">
+        select
+        fk_class_id
+        from t_student where id = #{stuId}
+    </select>
+
+    <update id="updateClassIdByStuId">
+        update t_student set fk_class_id = #{classId} where id = #{stuId}
+    </update>
+
+    <select id="searchBySuggestions" resultType="Student">
+        select
+            stu_real_name,
+            stu_school,
+            stu_college
+        from t_student where is_delete = 1
+    </select>
+
+    <update id="deleteById" parameterType="integer">
+        update t_student set is_delete = 0
+        where id = #{id}
+    </update>
+
+    <update id="deleteSelect">
+        update t_student set is_delete = 0
+        where  id in
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </update>
+
+    <select id="getStuByStuName" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_student
+        where stu_name = #{stuName}
+    </select>
+
+    <select id="getStuByStuNum" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_student
+        where stu_number = #{stuNum}
+    </select>
+
+    <!--插入一条记录-->
+    <insert id="save" parameterType="com.kclm.owep.entity.Student">
+        insert into t_student
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="stuName != null">
+                stu_name,
+            </if>
+            <if test="stuPwd != null">
+                stu_pwd,
+            </if>
+            <if test="stuNumber != null">
+                stu_number,
+            </if>
+            <if test="stuPhone != null">
+                stu_phone,
+            </if>
+            <if test="stuEmail != null">
+                stu_email,
+            </if>
+            <if test="stuRealName != null">
+                stu_real_name,
+            </if>
+            <if test="emailCode != null">
+                email_code,
+            </if>
+            <if test="gender != null">
+                gender,
+            </if>
+            <if test="cardNum != null">
+                card_num,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="effectiveDate != null">
+                effective_date,
+            </if>
+            <if test="birth != null">
+                birth,
+            </if>
+            <if test="imageUrl != null">
+                image_url,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="stuType != null">
+                stu_type,
+            </if>
+            <if test="stuSchool != null">
+                stu_school,
+            </if>
+            <if test="stuCollege != null">
+                stu_college,
+            </if>
+            <if test="stuMajor != null">
+                stu_major,
+            </if>
+            <if test="stuEducation != null">
+                stu_education,
+            </if>
+            <if test="englishLevel != null">
+                english_level,
+            </if>
+            <if test="perfectStatus != null">
+                perfect_status,
+            </if>
+            <if test="isDelete != null">
+                is_delete,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="lastAccessTime != null">
+                last_access_time,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="stuName != null">
+                #{stuName,jdbcType=VARCHAR},
+            </if>
+            <if test="stuPwd != null">
+                #{stuPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="stuNumber != null">
+                #{stuNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="stuPhone != null">
+                #{stuPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="stuEmail != null">
+                #{stuEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="stuRealName != null">
+                #{stuRealName,jdbcType=VARCHAR},
+            </if>
+            <if test="emailCode != null">
+                #{emailCode,jdbcType=VARCHAR},
+            </if>
+            <if test="gender != null">
+                #{gender,jdbcType=VARCHAR},
+            </if>
+            <if test="cardNum != null">
+                #{cardNum,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="effectiveDate != null">
+                #{effectiveDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="birth != null">
+                #{birth,jdbcType=TIMESTAMP},
+            </if>
+            <if test="imageUrl != null">
+                #{imageUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="stuType != null">
+                #{stuType,jdbcType=INTEGER},
+            </if>
+            <if test="stuSchool != null">
+                #{stuSchool,jdbcType=VARCHAR},
+            </if>
+            <if test="stuCollege != null">
+                #{stuCollege,jdbcType=VARCHAR},
+            </if>
+            <if test="stuMajor != null">
+                #{stuMajor,jdbcType=VARCHAR},
+            </if>
+            <if test="stuEducation != null">
+                #{stuEducation,jdbcType=VARCHAR},
+            </if>
+            <if test="englishLevel != null">
+                #{englishLevel,jdbcType=VARCHAR},
+            </if>
+            <if test="perfectStatus != null">
+                #{perfectStatus,jdbcType=INTEGER},
+            </if>
+            <if test="isDelete != null">
+                #{isDelete,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastAccessTime != null">
+                #{lastAccessTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="selectStuInfo" resultMap="selectStuInfo">
+        select
+        s.id sid,
+        s.stu_number,
+        s.stu_name,
+        s.stu_pwd,
+        s.stu_real_name,
+        s.gender,
+        s.stu_phone,
+        s.stu_email,
+        s.effective_date,
+        s.status,
+        s.stu_school
+        from t_student s left join t_class c on s.fk_class_id = c.id
+        <where>
+            <if test="className != null">
+                AND c.class_name = #{className}
+            </if>
+            <if test="stuRealName != null">                                                                                       nb
+                AND s.stu_real_name = #{stuRealName}
+            </if>
+            <if test="school != null">
+                AND s.stu_school = #{school}
+            </if>
+            <if test="college != null">
+                AND s.stu_college = #{college}
+            </if>
+            <if test="start != null">
+                AND c.start_time <![CDATA[ >= ]]> #{start}
+            </if>
+            <if test="end != null">
+                AND c.end_time <![CDATA[ <= ]]> #{end}
+            </if>
+            AND s.is_delete = 1 AND c.is_delete = 1
+        </where>
+    </select>
+    <resultMap id="selectStuInfo" type="com.kclm.owep.entity.Student">
+    <id column="sid" jdbcType="INTEGER" property="id" />
+    <result column="stu_number" jdbcType="VARCHAR" property="stuNumber" />
+    <result column="stu_pwd" jdbcType="VARCHAR" property="stuPwd" />
+    <result column="stu_real_name" jdbcType="VARCHAR" property="stuRealName" />
+    <result column="gender" jdbcType="INTEGER" property="gender" />
+    <result column="stu_phone" jdbcType="VARCHAR" property="stuPhone" />
+    <result column="stu_email" jdbcType="VARCHAR" property="stuEmail" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    </resultMap>
+
+    <update id="update" parameterType="com.kclm.owep.entity.Student">
+        update t_student
+        <set>
+            <if test="stuName != null">
+                stu_name = #{stuName,jdbcType=VARCHAR},
+            </if>
+        <if test="stuPhone != null">
+            stu_phone = #{stuPhone,jdbcType=VARCHAR},
+        </if>
+        <if test="stuEmail != null">
+            stu_email = #{stuEmail,jdbcType=VARCHAR},
+        </if>
+        <if test="stuPwd != null">
+            stu_pwd = #{stuPwd,jdbcType=VARCHAR},
+        </if>
+        <if test="effectiveDate != null">
+            effective_date = #{effectiveDate,jdbcType=VARCHAR},
+        </if>
+        <if test="status != null">
+            status = #{status,jdbcType=VARCHAR},
+        </if>
+        <if test="gender != null">
+            gender = #{gender,jdbcType=VARCHAR},
+        </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="getOtherClassNames" resultType="com.kclm.owep.entity.Clazz">
+        select class_name from t_class where id NOT IN (select fk_class_id from t_student where id = #{stuId})
+        and is_delete = 1
+    </select>
+
+    <update id="transferStu" >
+        update t_student s join t_class c on s.fk_class_id = c.id set s.fk_class_id = (select id from t_class
+        where class_name = #{className}) where s.id = #{stuId}
+    </update>
+
+    <update id="switchStatus">
+        update t_student set status = #{status}
+        where id = #{stuId}
+    </update>
+
+    <insert id="insertBatch" parameterType="list">
+        insert into t_student
+        (<include refid="Base_Column_List"/>)
+            values
+        <foreach collection="list" item="stu" separator=",">
+            (#{stu.id}, #{stu.stuName}, #{stu.stuPwd}, #{stu.stuNumber}, #{stu.stuPhone}, #{stu.stuEmail},
+            #{stu.stuRealName}, #{stu.emailCode}, #{stu.gender}, #{stu.cardNum},
+            #{stu.status}, #{stu.effectiveDate}, #{stu.birth}, #{stu.imageUrl},
+            #{stu.description}, #{stu.stuType}, #{stu.stuSchool}, #{stu.stuCollege},
+            #{stu.stuMajor}, #{stu.stuEducation}, #{stu.englishLevel}, #{stu.perfectStatus},
+            #{stu.isDelete}, #{stu.createTime}, #{stu.lastAccessTime}, #{stu.version})
+        </foreach>
+    </insert>
+
+    <insert id="insertBatchByClassId">
+        insert into t_student
+        (fk_class_id, <include refid="Base_Column_List"/>) <!-- 添加class_id字段 -->
+        values
+        <foreach collection="studentList" item="stu" separator=",">
+            (#{classId}, <!-- 这里设置class_id的值，它是外部传入的 -->
+            #{stu.id}, #{stu.stuName}, #{stu.stuPwd}, #{stu.stuNumber}, #{stu.stuPhone},
+            #{stu.stuEmail}, #{stu.stuRealName}, #{stu.emailCode}, #{stu.gender},
+            #{stu.cardNum}, #{stu.status}, #{stu.effectiveDate}, #{stu.birth},
+            #{stu.imageUrl}, #{stu.description}, #{stu.stuType}, #{stu.stuSchool},
+            #{stu.stuCollege}, #{stu.stuMajor}, #{stu.stuEducation}, #{stu.englishLevel},
+            #{stu.perfectStatus}, #{stu.isDelete}, #{stu.createTime},
+            #{stu.lastAccessTime}, #{stu.version})
+        </foreach>
+    </insert>
+
+    <select id="selectByClassId" resultMap="BaseResultMap" parameterType="Integer">
+        select <include refid="Base_Column_List"/>
+        from t_student where fk_class_id = #{classId} and is_delete = 1
+    </select>
+
+    <select id="selectByClassIdAndKeyword" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from t_student
+        <where>
+            fk_class_id = #{classId}
+            <if test="num != null and num != ''">
+                and stu_number = #{num}
+            </if>
+            <if test="name != null and name != ''">
+                and stu_real_name = #{name}
+            </if>
+            and is_delete = 1
+        </where>
+    </select>
+</mapper>

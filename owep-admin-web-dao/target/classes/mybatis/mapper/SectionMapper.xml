@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kclm.owep.mapper.SectionMapper">
+
+    <select id="selectByChapterId" resultMap="selectByChapterIdMap">
+        select
+        id,
+        section_name
+        from t_section
+        <where>
+            <if test="chapterId != null">
+                fk_chapter_id = #{chapterId}
+            </if>
+            and is_delete = 1
+        </where>
+    </select>
+
+    <resultMap id="selectByChapterIdMap" type="Section">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="section_name" jdbcType="VARCHAR" property="sectionName" />
+    </resultMap>
+</mapper>

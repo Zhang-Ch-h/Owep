@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "question_bank": "编程题库",
+    "type": "编程题",
+    "status": "正常",
+    "difficulty": "一般",
+    "question_stem": "实现九九乘法表",
+    "last_modified": "admin1,2020-06-16 17:14:34"
+  },
+  {
+    "id": 2,
+    "question_bank": "选择题库",
+    "type": "单选题",
+    "status": "禁用",
+    "difficulty": "一般",
+    "question_stem": "选出计算机系统里的最开始的时间",
+    "last_modified": "admin1,2020-06-16 17:14:34"
+  },
+  {
+    "id": 3,
+    "question_bank": "解答题库",
+    "type": "问答题",
+    "status": "正常",
+    "difficulty": "一般",
+    "question_stem": "MySQL数据库的事务的特性",
+    "last_modified": "admin1,2020-06-16 17:14:34"
+  }
+]

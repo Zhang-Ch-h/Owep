@@ -1,0 +1,36 @@
+{
+  "message": "",
+  "value": [
+    {
+      "examineeGroup": "扬州公司",
+      "duty": "考生",
+      "sortord": "交卷从早到晚",
+      "show": "显示全部答案"
+    },
+    {
+      "examineeGroup": "苏州分公司",
+      "duty": "初级开发工程师",
+      "sortord": "交卷从晚到早",
+      "show": "仅显示最高分记录"
+    },
+    {
+      "examineeGroup": "无锡分公司",
+      "duty": "中级级开发工程师",
+      "sortord": "用时从多到少"
+    },
+    {
+      "examineeGroup": "温州公司",
+      "sortord": "用时从少到多"
+    },
+    {
+      "examineeGroup": "杭州公司",
+      "sortord": "用时从高到低"
+    },
+    {
+      "examineeGroup": "上海公司",
+      "sortord": "用时从低到高"
+    }
+  ],
+  "code": 200,
+  "redirect": ""
+}

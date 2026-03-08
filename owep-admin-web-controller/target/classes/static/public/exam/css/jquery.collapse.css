@@ -1,0 +1,86 @@
+/***********
+ * author: yejf
+ * description: 折叠组件的样式
+ * date: 2020/6/17
+ */
+.right_caret {
+    text-shadow: 0 1px 0 #fff;
+    margin-right: 15px;
+    opacity: 80%;
+}
+.right_caret:hover {
+    color: red;
+}
+.blue-bg {
+    background-color: #0a6aa1 !important;
+    color: #FFF;
+    padding: 5px 15px !important;
+}
+.gray-bg {
+    background-color: #dedede !important;
+    color: #FFF;
+    padding: 5px 15px !important;
+}
+
+.input_field {
+    padding: 0px 20px;
+    font-size: 13px;
+    font-weight: normal;
+    color: #fff;
+}
+.input_field .input {
+    height: 30px;
+    width: 60%;
+    color: #333333;
+}
+.input:hover,.input_score:hover {
+    border: 3px solid #000000;
+}
+
+/* 设置分值的输入框 */
+.input_score {
+    width: 50px;
+    height: 27px;
+    padding: 0px 5px;
+    background-color: #A5DC86;
+    border: none;
+}
+.btn-xs {
+    padding: 3px 5px;
+    font-size: 12px;
+    margin-left: 5px;
+}
+/*  具体题目的样式 */
+.list-group .li-item {
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    padding: 5px;
+    border-radius: 0px;
+}
+
+.panel-body {
+    min-height: 100px;
+}
+
+.list-group .li-item input {
+    width: 50px;
+    height: 30px;
+    padding:2px 5px;
+    background-color: #A5DC86;
+    border: none;
+}
+.list-group .li-item span {
+    background-color: #eee;
+    display: inline-block;
+    padding: 5px 10px;
+    min-width: 85%;
+    margin: 0px -4px 0px -4px;
+}
+.list-group .li-item button {
+    border: none;
+    height: 30px;
+    padding: 0 7px;
+    background-color: #cccccc;
+    border-radius: 0px;
+    margin-right: -4px;
+}

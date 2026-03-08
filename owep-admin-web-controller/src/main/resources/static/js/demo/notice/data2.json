@@ -1,0 +1,37 @@
+[
+  {
+    "ID": 1,
+    "Name": "市场部",
+    "ParentName": "行政部",
+    "Level": 2,
+    "Desc": "负责产品销售的部门"
+  },
+  {
+    "ID": 2,
+    "Name": "产品部",
+    "ParentName": "行政部",
+    "Level": 2,
+    "Desc": "负责产品开发的部门"
+  },
+  {
+    "ID": 3,
+    "Name": "渠道部",
+    "ParentName": "行政部",
+    "Level": 2,
+    "Desc": "负责大客户的部门"
+  },
+  {
+    "ID": 4,
+    "Name": "人力资源部",
+    "ParentName": "行政部",
+    "Level": 2,
+    "Desc": "负责全公司人力资源的调配部门"
+  },
+  {
+    "ID": 5,
+    "Name": "行政部",
+    "ParentName": null,
+    "Level": 1,
+    "Desc": "负责全公司运行"
+  }
+]

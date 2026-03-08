@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "courseNumber": 1,
+    "courseName": 21,
+    "schemaName": "android",
+    "courseStage": "第一阶段",
+    "rank": 1,
+    "courseName": "java核心技术一"
+  },
+  {
+    "id": 2,
+    "stage_id": 1,
+    "course_id": 21,
+    "schemaName": "android",
+    "courseStage": "第一阶段",
+    "rank": 2,
+    "courseName": "java核心技术一"
+  },
+  {
+    "id": 3,
+    "stage_id": 2,
+    "course_id": 21,
+    "schemaName": "android",
+    "courseStage": "第一阶段",
+    "rank": 3,
+    "courseName": "Redis数据库"
+  },
+  {
+    "id": 4,
+    "stage_id": 2,
+    "course_id": 21,
+    "schemaName": "android",
+    "courseStage": "第二阶段",
+    "rank": 1,
+    "courseName": "mybatis"
+  },
+  {
+    "id": 5,
+    "stage_id": 2,
+    "course_id": 21,
+    "schemaName": "android",
+    "courseStage": "第二阶段",
+    "rank": 2,
+    "courseName": "docker"
+  }
+]

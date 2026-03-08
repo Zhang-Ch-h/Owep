@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--用户表的SQL操作-->
+<mapper namespace="com.kclm.owep.mapper.UserMapper">
+
+    <!--实体属性对应相应的表字段-->
+    <resultMap id="BaseResultMap" type="com.kclm.owep.entity.User">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="user_name" jdbcType="VARCHAR" property="userName" />
+        <result column="user_pwd" jdbcType="VARCHAR" property="userPwd" />
+        <result column="user_phone" jdbcType="VARCHAR" property="userPhone" />
+        <result column="real_name" jdbcType="VARCHAR" property="realName" />
+        <result column="user_email" jdbcType="VARCHAR" property="userEmail" />
+        <result column="email_code" jdbcType="VARCHAR" property="emailCode" />
+        <result column="gender" jdbcType="INTEGER" property="gender" />
+        <result column="card_num" jdbcType="VARCHAR" property="cardNum" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="effective_date" jdbcType="DATE" property="effectiveDate" />
+        <result column="user_type" jdbcType="INTEGER" property="userType" />
+        <result column="birth" jdbcType="DATE" property="birth" />
+        <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
+        <result column="description" jdbcType="VARCHAR" property="description" />
+        <result column="title" jdbcType="VARCHAR" property="title" />
+        <result column="perfect_status" jdbcType="INTEGER" property="perfectStatus" />
+        <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="last_access_time" jdbcType="TIMESTAMP" property="lastAccessTime" />
+        <result column="version" jdbcType="INTEGER" property="version" />
+    </resultMap>
+
+    <!--封装表字段名，方便后续简写使用-->
+    <sql id="Base_Column_List">
+        id, user_name, user_pwd, user_phone, real_name, user_email, email_code, gender, card_num,
+    status, effective_date, user_type, birth, image_url, description, title, perfect_status,
+    is_delete, create_time, last_access_time, version
+    </sql>
+
+    <!--根据id查找记录-->
+    <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_user
+        where id = #{id,jdbcType=INTEGER} and is_delete = 1
+    </select>
+
+    <!--查询所有记录-->
+    <select id="selectAll" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_user where is_delete = 1
+    </select>
+
+    <!--根据id逻辑删除记录,改变is_delete的状态-->
+    <update id="deleteById" parameterType="java.lang.Integer">
+        update t_user set is_delete = 0
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <!--逻辑删除查询出来集合里的记录,改变is_delete的状态-->
+    <!--<update id="deleteSelect" parameterType="java.lang.Integer">
+        update t_user set is_delete = 0
+        where id in
+        <foreach collection="idList" item="list" open="(" separator="," close=")">
+            #{list}
+        </foreach>
+    </update>-->
+
+    <update id="deleteSelect">
+        update t_user set is_delete = 0
+        where  id in
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </update>
+
+    <!--插入一条记录-->
+    <insert id="save" parameterType="com.kclm.owep.entity.User">
+        insert into t_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userName != null">
+                user_name,
+            </if>
+            <if test="userPwd != null">
+                user_pwd,
+            </if>
+            <if test="userPhone != null">
+                user_phone,
+            </if>
+            <if test="realName != null">
+                real_name,
+            </if>
+            <if test="userEmail != null">
+                user_email,
+            </if>
+            <if test="emailCode != null">
+                email_code,
+            </if>
+            <if test="gender != null">
+                gender,
+            </if>
+            <if test="cardNum != null">
+                card_num,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="effectiveDate != null">
+                effective_date,
+            </if>
+            <if test="userType != null">
+                user_type,
+            </if>
+            <if test="birth != null">
+                birth,
+            </if>
+            <if test="imageUrl != null">
+                image_url,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="perfectStatus != null">
+                perfect_status,
+            </if>
+            <if test="isDelete != null">
+                is_delete,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="lastAccessTime != null">
+                last_access_time,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="userName != null">
+                #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="userPwd != null">
+                #{userPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="userPhone != null">
+                #{userPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="realName != null">
+                #{realName,jdbcType=VARCHAR},
+            </if>
+            <if test="userEmail != null">
+                #{userEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="emailCode != null">
+                #{emailCode,jdbcType=VARCHAR},
+            </if>
+            <if test="gender != null">
+                #{gender,jdbcType=INTEGER},
+            </if>
+            <if test="cardNum != null">
+                #{cardNum,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="effectiveDate != null">
+                #{effectiveDate,jdbcType=DATE},
+            </if>
+            <if test="userType != null">
+                #{userType,jdbcType=INTEGER},
+            </if>
+            <if test="birth != null">
+                #{birth,jdbcType=DATE},
+            </if>
+            <if test="imageUrl != null">
+                #{imageUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="perfectStatus != null">
+                #{perfectStatus,jdbcType=INTEGER},
+            </if>
+            <if test="isDelete != null">
+                #{isDelete,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastAccessTime != null">
+                #{lastAccessTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <!--根据id更新记录-->
+    <update id="update" parameterType="com.kclm.owep.entity.User">
+        update t_user
+        <set>
+            <if test="userName != null">
+                user_name = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="userPwd != null">
+                user_pwd = #{userPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="userPhone != null">
+                user_phone = #{userPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="realName != null">
+                real_name = #{realName,jdbcType=VARCHAR},
+            </if>
+            <if test="userEmail != null">
+                user_email = #{userEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="emailCode != null">
+                email_code = #{emailCode,jdbcType=VARCHAR},
+            </if>
+            <if test="gender != null">
+                gender = #{gender,jdbcType=INTEGER},
+            </if>
+            <if test="cardNum != null">
+                card_num = #{cardNum,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="effectiveDate != null">
+                effective_date = #{effectiveDate,jdbcType=DATE},
+            </if>
+            <if test="userType != null">
+                user_type = #{userType,jdbcType=INTEGER},
+            </if>
+            <if test="birth != null">
+                birth = #{birth,jdbcType=DATE},
+            </if>
+            <if test="imageUrl != null">
+                image_url = #{imageUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="perfectStatus != null">
+                perfect_status = #{perfectStatus,jdbcType=INTEGER},
+            </if>
+            <if test="isDelete != null">
+                is_delete = #{isDelete,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastAccessTime != null">
+                last_access_time = #{lastAccessTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="selectByName" resultType="com.kclm.owep.entity.User">
+        select
+        <include refid="Base_Column_List" />
+        from t_user
+        where user_name = #{userName}
+    </select>
+
+    <select id="getGroupId" resultType="INTEGER">
+        select
+            group_id as gid
+        from t_user_group
+        where user_id = #{id}
+
+    </select>
+
+    <insert id="attachGroupToUser">
+        insert into t_user_group(user_id, group_id) value(#{uid},#{gid})
+    </insert>
+
+    <select id="selectByType" resultType="com.kclm.owep.entity.User">
+        select
+        <include refid="Base_Column_List" />
+        from t_user
+        where user_type =  #{type} and is_delete = 1
+    </select>
+
+    <select id="getUserByUserName" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_user
+        where user_name = #{userName}
+    </select>
+
+    <!--分隔点-->
+
+    <select id="selectUserByuserNameAndrealName" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_user
+        where user_name = #{userName} and real_name = #{realName} and user_type = #{userType,jdbcType=INTEGER} and is_delete = 1
+    </select>
+
+    <select id="selectGroupsByUserId" resultMap="UserGroup">
+        select u.id uid,
+        user_name,
+        user_pwd,
+        user_phone,
+        real_name,
+        user_email,
+        email_code,
+        gender,
+        card_num,
+        status,
+        effective_date,
+        user_type,
+        birth,
+        image_url,
+        description,
+        title,
+        perfect_status,
+        is_delete,
+        u.create_time u_create_time,
+        u.last_access_time u_last_access_time,
+        u.version u_version,
+        g.id gid,
+        group_name,
+        group_description,
+        g.create_time g_create_time,
+        g.last_access_time g_last_access_time,
+        g.version g_version,
+        max_count
+        from t_user u
+        left join t_user_group ug on u.id = ug.user_id
+        left join t_group g on ug.group_id = g.id
+        <where>
+            <if test="userId != null and userId != 0">
+                u.id = #{userId}
+            </if>
+        </where>
+    </select>
+    <resultMap id="UserGroup" type="com.kclm.owep.entity.User">
+        <id property="id" column="uid"/>
+        <result property="userName" column="user_name"/>
+        <result property="userPwd" column="user_pwd"/>
+        <result property="userPhone" column="user_phone"/>
+        <result property="realName" column="real_name"/>
+        <result property="userEmail" column="user_email"/>
+        <result property="emailCode" column="email_code"/>
+        <result property="gender" column="gender"/>
+        <result property="cardNum" column="card_num"/>
+        <result property="status" column="status"/>
+        <result property="effectiveDate" column="effective_date"/>
+        <result property="userType" column="user_type"/>
+        <result property="birth" column="birth"/>
+        <result property="imageUrl" column="image_url"/>
+        <result property="description" column="description"/>
+        <result property="title" column="title"/>
+        <result property="perfectStatus" column="perfect_status"/>
+        <result property="isDelete" column="is_delete"/>
+        <result property="createTime" column="u_create_time"/>
+        <result property="lastAccessTime" column="u_last_access_time"/>
+        <result property="version" column="u_version"/>
+        <collection property="groups" ofType="com.kclm.owep.entity.Group">
+            <id property="id" column="gid"/>
+            <result property="groupName" column="group_name"/>
+            <result property="groupDescription" column="group_description"/>
+            <result property="createTime" column="g_create_time"/>
+            <result property="lastAccessTime" column="g_last_access_time"/>
+            <result property="version" column="g_version"/>
+            <result property="maxCount" column="max_count"/>
+        </collection>
+    </resultMap>
+
+    <update id="switchStatus" parameterType="Integer">
+        update t_user set status = #{status}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteByUserIdInUG">
+        delete
+        from t_user_group
+        where
+        <foreach collection="list" item="item" separator="or">
+            user_id = #{item}
+        </foreach>
+    </delete>
+
+    <select id="getUserByTeacherRealName" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_user
+        where real_name = #{realName} and user_type = 3 and is_delete = 1
+    </select>
+</mapper>

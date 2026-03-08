@@ -1,0 +1,20 @@
+{
+  "name": "jquery.collapse",
+  "version": "1.0.0",
+  "description": "一个可以自由折叠的panel，基于bootstrap和jquery",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "bootstrap",
+    "jquery",
+    "collapse"
+  ],
+  "author": "yejf",
+  "license": "MIT",
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "jquery": "^3.5.1"
+  }
+}

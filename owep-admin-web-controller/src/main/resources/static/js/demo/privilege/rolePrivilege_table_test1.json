@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "privilegeName": "代码测试权限",
+    "privilegeDescription": "代码测试权限"
+  },
+  {
+    "id": 2,
+    "privilegeName": "咨询师权限",
+    "privilegeDescription": "咨询师权限"
+  },
+  {
+    "id": 3,
+    "privilegeName": "测试教务角色权限",
+    "privilegeDescription": "测试教务角色权限"
+  },
+  {
+    "id": 4,
+    "privilegeName": "教务权限",
+    "privilegeDescription": "教师权限"
+  },
+  {
+    "id": 5,
+    "privilegeName": "教师权限",
+    "privilegeDescription": "教务权限"
+  },
+  {
+    "id": 10,
+    "privilegeName": "管理员权限",
+    "privilegeDescription": "管理员权限"
+  }
+]

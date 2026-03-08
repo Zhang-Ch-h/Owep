@@ -1,0 +1,68 @@
+[
+  {
+    "id": 1,
+    "pid": 0,
+    "menuName": "系统配置",
+    "privilege": "系统配置"
+  },
+  {
+    "id": 2,
+    "pid": 0,
+    "menuName": "用户管理",
+    "privilege": "用户管理"
+  },
+  {
+    "id": 3,
+    "pid": 0,
+    "menuName": "权限管理",
+    "privilege": "权限管理"
+  },
+  {
+    "id": 4,
+    "pid": 1,
+    "menuName": "参数信息",
+    "privilege": "参数信息"
+  },
+  {
+    "id": 5,
+    "pid": 1,
+    "menuName": "资料配置",
+    "privilege": "资料配置"
+  },
+  {
+    "id": 6,
+    "pid": 1,
+    "menuName": "数据库备份",
+    "privilege": "数据库备份"
+  },
+  {
+    "id": 7,
+    "pid": 2,
+    "menuName": "管理员管理",
+    "privilege": "管理员管理"
+  },
+  {
+    "id": 8,
+    "pid": 2,
+    "menuName": "学生管理",
+    "privilege": "学生管理"
+  },
+  {
+    "id": 9,
+    "pid": 3,
+    "menuName": "用户组管理",
+    "privilege": "用户组管理"
+  },
+  {
+    "id": 10,
+    "pid": 3,
+    "menuName": "角色管理",
+    "privilege": "角色管理"
+  },
+  {
+    "id": 11,
+    "pid": 3,
+    "menuName": "角色权限",
+    "privilege": "角色权限"
+  }
+]
